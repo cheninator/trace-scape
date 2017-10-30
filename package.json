@@ -7,7 +7,7 @@
     "clean": "rimraf bin node_modules",
     "electron": "electron bin/electron",
     "web": "lite-server",
-    "start": "tsc && concurrently --kill-others \"tsc -w \" \"lite-server\" ",
+    "start": "tsc && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,7 +22,8 @@
     "pixi.js":"^4.6.0"
   },
   "devDependencies": {
-    "electron": "~1.7.8",
+    "@types/node": "^8.0.47",
+    "electron": "^1.7.8",
     "lite-server": "^2.3.0",
     "rimraf": "^2.5.4",
     "tslint": "^4.5.1",
