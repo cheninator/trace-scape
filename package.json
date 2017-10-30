@@ -2,10 +2,13 @@
   "name": "trace-scape",
   "version": "1.0.0",
   "description": "A trace viewer built with web technologies",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rimraf bin node_modules"
+    "clean": "rimraf bin node_modules",
+    "electron": "electron bin/electron",
+    "web": "lite-server",
+    "start": "tsc && concurrently --kill-others \"tsc -w \" \"lite-server\" ",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -13,7 +16,13 @@
   },
   "author": "Yonni Chen",
   "license": "Apache-2.0",
+  "dependencies": {
+    "concurrently": "3.1.0",
+    "jquery": "^3.2.1",
+    "pixi.js":"^4.6.0"
+  },
   "devDependencies": {
+    "electron": "~1.7.8",
     "lite-server": "^2.3.0",
     "rimraf": "^2.5.4",
     "tslint": "^4.5.1",
