@@ -4,7 +4,8 @@
   "description": "A trace viewer built with web technologies",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf bin node_modules"
   },
   "repository": {
     "type": "git",
@@ -13,9 +14,10 @@
   "author": "Yonni Chen",
   "license": "Apache-2.0",
   "devDependencies": {
+    "lite-server": "^2.3.0",
+    "rimraf": "^2.5.4",
     "tslint": "^4.5.1",
     "tslint-eslint-rules": "^3.5.1",
-    "typescript": "^2.5.3",
-    "lite-server": "^2.3.0"
+    "typescript": "^2.5.3"
   }
 }

@@ -41,9 +41,9 @@
         "no-use-before-declare": true,
         "no-var-keyword": true,
         "object-literal-sort-keys": false,
-        "cyclomatic-complexity": [ true, 20],
-        "max-classes-per-file": [true, 2],
-        "max-line-length": [true, 120],
+        "cyclomatic-complexity": [ true, 20 ],
+        "max-classes-per-file": [ true, 2 ],
+        "max-line-length": [ true, 120 ],
         "no-unsafe-finally": true,
         "one-line": [
             false,
