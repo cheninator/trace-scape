@@ -1,0 +1,21 @@
+{
+  "name": "trace-scape",
+  "version": "1.0.0",
+  "description": "A trace viewer built with web technologies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cheninator/trace-scape"
+  },
+  "author": "Yonni Chen",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "tslint": "^4.5.1",
+    "tslint-eslint-rules": "^3.5.1",
+    "typescript": "^2.5.3",
+    "lite-server": "^2.3.0"
+  }
+}
