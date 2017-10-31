@@ -4,11 +4,14 @@
   "description": "A trace viewer built with web technologies",
   "main": "main.js",
   "scripts": {
-    "clean": "rimraf bin node_modules",
-    "electron": "electron bin/electron",
-    "web": "lite-server",
-    "start": "tsc && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "bundle": "echo",
+    "clean": "rimraf bin",
+    "clean:modules": "rimraf node_modules",
+    "desktop": "electron bin/electron",
+    "start": "npm run clean && tsc && npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "web": "lite-server"
   },
   "repository": {
     "type": "git",
@@ -19,11 +22,14 @@
   "dependencies": {
     "concurrently": "3.1.0",
     "jquery": "^3.2.1",
-    "pixi.js":"^4.6.0"
+    "pixi.js": "^4.6.0"
   },
   "devDependencies": {
-    "@types/node": "^8.0.47",
+    "@types/jquery": "^3.2.16",
     "electron": "^1.7.8",
+    "gulp": "^3.9.1",
+    "gulp-flatten": "^0.3.1",
+    "gulp-uglify": "^3.0.0",
     "lite-server": "^2.3.0",
     "rimraf": "^2.5.4",
     "tslint": "^4.5.1",
