@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.2.16",
+    "@types/pixi.js": "^4.5.7",
     "electron": "^1.7.8",
     "gulp": "^3.9.1",
     "gulp-flatten": "^0.3.1",

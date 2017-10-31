@@ -1,4 +1,3 @@
-import * as $ from 'jquery';
 
 export interface ITraceServerProtocol {
     fetchTree(): Promise<any>;
