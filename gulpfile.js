@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
+    'chart.js/**/Chart.min.js',
     'jquery/**/jquery.min.js',
     'pixi.js/**/pixi.min.js'
 ];

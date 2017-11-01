@@ -1,3 +1,4 @@
+import { Colors } from './../ui/colors';
 import { TimelineController } from './timeline-controller';
 import { TimelineRuler } from './timeline-ruler';
 
@@ -10,13 +11,13 @@ export class TimelineView {
     private timelineRuler: TimelineRuler;
 
     constructor() {
-        let canvas = <HTMLCanvasElement> document.getElementById('canvas');
+        let canvas = <HTMLCanvasElement> document.getElementById('control-flow');
         let options = {
             width: canvas.width,
             height: canvas.height,
             view: canvas,
             antialias: false,
-            backgroundColor : 0xffffff
+            backgroundColor : Colors.WHITE
         };
 
         this.application = new PIXI.Application(options);
@@ -25,7 +26,7 @@ export class TimelineView {
         window.addEventListener('ontimelinechange', this.timelineChanged);
 
         this.timelineController = new TimelineController();
-        this.timelineRuler = new TimelineRuler();
+        this.timelineRuler = new TimelineRuler(0, 0, 0);
     }
 
     private initGraphicsContainer(): void {
@@ -39,8 +40,6 @@ export class TimelineView {
     }
 
     public clear(): void {
-        for (let eventGraphic of this.eventGraphics) {
-            eventGraphic.clear();
-        }
+        this.eventGraphics.forEach((e: PIXI.Graphics) => e.clear());
     }
 }

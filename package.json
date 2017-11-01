@@ -20,11 +20,13 @@
   "author": "Yonni Chen",
   "license": "Apache-2.0",
   "dependencies": {
-    "concurrently": "3.1.0",
+    "chart.js":"^2.7.1",
+    "concurrently": "3.5.0",
     "jquery": "^3.2.1",
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
+    "@types/chartjs": "^0.0.31",
     "@types/jquery": "^3.2.16",
     "@types/pixi.js": "^4.5.7",
     "electron": "^1.7.8",
@@ -33,8 +35,8 @@
     "gulp-uglify": "^3.0.0",
     "lite-server": "^2.3.0",
     "rimraf": "^2.5.4",
-    "tslint": "^4.5.1",
-    "tslint-eslint-rules": "^3.5.1",
+    "tslint": "^5.8.0",
+    "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.5.3"
   }
 }
