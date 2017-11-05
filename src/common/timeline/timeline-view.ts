@@ -1,17 +1,17 @@
 import { Colors } from './../ui/colors';
 import { TimelineController } from './timeline-controller';
+import { TimelineChart } from './timeline-chart';
 import { TimelineRuler } from './timeline-ruler';
 
 export class TimelineView {
 
     private application: PIXI.Application;
-    private graphicsContainer: PIXI.Container;
-    private eventGraphics: Array<PIXI.Graphics>;
     private timelineController: TimelineController;
     private timelineRuler: TimelineRuler;
+    private timelineChart: TimelineChart;
 
-    constructor() {
-        let canvas = <HTMLCanvasElement> document.getElementById('control-flow');
+    constructor(id: string) {
+        let canvas = <HTMLCanvasElement> document.getElementById(id);
         let options = {
             width: canvas.width,
             height: canvas.height,
@@ -21,25 +21,15 @@ export class TimelineView {
         };
 
         this.application = new PIXI.Application(options);
-        this.initGraphicsContainer();
-
-        window.addEventListener('ontimelinechange', this.timelineChanged);
-
-        this.timelineController = new TimelineController();
+        
+        this.timelineController = new TimelineController(canvas.width);
+        this.timelineChart = new TimelineChart();
         this.timelineRuler = new TimelineRuler(0, 0, 0);
+
+        window.addEventListener('visiblewindowchanged', this.visibleWindowChanged);
     }
 
-    private initGraphicsContainer(): void {
-        this.graphicsContainer = new PIXI.Container();
-        this.graphicsContainer.interactive = true;
-        app.stage.addChild(this.graphicsContainer);
-    }
-
-    private timelineChanged(e: Event): void {
-        console.log("Changed");
-    }
-
-    public clear(): void {
-        this.eventGraphics.forEach((e: PIXI.Graphics) => e.clear());
+    private visibleWindowChanged(e: Event): void {
+        this.timelineChart.model = this.timelineController.viewModel;
     }
 }

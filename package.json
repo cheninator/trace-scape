@@ -9,7 +9,7 @@
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
     "desktop": "electron bin/electron",
-    "start": "npm run clean && tsc && npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
+    "start": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "web": "lite-server"
   },
@@ -37,6 +37,7 @@
     "rimraf": "^2.5.4",
     "tslint": "^5.8.0",
     "tslint-eslint-rules": "^4.1.1",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "webpack": "^3.8.1"
   }
 }

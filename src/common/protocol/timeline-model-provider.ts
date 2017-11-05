@@ -1,11 +1,12 @@
+import { TimelineRowModel, TimelineArrow } from './../timeline/timeline-viewmodel';
 
-export interface ITraceServerProtocol {
-    fetchTree(): Promise<any>;
-    fetchEvents(filter: any): Promise<any>;
-    fetchArrows(): Promise<any>;
+export interface ITimelineModelProvider {
+    fetchEntries(): Promise<any>;
+    fetchEvents(filter: any): Promise<Array<TimelineRowModel>>;
+    fetchArrows(): Promise<TimelineArrow>;
 }
 
-export class TraceServerProtocol implements ITraceServerProtocol {
+export class TimelineModelProvider implements ITimelineModelProvider {
 
     private serverUrl_: string;
     private traceId_: string;
@@ -23,7 +24,7 @@ export class TraceServerProtocol implements ITraceServerProtocol {
         this.serverUrl_ = serverUrl;
     }
 
-    fetchTree() : Promise<any> {
+    public fetchEntries() : Promise<any> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
@@ -42,7 +43,7 @@ export class TraceServerProtocol implements ITraceServerProtocol {
         });
     }
 
-    fetchEvents(filter: any) : Promise<any> {
+    public fetchEvents(filter: any) : Promise<Array<TimelineRowModel>> {
         return new Promise((resolve, reject) => {
             let req = new XMLHttpRequest();
             req.open('POST', `${this.serverUrl_}/tracecompass/traces/${this.traceId_}/ControlFlowView/events`, true);
@@ -54,7 +55,8 @@ export class TraceServerProtocol implements ITraceServerProtocol {
                 let arrayBuffer = req.response;
                 if (arrayBuffer) {
                     let byteArray = new Uint8Array(arrayBuffer);
-                    resolve(byteArray);
+                    resolve(null);
+                    //resolve(byteArray);
                 }
             };
 
@@ -66,7 +68,7 @@ export class TraceServerProtocol implements ITraceServerProtocol {
         });
     }
 
-    fetchArrows() : Promise<any> {
+    public fetchArrows() : Promise<TimelineArrow> {
         return null;
     }
 }

@@ -2,7 +2,13 @@
 A trace viewer built with web technologies
 
 # Prerequisites
-- Node.js
+- Node.js 6
+
+https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+- Webpack
+```bash
+sudo npm install -g webpack
+```
 
 # Quick start
 ```bash

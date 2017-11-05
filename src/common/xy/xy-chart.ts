@@ -1,8 +1,16 @@
 
-export class XYChart {
+export class XYChart implements IChart {
 
-    constructor() {
-        let element = <HTMLCanvasElement> document.getElementById('disk');
+    constructor(id: string) {
+        let element = <HTMLCanvasElement> document.getElementById(id);
         let ctx = element.getContext('2d');
+    }
+
+    public draw() {
+
+    }
+
+    public clear() {
+        
     }
 }
