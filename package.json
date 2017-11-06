@@ -8,8 +8,9 @@
     "bundle": "echo",
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
-    "desktop": "./node_modules/electron/dist/electron bin/electron/main.js",
-    "start": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
+    "desktop": "electron bin/electron/main.js",
+    "start": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
+    "start:desktop": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "web": "lite-server"
   },
