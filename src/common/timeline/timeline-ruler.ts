@@ -13,18 +13,17 @@ export class TimelineRuler {
 
     /* Width in pixel of the ruler */
     private width_: number;
+    /* Heigth in pixel of the canvas used to draw the events */
+    private heigth_: number;
 
     /* X and Y position of the ruler */
     private positionX_: number;
     private positionY_: number;
 
-    /* Heigth of the canvas used to draw the events */
-    private heigth_: number;
-
-    constructor(x: number, y: number, heigth: number) {
+    constructor(x: number, y: number, width: number, heigth: number) {
         this.rulerContainer_ = new PIXI.Container();
         this.rulerGraphics_ = new PIXI.Graphics();
-        this.width_ = 1000;
+        this.width_ = width;
 
         this.positionX_ = x;
         this.positionY_ = y;

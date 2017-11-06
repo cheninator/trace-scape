@@ -21,12 +21,16 @@ export class TimelineView {
         };
 
         this.application = new PIXI.Application(options);
-        
+
         this.timelineController = new TimelineController(canvas.width);
         this.timelineChart = new TimelineChart();
-        this.timelineRuler = new TimelineRuler(0, 0, 0);
+        this.timelineRuler = new TimelineRuler(0, 0, canvas.width, canvas.height);
 
         window.addEventListener('visiblewindowchanged', this.visibleWindowChanged);
+    }
+
+    public inflate(): void {
+
     }
 
     private visibleWindowChanged(e: Event): void {

@@ -1,12 +1,12 @@
-import { TimelineRowModel, TimelineArrow } from './../timeline/timeline-viewmodel';
+import { TimelineRowModel, TimelineEntry, TimelineArrow } from './../timeline/timeline-viewmodel';
 
 export interface ITimelineModelProvider {
-    fetchEntries(): Promise<any>;
+    fetchEntries(): Promise<Array<TimelineEntry>>;
     fetchEvents(filter: any): Promise<Array<TimelineRowModel>>;
     fetchArrows(): Promise<TimelineArrow>;
 }
 
-export class TimelineModelProvider implements ITimelineModelProvider {
+export class ControlFlowModelProvider implements ITimelineModelProvider {
 
     private serverUrl_: string;
     private traceId_: string;
@@ -24,7 +24,7 @@ export class TimelineModelProvider implements ITimelineModelProvider {
         this.serverUrl_ = serverUrl;
     }
 
-    public fetchEntries() : Promise<any> {
+    public fetchEntries() : Promise<Array<TimelineEntry>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
@@ -32,12 +32,12 @@ export class TimelineModelProvider implements ITimelineModelProvider {
                     url: `${this.serverUrl_}/tracecompass/traces/${this.traceId_}/ControlFlowView`,
                     contentType: 'application/x-www-form-urlencoded',
                     success: (response) => {
-                        let obj = JSON.parse(response);
+                        let obj = <Array<TimelineEntry>> JSON.parse(response);
                         resolve(obj);
                     },
                     error: (xhr, status, error) => {
                         reject(error);
-                    }
+                    },
                 }
             );
         });
