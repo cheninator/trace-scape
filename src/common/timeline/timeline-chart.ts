@@ -4,7 +4,7 @@ import { IChart } from './../base/IChart';
 
 export class TimelineChart implements IChart {
 
-    private graphicsContainer: PIXI.Container;
+    public graphicsContainer: PIXI.Container;
     private eventGraphics: Array<PIXI.Graphics>;
     private viewModel_: TimelineViewModel;
 
@@ -18,18 +18,22 @@ export class TimelineChart implements IChart {
         6: Colors.VERY_LIGHT_GREY
     };
 
+    constructor() {
+        this.graphicsContainer = new PIXI.Container();
+    }
+
     public draw() {
         this.clear();
-        let visibleWindow = this.viewModel_.viewModelContext;
+        let visibleWindow = this.viewModel_.context;
 
         for (let event of this.viewModel_.events) {
-            let eventGraphic = this.eventGraphics[event.id];
+            let eventGraphic = this.eventGraphics[event.entryID];
             for (let state of event.states) {
                 let style = this.colorMapping[state.value];
                 if (style !== undefined) {
                     let start = Math.max(state.startTime, visibleWindow.min);
                     let x = Math.round((start - visibleWindow.min) / visibleWindow.resolution);
-                    let y = (event.id + 1) * 20;
+                    let y = (event.entryID + 1) * 20;
                     let width = Math.round(state.duration / visibleWindow.resolution);
                     let height = 15;
 
@@ -46,8 +50,9 @@ export class TimelineChart implements IChart {
     }
 
     set model(model: TimelineViewModel) {
-        let previousModelEntriesCount = this.viewModel_ !== undefined ? this.viewModel_.entries.length : 0;
-        if (previousModelEntriesCount !== model.entries.length) {
+        if (this.viewModel_ === undefined && model !== undefined) {
+            this.viewModel_ = model;
+
             this.eventGraphics = new Array(this.viewModel_.entries.length);
             this.graphicsContainer.removeChildren();
             for (let i = 0; i < model.entries.length; ++i) {
@@ -55,7 +60,5 @@ export class TimelineChart implements IChart {
                 this.graphicsContainer.addChild(this.eventGraphics[i]);
             }
         }
-        this.viewModel_ = model;
-        this.draw();
     }
 }

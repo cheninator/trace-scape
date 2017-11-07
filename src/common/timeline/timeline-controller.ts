@@ -1,6 +1,8 @@
-import { TimelineViewModel, TimelineEntry, TimelineRowModel } from './timeline-viewmodel';
-import { ITimelineModelProvider, ControlFlowModelProvider } from './../protocol/timeline-model-provider';
+import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
+import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
+import { TimelineRequestFilter } from './../filter/timeline-request-filter';
 import { VisibleWindow } from './../visible-window';
+import { Utils } from './../utils';
 import { Key } from './../key';
 
 export class TimelineController {
@@ -16,43 +18,72 @@ export class TimelineController {
     private left_: Key;
     private right_: Key;
 
-    constructor(viewWidth: number) {
+    constructor(viewWidth: number, modelProvider: ITimelineModelProvider) {
         this.viewWidth_ = viewWidth;
-        this.modelProvider_ = new ControlFlowModelProvider('http://localhost:8080', 'trace2');
+        this.modelProvider_ = modelProvider;
+        this.visibleWindow_ = new VisibleWindow(0, 0, 0);
         this.initKeys();
     }
 
     public async inflate() {
-        let model = await this.modelProvider_.fetchEntries();
+        let response = await this.modelProvider_.fetchEntries();
 
-        while (model.length !== 10) {
-            model = await this.modelProvider_.fetchEntries();
+        // This is arbitrary
+        this.visibleWindow_.min = response.model[0].startTime;
+        this.updateVisibleWindow(response.model);
+
+        while (response.status !== "COMPLETED") {
+            await Utils.wait(500);
+            response = await this.modelProvider_.fetchEntries();
+            this.updateVisibleWindow(response.model);
         }
+
+        let events = await this.modelProvider_.fetchEvents(<TimelineRequestFilter> {
+            start: this.visibleWindow_.min,
+            end: this.visibleWindow_.max,
+            resolution: this.visibleWindow_.resolution,
+            entries: response.model.map((entry) => entry.id)
+        });
+
+        this.viewModel_ = <TimelineViewModel> {
+            entries: response.model,
+            events: events.model,
+            arrows: new Array(),
+            context: this.visibleWindow_
+        };
+        window.dispatchEvent(new Event('visiblewindowchanged'));
+    }
+
+    private updateVisibleWindow(entries: Array<TimelineEntry>) {
+        entries.forEach((entry: TimelineEntry) => {
+            this.visibleWindow_.min = Math.min(this.visibleWindow_.min, entry.startTime);
+            this.visibleWindow_.max = Math.max(this.visibleWindow_.max, entry.endTime);
+        });
+        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
     }
 
     get viewModel() {
         return this.viewModel_;
     }
 
-    private updateViewModel(): void {
-        this.modelProvider_.fetchEvents(null).then((v: Array<TimelineRowModel>) => {
-            this.viewModel_.events = v;
-            window.dispatchEvent(new Event('visiblewindowchanged'));
-        });
+    private async updateViewModelEvents() {
+        let response = await this.modelProvider_.fetchEvents(null);
+        this.viewModel_.events = response.model;
+        window.dispatchEvent(new Event('visiblewindowchanged'));
     }
 
     public zoomIn(): void {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
-        this.updateViewModel();
+        this.updateViewModelEvents();
     }
 
     public zoomOut(): void {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
-        this.updateViewModel();
+        this.updateViewModelEvents();
     }
 
     public panLeft(): void {
@@ -60,7 +91,7 @@ export class TimelineController {
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
-        this.updateViewModel();
+        this.updateViewModelEvents();
     }
 
     public panRight(): void {
@@ -68,7 +99,7 @@ export class TimelineController {
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
-        this.updateViewModel();
+        this.updateViewModelEvents();
     }
 
     private initKeys(): void {

@@ -2,8 +2,8 @@ import { Colors } from './../ui/colors';
 
 export class TimelineRuler {
 
-    readonly lineWidth = 1;
-    readonly textStyle = new PIXI.TextStyle({
+    private readonly lineWidth = 1;
+    private readonly textStyle = new PIXI.TextStyle({
         fill: Colors.BLACK,
         fontSize: 13
     });

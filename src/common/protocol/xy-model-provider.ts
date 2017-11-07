@@ -17,12 +17,11 @@ export class DiskModelProvider implements IXYModelProvider {
 
 export class CpuModelProvider implements IXYModelProvider {
 
-        public fetchEntries(): Promise<any> {
-            return null;
-        }
+    public fetchEntries(): Promise<any> {
+        return null;
+    }
 
-        public fetchData(): Promise<any> {
-            return null;
-        }
+    public fetchData(): Promise<any> {
+        return null;
     }
 }

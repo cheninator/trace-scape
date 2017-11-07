@@ -7,9 +7,12 @@ export interface TimelineViewModel {
     context: VisibleWindow;
 }
 
-// TODO
 export interface TimelineEntry {
-
+    id: number;
+    parentId: number;
+    startTime: number;
+    endTime: number;
+    name: string;
 }
 
 // TODO
@@ -18,7 +21,7 @@ export interface TimelineArrow {
 }
 
 export interface TimelineRowModel {
-    id: number;
+    entryID: number;
     states: Array<TimelineState>;
 }
 

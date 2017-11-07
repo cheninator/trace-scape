@@ -1,8 +1,10 @@
 import { TimelineRowModel, TimelineEntry, TimelineArrow } from './../timeline/timeline-viewmodel';
+import { TimelineRequestFilter } from './../filter/timeline-request-filter';
+import { ModelResponse } from './model-response';
 
 export interface ITimelineModelProvider {
-    fetchEntries(): Promise<Array<TimelineEntry>>;
-    fetchEvents(filter: any): Promise<Array<TimelineRowModel>>;
+    fetchEntries(): Promise<ModelResponse<Array<TimelineEntry>>>;
+    fetchEvents(filter: TimelineRequestFilter): Promise<ModelResponse<Array<TimelineRowModel>>>;
     fetchArrows(): Promise<TimelineArrow>;
 }
 
@@ -24,15 +26,15 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
         this.serverUrl_ = serverUrl;
     }
 
-    public fetchEntries() : Promise<Array<TimelineEntry>> {
+    public fetchEntries() : Promise<ModelResponse<Array<TimelineEntry>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
                     type: 'GET',
-                    url: `${this.serverUrl_}/tracecompass/traces/${this.traceId_}/ControlFlowView`,
+                    url: `${this.serverUrl_}/traces/${this.traceId_}/ControlFlowView`,
                     contentType: 'application/x-www-form-urlencoded',
                     success: (response) => {
-                        let obj = <Array<TimelineEntry>> JSON.parse(response);
+                        let obj = <ModelResponse<Array<TimelineEntry>>> response;
                         resolve(obj);
                     },
                     error: (xhr, status, error) => {
@@ -43,28 +45,23 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
         });
     }
 
-    public fetchEvents(filter: any) : Promise<Array<TimelineRowModel>> {
+    public fetchEvents(filter: TimelineRequestFilter) : Promise<ModelResponse<Array<TimelineRowModel>>> {
         return new Promise((resolve, reject) => {
-            let req = new XMLHttpRequest();
-            req.open('POST', `${this.serverUrl_}/tracecompass/traces/${this.traceId_}/ControlFlowView/events`, true);
-            req.setRequestHeader('Content-type', 'application/json');
-            req.responseType = 'arraybuffer';
-
-            req.onload = (oEvent) => {
-                // Not oReq.responseText
-                let arrayBuffer = req.response;
-                if (arrayBuffer) {
-                    let byteArray = new Uint8Array(arrayBuffer);
-                    resolve(null);
-                    //resolve(byteArray);
+            $.ajax(
+                {
+                    type: "POST",
+                    url: `${this.serverUrl_}/traces/${this.traceId_}/ControlFlowView/events`,
+                    data: JSON.stringify(filter),
+                    contentType: "application/json; charset=utf-8",
+                    success: (response) => {
+                        let obj = <ModelResponse<Array<TimelineRowModel>>> response;
+                        resolve(obj);
+                    },
+                    error: (xhr, status, error) => {
+                        reject(error);
+                    },
                 }
-            };
-
-            req.onerror = (error) => {
-                reject(error);
-            };
-
-            req.send(JSON.stringify(filter));
+            );
         });
     }
 
