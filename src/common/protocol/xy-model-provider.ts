@@ -1,16 +1,18 @@
+import { ModelResponse } from './model-response';
+import { XYEntries, XYSeries } from './../xy/xy-viewmodel';
 
 export interface IXYModelProvider {
-    fetchEntries(): Promise<any>;
-    fetchData(): Promise<any>;
+    fetchEntries(): Promise<ModelResponse<XYEntries>>;
+    fetchData(): Promise<XYSeries>;
 }
 
 export class DiskModelProvider implements IXYModelProvider {
 
-    public fetchEntries(): Promise<any> {
+    public fetchEntries(): Promise<ModelResponse<XYEntries>> {
         return null;
     }
 
-    public fetchData(): Promise<any> {
+    public fetchData(): Promise<XYSeries> {
         return null;
     }
 }
