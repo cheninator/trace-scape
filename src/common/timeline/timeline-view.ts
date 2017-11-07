@@ -28,6 +28,8 @@ export class TimelineView {
         this.timelineRuler = new TimelineRuler(0, 0, canvas.width, canvas.height);
 
         window.addEventListener('visiblewindowchanged', this.visibleWindowChanged.bind(this));
+
+        this.application.stage.addChild(this.timelineRuler.rulerContainer_);
         this.application.stage.addChild(this.timelineChart.graphicsContainer);
     }
 
@@ -38,5 +40,8 @@ export class TimelineView {
     private visibleWindowChanged(e: Event): void {
         this.timelineChart.model = this.timelineController.viewModel;
         this.timelineChart.draw();
+
+        this.timelineRuler.context = this.timelineController.viewModel.context;
+        this.timelineRuler.draw();
     }
 }

@@ -14,8 +14,8 @@ export class Key {
         this.release = undefined;
 
         // Attach event listeners
-        window.addEventListener('keydown', this.downHandler, false);
-        window.addEventListener('keyup', this.upHandler, false);
+        window.addEventListener('keydown', this.downHandler.bind(this), false);
+        window.addEventListener('keyup', this.upHandler.bind(this), false);
     }
 
     private downHandler(e: KeyboardEvent) {

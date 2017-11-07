@@ -67,7 +67,14 @@ export class TimelineController {
     }
 
     private async updateViewModelEvents() {
-        let response = await this.modelProvider_.fetchEvents(null);
+        let filter: TimelineRequestFilter = {
+            start: this.visibleWindow_.min,
+            end: this.visibleWindow_.max,
+            resolution: this.visibleWindow_.resolution,
+            entries: this.viewModel_.entries.map((entry) => entry.id)
+        };
+
+        let response = await this.modelProvider_.fetchEvents(filter);
         this.viewModel_.events = response.model;
         window.dispatchEvent(new Event('visiblewindowchanged'));
     }
@@ -104,15 +111,15 @@ export class TimelineController {
 
     private initKeys(): void {
         this.plus_ = new Key(107);
-        this.plus_.press = this.zoomIn;
+        this.plus_.press = this.zoomIn.bind(this);
 
         this.minus_ = new Key(109);
-        this.minus_.press = this.zoomOut;
+        this.minus_.press = this.zoomOut.bind(this);
 
         this.left_ = new Key(37);
-        this.left_.press = this.panLeft;
+        this.left_.press = this.panLeft.bind(this);
 
         this.right_ = new Key(39);
-        this.right_.press = this.panRight;
+        this.right_.press = this.panRight.bind(this);
     }
 }

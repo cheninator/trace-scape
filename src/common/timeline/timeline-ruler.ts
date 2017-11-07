@@ -1,4 +1,5 @@
 import { Colors } from './../ui/colors';
+import { VisibleWindow } from './../visible-window';
 
 export class TimelineRuler {
 
@@ -8,8 +9,9 @@ export class TimelineRuler {
         fontSize: 13
     });
 
-    private rulerContainer_: PIXI.Container;
+    public rulerContainer_: PIXI.Container;
     private rulerGraphics_: PIXI.Graphics;
+    private context_: VisibleWindow;
 
     /* Width in pixel of the ruler */
     private width_: number;
@@ -23,22 +25,26 @@ export class TimelineRuler {
     constructor(x: number, y: number, width: number, heigth: number) {
         this.rulerContainer_ = new PIXI.Container();
         this.rulerGraphics_ = new PIXI.Graphics();
-        this.width_ = width;
 
         this.positionX_ = x;
         this.positionY_ = y;
+        this.width_ = width;
         this.heigth_ = heigth;
+    }
+
+    set context(context: VisibleWindow) {
+        this.context_ = context;
     }
 
     public clear(): void {
         this.rulerGraphics_.clear();
     }
 
-    public drawRuler(): void {
+    public draw(): void {
         this.clear();
         this.rulerGraphics_.lineStyle(this.lineWidth, Colors.BLACK);
-        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_);
-        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_);
+        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + 20);
+        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + 20);
 
         let numberOfDelimitation = 5;
         let delta = this.width_ / numberOfDelimitation;
@@ -47,17 +53,17 @@ export class TimelineRuler {
         for (let i = 0; i < numberOfDelimitation; ++i) {
             this.drawSeparation(this.positionX_ + i * delta, this.heigth_);
         }
+        this.rulerContainer_.addChild(this.rulerGraphics_);
     }
 
     private drawSeparation(start: number, height: number): void {
         this.rulerGraphics_.lineStyle(this.lineWidth, Colors.BLACK);
-        this.rulerGraphics_.moveTo(start, 3);
+        this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 
-        //let time = new PIXI.Text(this.formatTime(visibleWindow.min + start * timePerPixel), this.textStyle);
-        let time = new PIXI.Text(this.formatTime(start * 10), this.textStyle);
+        let time = new PIXI.Text(this.formatTime(this.context_.min + start * this.context_.resolution), this.textStyle);
         time.x = start + 5;
-        time.y = 0;
+        time.y = this.positionY_;
         this.rulerContainer_.addChild(time);
     }
 
