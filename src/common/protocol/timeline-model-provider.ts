@@ -1,8 +1,10 @@
 import { TimelineRowModel, TimelineEntry, TimelineArrow } from './../timeline/timeline-viewmodel';
 import { TimelineRequestFilter } from './../filter/timeline-request-filter';
+import { Trace } from './../model/trace';
 import { ModelResponse } from './model-response';
 
 export interface ITimelineModelProvider {
+    readonly trace: Trace;
     fetchEntries(): Promise<ModelResponse<Array<TimelineEntry>>>;
     fetchEvents(filter: TimelineRequestFilter): Promise<ModelResponse<Array<TimelineRowModel>>>;
     fetchArrows(): Promise<TimelineArrow>;
@@ -11,11 +13,15 @@ export interface ITimelineModelProvider {
 export class ControlFlowModelProvider implements ITimelineModelProvider {
 
     private serverUrl_: string;
-    private traceId_: string;
+    private readonly trace_: Trace;
 
-    constructor(serverUrl: string, traceId: string) {
+    constructor(serverUrl: string, trace: Trace) {
         this.serverUrl_ = serverUrl;
-        this.traceId_ = traceId;
+        this.trace_ = trace;
+    }
+
+    get trace() {
+        return this.trace_;
     }
 
     public fetchEntries() : Promise<ModelResponse<Array<TimelineEntry>>> {
@@ -23,7 +29,7 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
             $.ajax(
                 {
                     type: 'GET',
-                    url: `${this.serverUrl_}/traces/${this.traceId_}/ControlFlowView`,
+                    url: `${this.serverUrl_}/traces/${this.trace_.id}/ControlFlowView`,
                     contentType: 'application/x-www-form-urlencoded',
                     success: (response) => {
                         let obj = <ModelResponse<Array<TimelineEntry>>> response;
@@ -42,7 +48,7 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
             $.ajax(
                 {
                     type: "POST",
-                    url: `${this.serverUrl_}/traces/${this.traceId_}/ControlFlowView/events`,
+                    url: `${this.serverUrl_}/traces/${this.trace_.id}/ControlFlowView/events`,
                     data: JSON.stringify(filter),
                     contentType: "application/json; charset=utf-8",
                     success: (response) => {

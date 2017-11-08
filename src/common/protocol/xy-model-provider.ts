@@ -1,30 +1,39 @@
 import { ModelResponse } from './model-response';
 import { XYEntries, XYSeries } from './../xy/xy-viewmodel';
+import { XYResquestFilter } from './../filter/xy-request-filter';
+import { Trace } from './../model/trace';
 
 export interface IXYModelProvider {
-    fetchEntries(): Promise<ModelResponse<XYEntries>>;
-    fetchData(): Promise<ModelResponse<XYSeries>>;
+    readonly trace: Trace;
+    fetchEntries(filter: XYResquestFilter): Promise<ModelResponse<Array<XYEntries>>>;
+    fetchData(filter: XYResquestFilter): Promise<ModelResponse<Array<XYSeries>>>;
 }
 
 export class DiskModelProvider implements IXYModelProvider {
 
     private serverUrl_: string;
-    private traceId_: string;
+    private readonly trace_: Trace;
 
-    constructor(serverUrl: string, traceId: string) {
+    constructor(serverUrl: string, trace: Trace) {
         this.serverUrl_ = serverUrl;
-        this.traceId_ = traceId;
+        this.trace_ = trace;
     }
 
-    public fetchEntries(): Promise<ModelResponse<XYEntries>> {
+    get trace() {
+        return this.trace_;
+    }
+
+    public fetchEntries(filter: XYResquestFilter): Promise<ModelResponse<Array<XYEntries>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
                     type: 'GET',
-                    url: `${this.serverUrl_}/traces/${this.traceId_}/disk`,
+                    url: `${this.serverUrl_}/traces/${this.trace_.id}/DiskIO`,
                     contentType: 'application/x-www-form-urlencoded',
+                    data: filter,
                     success: (response) => {
-                        let obj = <ModelResponse<XYEntries>> response;
+                        console.log(response);
+                        let obj = <ModelResponse<Array<XYEntries>>> response;
                         resolve(obj);
                     },
                     error: (xhr, status, error) => {
@@ -35,15 +44,17 @@ export class DiskModelProvider implements IXYModelProvider {
         });
     }
 
-    public fetchData(): Promise<ModelResponse<XYSeries>> {
+    public fetchData(filter: XYResquestFilter): Promise<ModelResponse<Array<XYSeries>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
                     type: 'GET',
-                    url: `${this.serverUrl_}/traces/${this.traceId_}/disk`,
+                    url: `${this.serverUrl_}/traces/${this.trace_.id}/DiskIO`,
                     contentType: 'application/x-www-form-urlencoded',
+                    data: filter,
                     success: (response) => {
-                        let obj = <ModelResponse<XYSeries>> response;
+                        console.log(response);
+                        let obj = <ModelResponse<Array<XYSeries>>> response;
                         resolve(obj);
                     },
                     error: (xhr, status, error) => {
@@ -52,24 +63,5 @@ export class DiskModelProvider implements IXYModelProvider {
                 }
             );
         });
-    }
-}
-
-export class CpuModelProvider implements IXYModelProvider {
-
-    private serverUrl_: string;
-    private traceId_: string;
-
-    constructor(serverUrl: string, traceId: string) {
-        this.serverUrl_ = serverUrl;
-        this.traceId_ = traceId;
-    }
-
-    public fetchEntries(): Promise<any> {
-        return null;
-    }
-
-    public fetchData(): Promise<any> {
-        return null;
     }
 }
