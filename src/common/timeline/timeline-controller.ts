@@ -79,21 +79,21 @@ export class TimelineController {
         window.dispatchEvent(new Event('visiblewindowchanged'));
     }
 
-    public zoomIn(): void {
+    public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateViewModelEvents();
     }
 
-    public zoomOut(): void {
+    public zoomOut() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateViewModelEvents();
     }
 
-    public panLeft(): void {
+    public panLeft() {
         let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * 0.05;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
@@ -101,7 +101,7 @@ export class TimelineController {
         this.updateViewModelEvents();
     }
 
-    public panRight(): void {
+    public panRight() {
         let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * 0.05;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
@@ -109,7 +109,7 @@ export class TimelineController {
         this.updateViewModelEvents();
     }
 
-    private initKeys(): void {
+    private initKeys() {
         this.plus_ = new Key(107);
         this.plus_.press = this.zoomIn.bind(this);
 

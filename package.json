@@ -9,7 +9,7 @@
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
     "desktop": "electron bin/electron/main.js",
-    "start": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
+    "start": "npm run clean && tsc && npm run build && webpack --devtool source-map && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "start:desktop": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "web": "lite-server"

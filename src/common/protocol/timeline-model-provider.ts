@@ -18,14 +18,6 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
         this.traceId_ = traceId;
     }
 
-    set serverUrl(serverUrl: string) {
-        this.serverUrl_ = serverUrl;
-    }
-
-    set traceId(serverUrl: string) {
-        this.serverUrl_ = serverUrl;
-    }
-
     public fetchEntries() : Promise<ModelResponse<Array<TimelineEntry>>> {
         return new Promise((resolve, reject) => {
             $.ajax(

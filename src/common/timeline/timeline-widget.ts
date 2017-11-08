@@ -4,7 +4,7 @@ import { TimelineController } from './timeline-controller';
 import { TimelineChart } from './timeline-chart';
 import { TimelineRuler } from './timeline-ruler';
 
-export class TimelineView {
+export class TimelineWidget {
 
     private application: PIXI.Application;
     private timelineController: TimelineController;
@@ -33,11 +33,11 @@ export class TimelineView {
         this.application.stage.addChild(this.timelineChart.graphicsContainer);
     }
 
-    public inflate(): void {
+    public inflate() {
         this.timelineController.inflate();
     }
 
-    private visibleWindowChanged(e: Event): void {
+    private visibleWindowChanged(e: Event) {
         this.timelineChart.model = this.timelineController.viewModel;
         this.timelineChart.draw();
 

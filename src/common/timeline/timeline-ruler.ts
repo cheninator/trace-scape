@@ -36,11 +36,11 @@ export class TimelineRuler {
         this.context_ = context;
     }
 
-    public clear(): void {
+    public clear() {
         this.rulerGraphics_.clear();
     }
 
-    public draw(): void {
+    public draw() {
         this.clear();
         this.rulerGraphics_.lineStyle(this.lineWidth, Colors.BLACK);
         this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + 20);
@@ -56,7 +56,7 @@ export class TimelineRuler {
         this.rulerContainer_.addChild(this.rulerGraphics_);
     }
 
-    private drawSeparation(start: number, height: number): void {
+    private drawSeparation(start: number, height: number) {
         this.rulerGraphics_.lineStyle(this.lineWidth, Colors.BLACK);
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);

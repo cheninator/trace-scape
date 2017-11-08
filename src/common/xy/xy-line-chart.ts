@@ -15,7 +15,6 @@ export class XYLineChart implements IChart {
     set viewModel(viewmodel: XYViewModel) {
         if (viewmodel !== undefined) {
             this.viewModel_ = viewmodel;
-            this.draw();
         }
     }
 
