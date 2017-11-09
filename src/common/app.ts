@@ -10,11 +10,12 @@ let trace: Trace = {
     startTime: 1331668247314038062,
     endTime: 1331668259054285979
 };
-
+/*
 let modelProvider = new ControlFlowModelProvider('http://localhost:8080/tracecompass', trace);
 let timeline = new TimelineWidget('control-flow', modelProvider);
-timeline.inflate();
-
+console.log(timeline);
+//timeline.inflate();
+*/
 let xyModelProvider = new DiskModelProvider('http://localhost:8080/tracecompass', trace);
 let xy = new XYWidget('disk', xyModelProvider);
 xy.inflate();

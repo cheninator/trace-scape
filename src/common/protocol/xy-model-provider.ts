@@ -54,7 +54,17 @@ export class DiskModelProvider implements IXYModelProvider {
                     data: filter,
                     success: (response) => {
                         console.log(response);
-                        let obj = <ModelResponse<Array<XYSeries>>> response;
+                        let obj: ModelResponse<Array<XYSeries>> = {
+                            status: response.status,
+                            statusMessage: response.statusMessage,
+                            model: [
+                                {
+                                    name: "test",
+                                    x: response.model.xaxis,
+                                    y: response.model.ydata["253,0 write"].data
+                                }
+                            ]
+                        }
                         resolve(obj);
                     },
                     error: (xhr, status, error) => {

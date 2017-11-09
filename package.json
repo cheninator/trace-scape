@@ -27,7 +27,6 @@
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
-    "@types/chartjs": "^0.0.31",
     "@types/jquery": "^3.2.16",
     "@types/pixi.js": "^4.5.7",
     "electron": "^1.7.8",
