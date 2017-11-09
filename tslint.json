@@ -12,9 +12,16 @@
         "label-position": true,
         "member-access": false,
         "member-ordering": [
-            true,
-            "static-before-instance",
-            "variables-before-functions"
+            true, 
+            {
+                "order": [
+                    "static-before-instance",
+                    "variables-before-functions",
+                    "public-constructor",
+                    "public-instance-method",
+                    "private-instance-method"
+                ]
+            }
         ],
         "no-arg": true,
         "no-bitwise": true,
@@ -58,6 +65,7 @@
         ],
         "radix": true,
         "semicolon": [
+            true,
             "always"
         ],
         "triple-equals": [
@@ -93,12 +101,7 @@
         "no-extra-semi": true,
         "no-invalid-regexp": true,
         "no-multi-spaces": true,
-        "no-irregular-whitespace": [
-            true, 
-            {
-                "skipComments":true
-            }
-        ],
+        "no-irregular-whitespace": true,
         "no-duplicate-case": true,
         "no-constant-condition": true,
         "no-ex-assign": true,

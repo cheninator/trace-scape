@@ -1,4 +1,5 @@
-import { Colors } from './../ui/colors';
+import { colors } from './../ui/colors';
+import { eventType } from './../events';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
 import { TimelineController } from './timeline-controller';
 import { TimelineChart } from './timeline-chart';
@@ -18,7 +19,7 @@ export class TimelineWidget {
             height: canvas.height,
             view: canvas,
             antialias: false,
-            backgroundColor : Colors.WHITE
+            backgroundColor : colors.WHITE
         };
 
         this.application = new PIXI.Application(options);
@@ -27,7 +28,7 @@ export class TimelineWidget {
         this.timelineChart = new TimelineChart();
         this.timelineRuler = new TimelineRuler(0, 0, canvas.width, canvas.height);
 
-        window.addEventListener('visiblewindowchanged', this.visibleWindowChanged.bind(this));
+        window.addEventListener(eventType.VIEW_MODEL_CHANGED, this.viewModelChanged.bind(this));
 
         this.application.stage.addChild(this.timelineRuler.rulerContainer_);
         this.application.stage.addChild(this.timelineChart.graphicsContainer);
@@ -37,7 +38,7 @@ export class TimelineWidget {
         this.timelineController.inflate();
     }
 
-    private visibleWindowChanged(e: Event) {
+    private viewModelChanged(e: Event) {
         this.timelineChart.model = this.timelineController.viewModel;
         this.timelineChart.draw();
 

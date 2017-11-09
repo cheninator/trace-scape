@@ -1,11 +1,11 @@
-import { Colors } from './../ui/colors';
+import { colors } from './../ui/colors';
 import { VisibleWindow } from './../visible-window';
 
 export class TimelineRuler {
 
     private readonly lineWidth = 1;
     private readonly textStyle = new PIXI.TextStyle({
-        fill: Colors.BLACK,
+        fill: colors.BLACK,
         fontSize: 13
     });
 
@@ -42,7 +42,7 @@ export class TimelineRuler {
 
     public draw() {
         this.clear();
-        this.rulerGraphics_.lineStyle(this.lineWidth, Colors.BLACK);
+        this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
         this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + 20);
         this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + 20);
 
@@ -57,7 +57,7 @@ export class TimelineRuler {
     }
 
     private drawSeparation(start: number, height: number) {
-        this.rulerGraphics_.lineStyle(this.lineWidth, Colors.BLACK);
+        this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 

@@ -1,7 +1,7 @@
 import { TimelineWidget } from './timeline/timeline-widget';
 import { XYWidget } from './xy/xy-widget';
-import { ControlFlowModelProvider } from './protocol/timeline-model-provider';
-import { DiskModelProvider } from './protocol/xy-model-provider';
+import { ControlFlowModelProvider } from './protocol/timeline/control-flow-model-provider';
+import { DiskModelProvider } from './protocol/xy/disks-io-model-provider';
 import { Trace } from './model/trace';
 
 let trace: Trace = {
@@ -16,6 +16,6 @@ let timeline = new TimelineWidget('control-flow', modelProvider);
 console.log(timeline);
 //timeline.inflate();
 */
-let xyModelProvider = new DiskModelProvider('http://localhost:8080/tracecompass', trace);
-let xy = new XYWidget('disk', xyModelProvider);
+let diskModelProvider = new DiskModelProvider('http://localhost:8080/tracecompass', trace);
+let xy = new XYWidget('disk', diskModelProvider);
 xy.inflate();

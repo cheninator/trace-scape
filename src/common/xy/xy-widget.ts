@@ -1,6 +1,7 @@
 import { XYLineChart } from './xy-line-chart';
 import { IXYModelProvider } from './../protocol/xy-model-provider';
 import { XYController } from './xy-controller';
+import { eventType } from './../events';
 
 export class XYWidget {
 
@@ -11,14 +12,14 @@ export class XYWidget {
         this.chart_ = new XYLineChart(id);
         this.controller_ = new XYController(modelProvider);
 
-        window.addEventListener('visiblewindowchanged', this.visibleWindowChanged.bind(this));
+        window.addEventListener(eventType.VIEW_MODEL_CHANGED, this.viewModelChanged.bind(this));
     }
 
     public inflate() {
         this.controller_.inflate();
     }
 
-    private visibleWindowChanged(e: Event) {
+    private viewModelChanged(e: Event) {
         this.chart_.viewModel = this.controller_.viewModel;
         this.chart_.draw();
     }

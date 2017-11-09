@@ -2,6 +2,7 @@ import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
 import { TimelineRequestFilter } from './../filter/timeline-request-filter';
 import { VisibleWindow } from './../visible-window';
+import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
 
@@ -21,7 +22,11 @@ export class TimelineController {
     constructor(viewWidth: number, modelProvider: ITimelineModelProvider) {
         this.viewWidth_ = viewWidth;
         this.modelProvider_ = modelProvider;
-        this.visibleWindow_ = new VisibleWindow(0, 0, 0);
+        this.visibleWindow_ = {
+            min: 0,
+            max: 0,
+            resolution: 0
+        };
         this.initKeys();
     }
 
@@ -51,7 +56,7 @@ export class TimelineController {
             arrows: new Array(),
             context: this.visibleWindow_
         };
-        window.dispatchEvent(new Event('visiblewindowchanged'));
+        window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
     }
 
     private updateVisibleWindow(entries: Array<TimelineEntry>) {
@@ -76,7 +81,7 @@ export class TimelineController {
 
         let response = await this.modelProvider_.fetchEvents(filter);
         this.viewModel_.events = response.model;
-        window.dispatchEvent(new Event('visiblewindowchanged'));
+        window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
     }
 
     public zoomIn() {

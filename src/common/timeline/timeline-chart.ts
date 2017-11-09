@@ -1,5 +1,5 @@
 import { TimelineViewModel } from './timeline-viewmodel';
-import { Colors } from './../ui/colors';
+import { colors } from './../ui/colors';
 import { IChart } from './../base/IChart';
 
 export class TimelineChart implements IChart {
@@ -9,13 +9,13 @@ export class TimelineChart implements IChart {
     private viewModel_: TimelineViewModel;
 
     private readonly colorMapping = {
-        0: Colors.DIM_GREY,
-        1: Colors.LA_RIOJA,
-        2: Colors.ISLAMIC_GREEN,
-        3: Colors.MEDIUM_BLUE,
-        4: Colors.RUBY,
-        5: Colors.TENNE,
-        6: Colors.VERY_LIGHT_GREY
+        0: colors.DIM_GREY,
+        1: colors.LA_RIOJA,
+        2: colors.ISLAMIC_GREEN,
+        3: colors.MEDIUM_BLUE,
+        4: colors.RUBY,
+        5: colors.TENNE,
+        6: colors.VERY_LIGHT_GREY
     };
 
     constructor() {

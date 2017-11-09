@@ -2,6 +2,7 @@ import { IXYModelProvider } from './../protocol/xy-model-provider';
 import { XYResquestFilter } from './../filter/xy-request-filter';
 import { VisibleWindow } from './../visible-window';
 import { XYViewModel } from './xy-viewmodel';
+import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
 
@@ -22,11 +23,11 @@ export class XYController {
 
     public async inflate() {
         if (this.visibleWindow_ === undefined) {
-            this.visibleWindow_ = new VisibleWindow (
-                this.modelProvider_.trace.startTime,
-                this.modelProvider_.trace.endTime,
-                0
-            );
+            this.visibleWindow_ = {
+                min: this.modelProvider_.trace.startTime,
+                max: this.modelProvider_.trace.endTime,
+                resolution: 0
+            };
             this.updateData();
         }
     }
@@ -54,7 +55,7 @@ export class XYController {
             entries: new Array(),
             series: response.model,
         };
-        window.dispatchEvent(new Event('visiblewindowchanged'));
+        window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
     }
 
     public zoomIn() {
