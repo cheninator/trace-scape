@@ -15,9 +15,7 @@ export class TraceModelProvider {
                     type: 'GET',
                     url: `${this.serverUrl_}/traces`,
                     success: (response) => {
-                        console.log(response);
-                        let obj = <Array<Trace>> response;
-                        resolve(obj);
+                        resolve(<Array<Trace>> response);
                     },
                     error: (xhr, status, error) => {
                         reject(error);
@@ -33,15 +31,12 @@ export class TraceModelProvider {
                 {
                     type: 'POST',
                     contentType: 'application/x-www-form-urlencoded',
-                    url: `${this.serverUrl_}/traces`,
+                    url: `${this.serverUrl_}/traces/${name}`,
                     data: {
-                        name: name,
                         path: path
                     },
                     success: (response) => {
-                        console.log(response);
-                        let obj = <Trace> response;
-                        resolve(obj);
+                        resolve(<Trace> response);
                     },
                     error: (xhr, status, error) => {
                         reject(error);

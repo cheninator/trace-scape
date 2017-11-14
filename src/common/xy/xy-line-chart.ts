@@ -27,12 +27,12 @@ export class XYLineChart implements IChart {
 
         let data = new Array();
         for (let series of this.viewModel_.series) {
-            for (let i = 0; i < series.x.length; ++i) {
-                data.push({
-                    x: series.x[i],
-                    y: series.y[i]
-                });
-            }
+            data = series.x.map((value, index) => {
+                return {
+                    x: value,
+                    y: series.y[index]
+                }
+            });
         }
 
         this.chart_ = new Chart(this.ctx_, {

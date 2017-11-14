@@ -1,7 +1,7 @@
 import { IXYModelProvider } from './../xy-model-provider';
 import { ModelResponse } from './../model-response';
 import { XYEntries, XYSeries } from './../../xy/xy-viewmodel';
-import { XYResquestFilter } from './../../filter/xy-request-filter';
+import { XYRequestFilter } from './../../filter/xy-request-filter';
 import { Trace } from './../../model/trace';
 
 export class CpuUsageModelProvider implements IXYModelProvider {
@@ -24,7 +24,7 @@ export class CpuUsageModelProvider implements IXYModelProvider {
     }
 
     // TODO
-    public fetchData(filter: XYResquestFilter): Promise<ModelResponse<Array<XYSeries>>> {
+    public fetchData(filter: XYRequestFilter): Promise<ModelResponse<Array<XYSeries>>> {
         return null;
     }
 }

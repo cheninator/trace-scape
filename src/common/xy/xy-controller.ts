@@ -1,5 +1,6 @@
 import { IXYModelProvider } from './../protocol/xy-model-provider';
-import { XYResquestFilter } from './../filter/xy-request-filter';
+import { BaseRequestFilter } from './../filter/base-request-filter';
+import { XYRequestFilter } from './../filter/xy-request-filter';
 import { VisibleWindow } from './../visible-window';
 import { XYViewModel } from './xy-viewmodel';
 import { eventType } from './../events';
@@ -11,21 +12,23 @@ export class XYController {
     private modelProvider_: IXYModelProvider;
     private visibleWindow_: VisibleWindow;
     private viewModel_: XYViewModel;
+    private viewWidth_: number;
 
     /* Key bindings */
     private plus_: Key;
     private minus_: Key;
 
-    constructor(modelProvider: IXYModelProvider) {
+    constructor(viewWidth: number, modelProvider: IXYModelProvider) {
         this.modelProvider_ = modelProvider;
+        this.viewWidth_ = viewWidth;
         this.initKeys();
     }
 
     public async inflate() {
         if (this.visibleWindow_ === undefined) {
             this.visibleWindow_ = {
-                min: this.modelProvider_.trace.startTime,
-                max: this.modelProvider_.trace.endTime,
+                min: this.modelProvider_.trace.start,
+                max: this.modelProvider_.trace.end,
                 resolution: 0
             };
             this.updateData();
@@ -37,10 +40,12 @@ export class XYController {
     }
 
     private async updateData() {
-        let filter: XYResquestFilter = {
+        this.updateTree();
+        let filter: XYRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
-            count: 300
+            count: this.viewWidth_,
+            ids: [0, 1, 2, 3]
         };
 
         let response = await this.modelProvider_.fetchData(filter);
@@ -51,24 +56,34 @@ export class XYController {
         }
 
         this.viewModel_ = {
-            title: "test",
+            title: "Disks I/O activity",
             entries: new Array(),
             series: response.model,
         };
         window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
     }
 
+    private async updateTree() {
+        let filter: BaseRequestFilter = {
+            start: this.visibleWindow_.min,
+            end: this.visibleWindow_.max,
+            count: this.viewWidth_,
+        }
+
+        let response = await this.modelProvider_.fetchEntries(filter);
+    }
+
     public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / 300;
+        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateData();
     }
 
     public zoomOut() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / 300;
+        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateData();
     }
 

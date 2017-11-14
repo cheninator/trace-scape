@@ -1,6 +1,5 @@
+import { BaseRequestFilter } from './base-request-filter';
 
-export interface XYResquestFilter {
-    start: number;
-    end: number;
-    count: number;
+export interface XYRequestFilter extends BaseRequestFilter {
+    ids: Array<number>
 }
