@@ -1,5 +1,6 @@
 import { colors } from './../ui/colors';
 import { VisibleWindow } from './../visible-window';
+import { TimeFormatter } from './../formatter/time-formatter';
 
 export class TimelineRuler {
 
@@ -61,16 +62,10 @@ export class TimelineRuler {
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 
-        let time = new PIXI.Text(this.formatTime(this.context_.min + start * this.context_.resolution), this.textStyle);
-        time.x = start + 5;
-        time.y = this.positionY_;
-        this.rulerContainer_.addChild(time);
-    }
-
-    private formatTime(time: number): string {
-        let date = new Date(time / 1000000);
-        let milliseconds = date.getMilliseconds();
-        let millisecondsText = milliseconds < 100 ? "0" + milliseconds : milliseconds;
-        return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}: ${millisecondsText}`;
+        let time = TimeFormatter.fromNanos(this.context_.min + start * this.context_.resolution);
+        let pixiText = new PIXI.Text(time, this.textStyle);
+        pixiText.x = start + 5;
+        pixiText.y = this.positionY_;
+        this.rulerContainer_.addChild(pixiText);
     }
 }

@@ -1,5 +1,8 @@
 import { IChart } from './../base/IChart';
 import { XYViewModel } from './xy-viewmodel';
+import { TimeFormatter } from './../formatter/time-formatter';
+
+// Type definitions are not working for ChartJS
 declare var Chart: any;
 
 export class XYLineChart implements IChart {
@@ -44,7 +47,12 @@ export class XYLineChart implements IChart {
                 scales: {
                     xAxes: [{
                         type: 'linear',
-                        position: 'bottom'
+                        position: 'bottom',
+                        ticks: {
+                            callback: (value: any, index: any, values: any) => {
+                                return TimeFormatter.fromNanos(value);
+                            }
+                        }
                     }]
                 },
                 elements: {

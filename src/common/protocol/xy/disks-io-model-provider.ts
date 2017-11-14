@@ -8,6 +8,7 @@ export class DiskModelProvider implements IXYModelProvider {
 
     private serverUrl_: string;
     private readonly trace_: Trace;
+    private readonly providerID_: 'org.eclipse.tracecompass.analysis.os.linux.core.inputoutput.DisksIODataProvider';
 
     constructor(serverUrl: string, trace: Trace) {
         this.serverUrl_ = serverUrl;
