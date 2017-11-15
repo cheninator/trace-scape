@@ -29,7 +29,6 @@ export class DiskModelProvider implements IXYModelProvider {
                     contentType: 'application/x-www-form-urlencoded',
                     data: filter,
                     success: (response) => {
-                        console.log(response);
                         let obj = <ModelResponse<Array<XYEntries>>> response;
                         resolve(obj);
                     },
@@ -59,7 +58,7 @@ export class DiskModelProvider implements IXYModelProvider {
                                 y: response.model.ydata[i].data
                             });
                         }
-                        
+
                         let obj: ModelResponse<Array<XYSeries>> = {
                             status: response.status,
                             statusMessage: response.statusMessage,

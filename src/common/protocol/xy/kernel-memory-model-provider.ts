@@ -5,11 +5,11 @@ import { BaseRequestFilter } from './../../filter/base-request-filter';
 import { XYRequestFilter } from './../../filter/xy-request-filter';
 import { Trace } from './../../model/trace';
 
-export class CpuUsageModelProvider implements IXYModelProvider {
+export class KernelMemoryModelProvider implements IXYModelProvider {
 
     private serverUrl_: string;
     private readonly trace_: Trace;
-    private readonly providerID_: string = 'org.eclipse.tracecompass.analysis.os.linux.core.cpuusage.CpuUsageDataProvider';
+    private readonly providerID_: string = 'org.eclipse.tracecompass.analysis.os.linux.core.kernelmemoryusage';
 
     constructor(serverUrl: string, trace: Trace) {
         this.serverUrl_ = serverUrl;

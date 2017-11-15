@@ -25,23 +25,26 @@ export class XYLineChart implements IChart {
     public draw() {
         this.clear();
 
-        let data = new Array();
+        let datasets = new Array();
         for (let series of this.viewModel_.series) {
-            data = series.x.map((value, index) => {
-                return {
-                    x: value,
-                    y: series.y[index]
-                }
+            datasets.push({
+                label: series.name,
+                data: series.x.map((value, index) => {
+                    return {
+                        x: value,
+                        y: series.y[index]
+                    }
+                }),
+                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 1
             });
         }
 
         this.chart_ = new Chart(this.ctx_, {
             type: 'scatter',
             data: {
-                datasets: [{
-                    label: "Test",
-                    data: data
-                }]
+                datasets: datasets
             },
             options: {
                 scales: {
@@ -57,11 +60,7 @@ export class XYLineChart implements IChart {
                 },
                 elements: {
                     point: { radius: 0 }
-                },
-                borderWidth: 1,
-                borderColor: [
-                    'rgba(0, 0, 0 , 1)'
-                ],
+                }
             }
         });
     }

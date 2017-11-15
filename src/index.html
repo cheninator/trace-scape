@@ -4,15 +4,23 @@
 <head>
   <meta charset="utf-8">
   <title>TracEscape</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <!--<script src="libs/google-protobuf.js"></script>-->
   <script src="libs/Chart.min.js"></script>
   <script src="libs/jquery.min.js"></script>
   <script src="libs/pixi.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <!--<canvas id="control-flow" width="1200" height="500"></canvas>-->
-  <canvas id="disk"></canvas>
+  <div class="row">
+    <div class="col-md-6"><canvas id="control-flow"></canvas></div>
+    <div class="col-md-6"><canvas id="disk"></canvas></div>
+  </div>
+  <div class="row">
+      <div class="col-md-6"><canvas id="cpu"></canvas></div>
+      <div class="col-md-6"><canvas id="kernel"></canvas></div>
+  </div> 
   <script src="bundle.js"></script>
 </body>
 

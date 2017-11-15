@@ -2,6 +2,8 @@ import { TimelineWidget } from './timeline/timeline-widget';
 import { XYWidget } from './xy/xy-widget';
 import { ControlFlowModelProvider } from './protocol/timeline/control-flow-model-provider';
 import { DiskModelProvider } from './protocol/xy/disks-io-model-provider';
+import { CpuUsageModelProvider } from './protocol/xy/cpu-usage-model-provider';
+import { KernelMemoryModelProvider } from './protocol/xy/kernel-memory-model-provider';
 import { TraceModelProvider } from './protocol/trace-model-provider';
 import { Trace } from './model/trace';
 
@@ -17,10 +19,22 @@ async function init() {
     } else {
         trace = traces[0];
     }
-    console.log(trace);
+/*
+    let modelProvider = new ControlFlowModelProvider('http://localhost:8080/tracecompass', trace);
+    let timeline = new TimelineWidget('control-flow', modelProvider);
+    timeline.inflate();
+*/
     let diskModelProvider = new DiskModelProvider(serverUrl, trace);
-    let xy = new XYWidget('disk', diskModelProvider);
-    xy.inflate();
+    let disk = new XYWidget('disk', diskModelProvider);
+    disk.inflate();
+
+    let cpuModelProvider = new CpuUsageModelProvider(serverUrl, trace);
+    let cpu = new XYWidget('cpu', cpuModelProvider);
+    cpu.inflate();
+
+    let kernelModelProvider = new KernelMemoryModelProvider(serverUrl, trace);
+    let kernel = new XYWidget('kernel', kernelModelProvider);
+    kernel.inflate();
 }
 
 init();

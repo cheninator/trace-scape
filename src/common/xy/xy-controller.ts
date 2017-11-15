@@ -31,6 +31,7 @@ export class XYController {
                 max: this.modelProvider_.trace.end,
                 resolution: 0
             };
+            await this.updateTree();
             this.updateData();
         }
     }
@@ -40,26 +41,20 @@ export class XYController {
     }
 
     private async updateData() {
-        this.updateTree();
         let filter: XYRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.viewWidth_,
-            ids: [0, 1, 2, 3]
+            ids: this.viewModel_.entries.map((entry) => entry.id)
         };
 
         let response = await this.modelProvider_.fetchData(filter);
-
         while (response.status !== "COMPLETED") {
             await Utils.wait(500);
             response = await this.modelProvider_.fetchData(filter);
         }
 
-        this.viewModel_ = {
-            title: "Disks I/O activity",
-            entries: new Array(),
-            series: response.model,
-        };
+        this.viewModel_.series = response.model;
         window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
     }
 
@@ -71,12 +66,23 @@ export class XYController {
         }
 
         let response = await this.modelProvider_.fetchEntries(filter);
+
+        if (this.viewModel_ === undefined) {
+            this.viewModel_ = {
+                title: "",
+                entries: response.model,
+                series: new Array()
+            };
+        } else {
+            this.viewModel_.entries = response.model
+        }
     }
 
     public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
+        this.updateTree();
         this.updateData();
     }
 
@@ -84,6 +90,7 @@ export class XYController {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
+        this.updateTree();
         this.updateData();
     }
 
