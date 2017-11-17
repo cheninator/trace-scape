@@ -1,4 +1,5 @@
 import { IChart } from './../base/IChart';
+import { colorPalette } from './../ui/colors';
 import { XYViewModel } from './xy-viewmodel';
 import { TimeFormatter } from './../formatter/time-formatter';
 
@@ -11,9 +12,9 @@ export class XYLineChart implements IChart {
     private chart_: any;
     private viewModel_: XYViewModel;
 
-    constructor(id: string) {
-        let element = <HTMLCanvasElement> document.getElementById(id);
-        this.ctx_ = element.getContext('2d');
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx_ = ctx;
+        this.initChart();
     }
 
     set viewModel(viewmodel: XYViewModel) {
@@ -33,18 +34,28 @@ export class XYLineChart implements IChart {
                     return {
                         x: value,
                         y: series.y[index]
-                    }
+                    };
                 }),
-                backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                borderColor: 'rgba(255, 0, 0, 1)',
+                fill: false,
+                borderColor: colorPalette[datasets.length % colorPalette.length],
                 borderWidth: 1
             });
         }
+        this.chart_.data.datasets = datasets;
+        this.chart_.update();
+    }
 
+    public clear() {
+        if (this.chart_ !== undefined) {
+            this.chart_.clear();
+        }
+    }
+
+    private initChart() {
         this.chart_ = new Chart(this.ctx_, {
             type: 'scatter',
             data: {
-                datasets: datasets
+                datasets: new Array()
             },
             options: {
                 scales: {
@@ -71,12 +82,5 @@ export class XYLineChart implements IChart {
                 responsiveAnimationDuration: 0, // animation duration after a resize
             }
         });
-    }
-
-    public clear() {
-        if (this.chart_ !== undefined) {
-            this.chart_.clear();
-            this.chart_.destroy();
-        }
     }
 }

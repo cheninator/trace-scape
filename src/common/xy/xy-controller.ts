@@ -31,9 +31,9 @@ export class XYController {
                 max: this.modelProvider_.trace.end,
                 resolution: 0
             };
-            await this.updateTree();
-            this.updateData();
         }
+        await this.updateTree();
+        this.updateData();
     }
 
     get viewModel() {
@@ -45,17 +45,20 @@ export class XYController {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.viewWidth_,
-            ids: this.viewModel_.entries.map((entry) => entry.id)
+            ids: [0, 1, 2]
         };
 
-        let response = await this.modelProvider_.fetchData(filter);
-        while (response.status !== "COMPLETED") {
-            await Utils.wait(500);
-            response = await this.modelProvider_.fetchData(filter);
-        }
+        let isComplete = false;
+        do {
+            let response = await this.modelProvider_.fetchData(filter);
+            if (response.status === "COMPLETED") {
+                isComplete = true;
+            }
 
-        this.viewModel_.series = response.model;
-        window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
+            this.viewModel_.series = response.model;
+            window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
+            await Utils.wait(500);
+        } while (!isComplete);
     }
 
     private async updateTree() {
@@ -63,7 +66,7 @@ export class XYController {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.viewWidth_,
-        }
+        };
 
         let response = await this.modelProvider_.fetchEntries(filter);
 
@@ -74,7 +77,7 @@ export class XYController {
                 series: new Array()
             };
         } else {
-            this.viewModel_.entries = response.model
+            this.viewModel_.entries = response.model;
         }
     }
 

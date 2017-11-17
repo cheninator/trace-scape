@@ -9,3 +9,12 @@ export const colors = {
     TENNE: 0xC86400,
     VERY_LIGHT_GREY: 0xC8C8C8,
 };
+
+export const colorPalette = [
+    'rgb(255, 0, 0)',
+    'rgb(0, 0, 255)',
+    'rgb(0, 255, 0)',
+    'rgb(128, 0, 128)',
+    'rgb(128, 128, 0)',
+    'rgb(0, 128, 128)',
+];

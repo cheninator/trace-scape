@@ -41,7 +41,6 @@ export class CpuUsageModelProvider implements IXYModelProvider {
     }
 
     public fetchData(filter: XYRequestFilter): Promise<ModelResponse<Array<XYSeries>>> {
-        console.log(JSON.stringify(filter));
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
@@ -63,7 +62,7 @@ export class CpuUsageModelProvider implements IXYModelProvider {
                             status: response.status,
                             statusMessage: response.statusMessage,
                             model: series
-                        }
+                        };
                         resolve(obj);
                     },
                     error: (xhr, status, error) => {

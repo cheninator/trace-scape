@@ -14,8 +14,9 @@ async function init() {
     let traces = await traceModelProvider.getTraces();
     let trace: Trace;
 
-    if (traces.length == 0) {
-        trace = await traceModelProvider.putTrace('kernel_vm', '/home/yonni/Documents/traces/ctf/src/main/resources/kernel_vm');
+    if (traces.length === 0) {
+        let path = '/home/yonni/Documents/traces/ctf/src/main/resources/huge_trace';
+        trace = await traceModelProvider.putTrace('huge_trace', path);
     } else {
         trace = traces[0];
     }
@@ -24,7 +25,7 @@ async function init() {
     let timeline = new TimelineWidget('control-flow', modelProvider);
     timeline.inflate();
 */
-    let diskModelProvider = new DiskModelProvider(serverUrl, trace);
+    let diskModelProvider = new DiskModelProvider('http://localhost:8080/tracecompass', trace);
     let disk = new XYWidget('disk', diskModelProvider);
     disk.inflate();
 
