@@ -22,6 +22,9 @@ export class XYController {
         this.modelProvider_ = modelProvider;
         this.viewWidth_ = viewWidth;
         this.initKeys();
+
+        window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
+        window.addEventListener(eventType.RESET_RANGE, this.resetRange.bind(this));
     }
 
     public async inflate() {
@@ -33,6 +36,20 @@ export class XYController {
             };
         }
         await this.updateTree();
+        this.updateData();
+    }
+
+    private resetRange(e: CustomEvent) {
+        this.visibleWindow_.min = this.modelProvider_.trace.start;
+        this.visibleWindow_.max = this.modelProvider_.trace.end;
+        this.updateTree();
+        this.updateData();
+    }
+
+    private rangeSelected(e: CustomEvent) {
+        this.visibleWindow_.min = e.detail.start.x;
+        this.visibleWindow_.max = e.detail.end.x;
+        this.updateTree();
         this.updateData();
     }
 

@@ -15,8 +15,8 @@ async function init() {
     let trace: Trace;
 
     if (traces.length === 0) {
-        let path = '/home/yonni/Documents/traces/ctf/src/main/resources/huge_trace';
-        trace = await traceModelProvider.putTrace('huge_trace', path);
+        let path = '/home/yonni/Documents/traces/ctf/src/main/resources/trace2';
+        trace = await traceModelProvider.putTrace('trace2', path);
     } else {
         trace = traces[0];
     }

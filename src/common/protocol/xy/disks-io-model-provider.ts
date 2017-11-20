@@ -20,7 +20,7 @@ export class DiskModelProvider implements IXYModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries(filter: BaseRequestFilter): Promise<ModelResponse<Array<XYEntries>>> {
+    public fetchEntries(filter: BaseRequestFilter): Promise<ModelResponse<Array<XYEntries>>> {      
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
