@@ -1,5 +1,6 @@
 import { TimelineRowModel, TimelineEntry, TimelineArrow } from './../../timeline/timeline-viewmodel';
 import { TimelineRequestFilter } from './../../filter/timeline-request-filter';
+import { BaseRequestFilter } from './../../filter/base-request-filter';
 import { Trace } from './../../model/trace';
 import { ITimelineModelProvider } from './../timeline-model-provider';
 import { ModelResponse } from './../model-response';
@@ -18,13 +19,14 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries() : Promise<ModelResponse<Array<TimelineEntry>>> {
+    public fetchEntries(filter: BaseRequestFilter) : Promise<ModelResponse<Array<TimelineEntry>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
                     type: 'GET',
-                    url: `${this.serverUrl_}/traces/${this.trace_.id}/ControlFlowView`,
+                    url: `${this.serverUrl_}/traces/${this.trace_.name}/ControlFlowView`,
                     contentType: 'application/x-www-form-urlencoded',
+                    data: filter,
                     success: (response) => {
                         let obj = <ModelResponse<Array<TimelineEntry>>> response;
                         resolve(obj);
@@ -42,7 +44,7 @@ export class ControlFlowModelProvider implements ITimelineModelProvider {
             $.ajax(
                 {
                     type: "POST",
-                    url: `${this.serverUrl_}/traces/${this.trace_.id}/ControlFlowView/events`,
+                    url: `${this.serverUrl_}/traces/${this.trace_.name}/ControlFlowView/events`,
                     data: JSON.stringify(filter),
                     contentType: "application/json; charset=utf-8",
                     success: (response) => {

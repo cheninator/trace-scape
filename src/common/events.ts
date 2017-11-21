@@ -2,5 +2,6 @@
 export const eventType = {
     VIEW_MODEL_CHANGED: 'viewModelChanged',
     RANGE_SELECTED: 'rangeSelected',
-    RESET_RANGE: 'resetRange'
+    RESET_RANGE: 'resetRange',
+    TIMEGRAPH_CHANGED: 'timegraphChanged',
 };

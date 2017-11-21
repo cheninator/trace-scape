@@ -13,7 +13,7 @@ export class ControlFlowComponent implements IComponent {
 
     get html(): string {
         return `
-        <canvas id="control-flow"></canvas>
+        <canvas id="control-flow" width="1650" height="600"></canvas>
         `;
     }
 

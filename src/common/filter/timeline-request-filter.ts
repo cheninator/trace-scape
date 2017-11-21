@@ -1,7 +1,5 @@
+import { BaseRequestFilter } from "./base-request-filter";
 
-export interface TimelineRequestFilter {
-    start: number;
-    end: number;
-    resolution: number;
+export interface TimelineRequestFilter extends BaseRequestFilter{
     entries: Array<number>;
 }

@@ -13,7 +13,7 @@ export class LayoutManager {
         content: [
         {
             type: 'row',
-            content:[
+            content: [
                 {
                     type: 'component',
                     componentName: 'dock',
@@ -24,16 +24,16 @@ export class LayoutManager {
                 },
                 {
                     type: 'column',
-                    content:[
+                    content: [
                         {
                             type: 'component',
                             componentName: 'control-flow',
                             componentState: { label: 'B' },
                             height: 60
-                        },  
+                        },
                         {
                             type: 'row',
-                            content: 
+                            content:
                             [
                                 {
                                     type: 'component',
@@ -44,7 +44,7 @@ export class LayoutManager {
                                     type: 'component',
                                     componentName: 'cpu',
                                     componentState: { label: 'B' }
-                                }, 
+                                },
                                 {
                                     type: 'component',
                                     componentName: 'mem',
@@ -83,9 +83,5 @@ export class LayoutManager {
                 container.getElement().html(component.html);
             });
         }
-
-        this.layout_.registerComponent( 'control-flow', function(container: any, componentState: any){
-            container.getElement().html( '<h2>' + componentState.label + '</h2>' );
-        });
     }
 }

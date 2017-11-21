@@ -25,7 +25,8 @@ export class TimelineChart implements IChart {
     public draw() {
         this.clear();
         let visibleWindow = this.viewModel_.context;
-
+        console.log(this.viewModel_);
+        console.log(this);
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.eventGraphics[event.entryID];
             for (let state of event.states) {
@@ -46,11 +47,13 @@ export class TimelineChart implements IChart {
     }
 
     public clear() {
-        this.eventGraphics.forEach((e: PIXI.Graphics) => e.clear());
+        if (this.eventGraphics !== undefined) {
+            this.eventGraphics.forEach((e: PIXI.Graphics) => e.clear());
+        }
     }
 
     set model(model: TimelineViewModel) {
-        if (this.viewModel_ === undefined && model !== undefined) {
+        if (model !== undefined) {
             this.viewModel_ = model;
 
             this.eventGraphics = new Array(this.viewModel_.entries.length);

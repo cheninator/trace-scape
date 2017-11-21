@@ -6,6 +6,7 @@ import { LayoutManager } from './layout-manager';
 import { CpuUsageComponent } from './ui/cpu-usage-component';
 import { DiskIOComponent } from './ui/disk-io-component';
 import { KernelMemoryComponent } from './ui/kernel-memory-component';
+import { ControlFlowComponent } from './ui/control-flow-component';
 
 async function main() {
 
@@ -16,7 +17,7 @@ async function main() {
     let trace: Trace;
 
     if (traces.length === 0) {
-        let name = 'kernel_vm';
+        let name = 'kernel';
         let path = `/home/yonni/Documents/traces/ctf/src/main/resources/${name}`;
         trace = await traceModelProvider.putTrace(name, path);
     } else {
@@ -27,6 +28,7 @@ async function main() {
     layoutManager.addComponent(new CpuUsageComponent(serverUrl, trace));
     layoutManager.addComponent(new DiskIOComponent(serverUrl, trace));
     layoutManager.addComponent(new KernelMemoryComponent(serverUrl, trace));
+    layoutManager.addComponent(new ControlFlowComponent(serverUrl, trace));
 
     layoutManager.init();
 }

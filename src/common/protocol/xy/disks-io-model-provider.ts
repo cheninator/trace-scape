@@ -9,7 +9,7 @@ export class DiskModelProvider implements IXYModelProvider {
 
     private serverUrl_: string;
     private readonly trace_: Trace;
-    private readonly providerID_: string = 'org.eclipse.tracecompass.analysis.os.linux.core.inputoutput.DisksIODataProvider';
+    private readonly providerID_ = 'org.eclipse.tracecompass.analysis.os.linux.core.inputoutput.DisksIODataProvider';
 
     constructor(serverUrl: string, trace: Trace) {
         this.serverUrl_ = serverUrl;
@@ -20,7 +20,7 @@ export class DiskModelProvider implements IXYModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries(filter: BaseRequestFilter): Promise<ModelResponse<Array<XYEntries>>> {      
+    public fetchEntries(filter: BaseRequestFilter): Promise<ModelResponse<Array<XYEntries>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
@@ -28,7 +28,7 @@ export class DiskModelProvider implements IXYModelProvider {
                     url: `${this.serverUrl_}/traces/${this.trace_.name}/${this.providerID_}`,
                     contentType: 'application/x-www-form-urlencoded',
                     data: filter,
-                    success: (response) => {
+                    success: (response: any) => {
                         let obj = <ModelResponse<Array<XYEntries>>> response;
                         resolve(obj);
                     },
@@ -48,7 +48,7 @@ export class DiskModelProvider implements IXYModelProvider {
                     url: `${this.serverUrl_}/traces/${this.trace_.name}/${this.providerID_}/xy`,
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(filter),
-                    success: (response) => {
+                    success: (response: any) => {
                         let series = new Array();
                         for (let i in response.model.ydata) {
                             series.push({

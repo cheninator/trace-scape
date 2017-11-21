@@ -1,6 +1,7 @@
 import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
 import { TimelineRequestFilter } from './../filter/timeline-request-filter';
+import { BaseRequestFilter } from './../filter/base-request-filter';
 import { VisibleWindow } from './../visible-window';
 import { eventType } from './../events';
 import { Utils } from './../utils';
@@ -22,41 +23,48 @@ export class TimelineController {
     constructor(viewWidth: number, modelProvider: ITimelineModelProvider) {
         this.viewWidth_ = viewWidth;
         this.modelProvider_ = modelProvider;
-        this.visibleWindow_ = {
-            min: 0,
-            max: 0,
-            resolution: 0
-        };
         this.initKeys();
     }
 
     public async inflate() {
-        let response = await this.modelProvider_.fetchEntries();
-
-        // This is arbitrary
-        this.visibleWindow_.min = response.model[0].startTime;
-        this.updateVisibleWindow(response.model);
-
-        while (response.status !== "COMPLETED") {
-            await Utils.wait(500);
-            response = await this.modelProvider_.fetchEntries();
-            this.updateVisibleWindow(response.model);
+        if (this.visibleWindow_ === undefined) {
+            this.visibleWindow_ = {
+                min: this.modelProvider_.trace.start,
+                max: this.modelProvider_.trace.end,
+                resolution: this.viewWidth_
+            };
         }
+        await this.updateTree();
 
         let events = await this.modelProvider_.fetchEvents(<TimelineRequestFilter> {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
-            resolution: this.visibleWindow_.resolution,
-            entries: response.model.map((entry) => entry.id)
+            count: this.visibleWindow_.resolution,
+            entries: this.viewModel_.entries.map((entry) => entry.id)
         });
+        console.log(events);
+        this.viewModel_.events = events.model;
+        window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
+    }
 
-        this.viewModel_ = <TimelineViewModel> {
-            entries: response.model,
-            events: events.model,
-            arrows: new Array(),
-            context: this.visibleWindow_
+    public async updateTree() {
+        let filter: BaseRequestFilter = {
+            start: this.visibleWindow_.min,
+            end: this.visibleWindow_.max,
+            count: this.viewWidth_,
         };
-        window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
+
+        let response = await this.modelProvider_.fetchEntries(filter);
+        if (this.viewModel_ === undefined) {
+            this.viewModel_ = {
+                entries: response.model,
+                events: new Array(),
+                arrows: new Array(),
+                context: this.visibleWindow_
+            };
+        } else {
+            this.viewModel_.entries = response.model;
+        }
     }
 
     private updateVisibleWindow(entries: Array<TimelineEntry>) {
@@ -64,7 +72,6 @@ export class TimelineController {
             this.visibleWindow_.min = Math.min(this.visibleWindow_.min, entry.startTime);
             this.visibleWindow_.max = Math.max(this.visibleWindow_.max, entry.endTime);
         });
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
     }
 
     get viewModel() {
@@ -75,26 +82,24 @@ export class TimelineController {
         let filter: TimelineRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
-            resolution: this.visibleWindow_.resolution,
+            count: this.visibleWindow_.resolution,
             entries: this.viewModel_.entries.map((entry) => entry.id)
         };
 
         let response = await this.modelProvider_.fetchEvents(filter);
         this.viewModel_.events = response.model;
-        window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));
+        window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
     }
 
     public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateViewModelEvents();
     }
 
     public zoomOut() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateViewModelEvents();
     }
 
@@ -102,7 +107,6 @@ export class TimelineController {
         let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * 0.05;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateViewModelEvents();
     }
 

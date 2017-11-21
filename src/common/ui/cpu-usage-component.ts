@@ -4,7 +4,7 @@ import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../model/trace';
 
 export class CpuUsageComponent implements IComponent {
-    
+
     private cpuModelProvider_: CpuUsageModelProvider;
 
     constructor(serverUrl: string, trace: Trace) {

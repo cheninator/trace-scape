@@ -12,7 +12,7 @@ export class XYLineChart implements IChart {
     private ctx_: CanvasRenderingContext2D;
     private chart_: any;
     private viewModel_: XYViewModel;
-    
+
     private overlayContext_: CanvasRenderingContext2D;
     private startIndex: any;
     private drag: boolean;
@@ -95,7 +95,9 @@ export class XYLineChart implements IChart {
         });
     }
 
-    /* Idea taken from https://stackoverflow.com/questions/42855738/how-do-i-selecting-a-date-range-like-onclick-but-drag-select */
+    /* Idea taken from
+     *    https://stackoverflow.com/questions/42855738/how-do-i-selecting-a-date-range-like-onclick-but-drag-select
+     **/
     private initSelectionControls() {
         let canvas = <HTMLCanvasElement> document.getElementById(`${this.ctx_.canvas.id}-overlay`);
         canvas.width = this.ctx_.canvas.width;
@@ -121,7 +123,6 @@ export class XYLineChart implements IChart {
     private pointerMove(e: MouseEvent) {
         const rect = this.ctx_.canvas.getBoundingClientRect();
         if (this.drag) {
-            const rect = this.ctx_.canvas.getBoundingClientRect();
             this.selectionRect.w = (e.clientX - rect.left) - this.selectionRect.startX;
             this.overlayContext_.globalAlpha = 0.25;
             this.overlayContext_.clearRect(0, 0, this.ctx_.canvas.width, this.ctx_.canvas.height);
