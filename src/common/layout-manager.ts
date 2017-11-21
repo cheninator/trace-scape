@@ -27,13 +27,19 @@ export class LayoutManager {
                     content:[
                         {
                             type: 'component',
-                            componentName: 'disk',
-                            componentState: { label: 'B' }
+                            componentName: 'control-flow',
+                            componentState: { label: 'B' },
+                            height: 60
                         },  
                         {
                             type: 'row',
                             content: 
                             [
+                                {
+                                    type: 'component',
+                                    componentName: 'disk',
+                                    componentState: { label: 'B' }
+                                },
                                 {
                                     type: 'component',
                                     componentName: 'cpu',
@@ -75,7 +81,11 @@ export class LayoutManager {
         for (let component of this.components_) {
             this.layout_.registerComponent(component.name, function(container: GoldenLayout.Container, componentState: any) {
                 container.getElement().html(component.html);
-            })
+            });
         }
+
+        this.layout_.registerComponent( 'control-flow', function(container: any, componentState: any){
+            container.getElement().html( '<h2>' + componentState.label + '</h2>' );
+        });
     }
 }

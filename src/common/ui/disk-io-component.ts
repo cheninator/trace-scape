@@ -14,10 +14,7 @@ export class DiskIOComponent implements IComponent {
     get html(): string {
         return `
         <div class="row">
-            <div class="col-md-6">
-                <canvas id="control-flow"></canvas>
-            </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <canvas id="disk-overlay" style="position:absolute; pointer-events:none; z-index: 0;"></canvas>
                 <canvas id="disk" style="z-index: 1;"></canvas>
             </div>

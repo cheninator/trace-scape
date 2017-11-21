@@ -7,7 +7,7 @@ import { CpuUsageComponent } from './ui/cpu-usage-component';
 import { DiskIOComponent } from './ui/disk-io-component';
 import { KernelMemoryComponent } from './ui/kernel-memory-component';
 
-async function init() {
+async function main() {
 
     let serverUrl = 'http://localhost:8080/tracecompass';
 
@@ -16,16 +16,12 @@ async function init() {
     let trace: Trace;
 
     if (traces.length === 0) {
-        let path = '/home/yonni/Documents/traces/ctf/src/main/resources/kernel_vm';
-        trace = await traceModelProvider.putTrace('kernel_vm', path);
+        let name = 'kernel_vm';
+        let path = `/home/yonni/Documents/traces/ctf/src/main/resources/${name}`;
+        trace = await traceModelProvider.putTrace(name, path);
     } else {
         trace = traces[0];
     }
-/*
-    let modelProvider = new ControlFlowModelProvider('http://localhost:8080/tracecompass', trace);
-    let timeline = new TimelineWidget('control-flow', modelProvider);
-    timeline.inflate();
-*/
 
     let layoutManager = new LayoutManager();
     layoutManager.addComponent(new CpuUsageComponent(serverUrl, trace));
@@ -35,4 +31,4 @@ async function init() {
     layoutManager.init();
 }
 
-init();
+main();

@@ -100,7 +100,7 @@ export class XYController {
 
     public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.90));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateTree();
         this.updateData();
@@ -108,7 +108,7 @@ export class XYController {
 
     public zoomOut() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.10));
         this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateTree();
         this.updateData();
