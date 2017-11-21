@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
+    'bootstrap/**/bootstrap.min.js',
     'chart.js/**/Chart.min.js',
     'golden-layout/**/goldenlayout.min.js',
     'jquery/**/jquery.min.js',
@@ -11,6 +12,7 @@ var modules = [
 ];
 
 var styles = [
+    'bootstrap/**/bootstrap.min.css',
     'golden-layout/**/goldenlayout-base.css',
     'golden-layout/**/goldenlayout-dark-theme.css'
 ];
