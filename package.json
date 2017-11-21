@@ -23,6 +23,7 @@
   "dependencies": {
     "chart.js":"^2.7.1",
     "concurrently": "3.5.0",
+    "golden-layout": "^1.5.9",
     "jquery": "^3.2.1",
     "pixi.js": "^4.6.0"
   },

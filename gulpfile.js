@@ -5,8 +5,14 @@ var buildPath = "./bin";
 
 var modules = [
     'chart.js/**/Chart.min.js',
+    'golden-layout/**/goldenlayout.min.js',
     'jquery/**/jquery.min.js',
     'pixi.js/**/pixi.min.js'
+];
+
+var styles = [
+    'golden-layout/**/goldenlayout-base.css',
+    'golden-layout/**/goldenlayout-dark-theme.css'
 ];
 
 var libs = [
@@ -32,4 +38,10 @@ gulp.task('templates', () => {
         .pipe(gulp.dest(buildPath));
 });
 
-gulp.task('build', [ 'templates', 'modules', 'libs' ]);
+gulp.task('css', () => {
+    return gulp.src(styles, {cwd: "node_modules/**"})
+        .pipe(flatten())
+        .pipe(gulp.dest(`${buildPath}/styles`));
+});
+
+gulp.task('build', [ 'templates', 'modules', 'libs', 'css' ]);

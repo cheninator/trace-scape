@@ -4,34 +4,22 @@
 <head>
   <meta charset="utf-8">
   <title>TracEscape</title>
+  <!-- CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="styles/goldenlayout-dark-theme.css" />
+  <link type="text/css" rel="stylesheet" href="styles/goldenlayout-base.css" />
+  
+  <!-- Scripts -->
   <!--<script src="libs/google-protobuf.js"></script>-->
   <script src="libs/Chart.min.js"></script>
   <script src="libs/jquery.min.js"></script>
+  <script src="libs/goldenlayout.min.js"></script>
   <script src="libs/pixi.min.js"></script>
+
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <div class="row">
-    <div class="col-md-6">
-      <canvas id="control-flow"></canvas>
-    </div>
-    <div class="col-md-6">
-      <canvas id="disk-overlay" style="position:absolute; pointer-events:none; z-index: 0;"></canvas>
-      <canvas id="disk" style="z-index: 1;"></canvas>
-    </div>
-  </div>
-  <div class="row">
-      <div class="col-md-6">
-        <canvas id="cpu-overlay" style="position:absolute; pointer-events:none; z-index: 0;"></canvas>
-        <canvas id="cpu" style="z-index: 1;"></canvas>
-      </div>
-      <div class="col-md-6">
-        <canvas id="kernel-overlay" style="position:absolute; pointer-events:none; z-index: 0;"></canvas>
-        <canvas id="kernel" style="z-index: 1;"></canvas>
-      </div>
-  </div> 
   <script src="bundle.js"></script>
 </body>
 

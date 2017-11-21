@@ -10,5 +10,9 @@
         "noImplicitAny": true,
         "noImplicitThis": true,
         "suppressImplicitAnyIndexErrors": true
-    }
+    },
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
 }
