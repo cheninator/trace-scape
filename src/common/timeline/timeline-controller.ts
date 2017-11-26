@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2017 École Polytechnique de Montréal
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
 import { TimelineRequestFilter } from './../filter/timeline-request-filter';
@@ -6,12 +14,12 @@ import { VisibleWindow } from './../visible-window';
 import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
+import { ModelResponse } from '../protocol/model-response';
 
 export class TimelineController {
 
     private modelProvider_: ITimelineModelProvider;
     private visibleWindow_: VisibleWindow;
-    private viewWidth_: number;
     private viewModel_: TimelineViewModel;
 
     /* Key bindings */
@@ -21,37 +29,43 @@ export class TimelineController {
     private right_: Key;
 
     constructor(viewWidth: number, modelProvider: ITimelineModelProvider) {
-        this.viewWidth_ = viewWidth;
         this.modelProvider_ = modelProvider;
+        this.visibleWindow_ = {
+            min: this.modelProvider_.trace.start,
+            max: this.modelProvider_.trace.end,
+            count: viewWidth
+        };
+
         this.initKeys();
     }
 
-    public async inflate() {
-        if (this.visibleWindow_ === undefined) {
-            this.visibleWindow_ = {
-                min: this.modelProvider_.trace.start,
-                max: this.modelProvider_.trace.end,
-                resolution: this.viewWidth_
-            };
+    public async inflate(visibleWindow?: VisibleWindow) {
+        if (visibleWindow !== undefined) {
+            this.visibleWindow_ = visibleWindow;
         }
+
         await this.updateTree();
 
         let events = await this.modelProvider_.fetchEvents(<TimelineRequestFilter> {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
-            count: this.visibleWindow_.resolution,
+            count: this.visibleWindow_.count,
             entries: this.viewModel_.entries.map((entry) => entry.id)
         });
-        console.log(events);
+
         this.viewModel_.events = events.model;
         window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
     }
+    
+    get viewModel() {
+        return this.viewModel_;
+    }
 
-    public async updateTree() {
+    private async updateTree() {
         let filter: BaseRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
-            count: this.viewWidth_,
+            count: this.visibleWindow_.count,
         };
 
         let response = await this.modelProvider_.fetchEntries(filter);
@@ -67,22 +81,12 @@ export class TimelineController {
         }
     }
 
-    private updateVisibleWindow(entries: Array<TimelineEntry>) {
-        entries.forEach((entry: TimelineEntry) => {
-            this.visibleWindow_.min = Math.min(this.visibleWindow_.min, entry.startTime);
-            this.visibleWindow_.max = Math.max(this.visibleWindow_.max, entry.endTime);
-        });
-    }
-
-    get viewModel() {
-        return this.viewModel_;
-    }
 
     private async updateViewModelEvents() {
         let filter: TimelineRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
-            count: this.visibleWindow_.resolution,
+            count: this.visibleWindow_.count,
             entries: this.viewModel_.entries.map((entry) => entry.id)
         };
 
@@ -114,7 +118,6 @@ export class TimelineController {
         let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * 0.05;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
-        this.visibleWindow_.resolution = (this.visibleWindow_.max - this.visibleWindow_.min) / this.viewWidth_;
         this.updateViewModelEvents();
     }
 

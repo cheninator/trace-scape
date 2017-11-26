@@ -1,7 +1,15 @@
+/*
+ * Copyright (C) 2017 École Polytechnique de Montréal
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import { TimeFormatter } from './../formatter/time-formatter';
 import { IChart } from './../base/IChart';
 import { colorPalette } from './../ui/colors';
 import { XYViewModel } from './xy-viewmodel';
-import { TimeFormatter } from './../formatter/time-formatter';
 import { eventType } from './../events';
 
 // Type definitions are not working for ChartJS

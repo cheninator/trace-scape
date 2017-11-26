@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2017 École Polytechnique de Montréal
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 import { colors } from './../ui/colors';
 import { VisibleWindow } from './../visible-window';
 import { TimeFormatter } from './../formatter/time-formatter';
@@ -62,7 +70,7 @@ export class TimelineRuler {
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 
-        let time = TimeFormatter.fromNanos(this.context_.min + start * this.context_.resolution);
+        let time = TimeFormatter.fromNanos(this.context_.min + start * this.context_.count);
         let pixiText = new PIXI.Text(time, this.textStyle);
         pixiText.x = start + 5;
         pixiText.y = this.positionY_;

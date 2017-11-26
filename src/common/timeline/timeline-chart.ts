@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2017 École Polytechnique de Montréal
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 import { TimelineViewModel } from './timeline-viewmodel';
 import { colors } from './../ui/colors';
 import { IChart } from './../base/IChart';
@@ -25,17 +33,15 @@ export class TimelineChart implements IChart {
     public draw() {
         this.clear();
         let visibleWindow = this.viewModel_.context;
-        console.log(this.viewModel_);
-        console.log(this);
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.eventGraphics[event.entryID];
             for (let state of event.states) {
                 let style = this.colorMapping[state.value];
                 if (style !== undefined) {
                     let start = Math.max(state.startTime, visibleWindow.min);
-                    let x = Math.round((start - visibleWindow.min) / visibleWindow.resolution);
+                    let x = Math.round((start - visibleWindow.min) / visibleWindow.count);
                     let y = (event.entryID + 1) * 20;
-                    let width = Math.round(state.duration / visibleWindow.resolution);
+                    let width = Math.round(state.duration / visibleWindow.count);
                     let height = 15;
 
                     eventGraphic.beginFill(style, 1);

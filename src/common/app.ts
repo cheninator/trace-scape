@@ -1,12 +1,17 @@
-import { TimelineWidget } from './timeline/timeline-widget';
-import { ControlFlowModelProvider } from './protocol/timeline/control-flow-model-provider';
+/*
+ * Copyright (C) 2017 École Polytechnique de Montréal
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
 import { TraceModelProvider } from './protocol/trace-model-provider';
-import { Trace } from './model/trace';
 import { LayoutManager } from './layout-manager';
 import { CpuUsageComponent } from './ui/cpu-usage-component';
 import { DiskIOComponent } from './ui/disk-io-component';
 import { KernelMemoryComponent } from './ui/kernel-memory-component';
 import { ControlFlowComponent } from './ui/control-flow-component';
+import { Trace } from './model/trace';
 
 async function main() {
 

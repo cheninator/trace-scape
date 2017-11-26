@@ -8,6 +8,13 @@
 
 export interface ModelResponse<T> {
     model: T;
-    status: string;
+    status: Status;
     statusMessage: string;
+}
+
+export enum Status {
+    RUNNING,
+    COMPLETED,
+    FAILED,
+    CANCELLED
 }
