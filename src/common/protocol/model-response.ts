@@ -13,8 +13,8 @@ export interface ModelResponse<T> {
 }
 
 export enum Status {
-    RUNNING,
-    COMPLETED,
-    FAILED,
-    CANCELLED
+    RUNNING = "RUNNING",
+    COMPLETED = "COMPLETED",
+    FAILED = "FAILED",
+    CANCELLED = "CANCELLED"
 }

@@ -70,7 +70,8 @@ export class TimelineRuler {
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 
-        let time = TimeFormatter.fromNanos(this.context_.min + start * this.context_.count);
+        let resolution = (this.context_.max - this.context_.min) / this.context_.count
+        let time = TimeFormatter.fromNanos(this.context_.min + start * resolution);
         let pixiText = new PIXI.Text(time, this.textStyle);
         pixiText.x = start + 5;
         pixiText.y = this.positionY_;

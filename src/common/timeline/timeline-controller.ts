@@ -37,6 +37,8 @@ export class TimelineController {
         };
 
         this.initKeys();
+        window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
+        window.addEventListener(eventType.RESET_RANGE, this.resetRange.bind(this));
     }
 
     public async inflate(visibleWindow?: VisibleWindow) {
@@ -81,7 +83,6 @@ export class TimelineController {
         }
     }
 
-
     private async updateViewModelEvents() {
         let filter: TimelineRequestFilter = {
             start: this.visibleWindow_.min,
@@ -93,6 +94,18 @@ export class TimelineController {
         let response = await this.modelProvider_.fetchEvents(filter);
         this.viewModel_.events = response.model;
         window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
+    }
+
+    private resetRange(e: CustomEvent) {
+        this.visibleWindow_.min = this.modelProvider_.trace.start;
+        this.visibleWindow_.max = this.modelProvider_.trace.end;
+        this.updateViewModelEvents();
+    }
+
+    private rangeSelected(e: CustomEvent) {
+        this.visibleWindow_.min = e.detail.start.x;
+        this.visibleWindow_.max = e.detail.end.x;
+        this.updateViewModelEvents();
     }
 
     public zoomIn() {

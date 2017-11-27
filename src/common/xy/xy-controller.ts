@@ -18,7 +18,7 @@ import { Key } from './../key';
 
 export class XYController {
 
-    private readonly WAIT_BEFORE_REQUEST = 500;
+    private readonly WAIT_BEFORE_REQUEST = 700;
 
     private modelProvider_: IXYModelProvider;
     private visibleWindow_: VisibleWindow;
@@ -82,8 +82,9 @@ export class XYController {
     }
 
     private async update() {
-        let treeComplete, xyComplete = false;
-        let treeStatus, xyStatus;
+        let treeComplete = false;
+        let xyComplete = false;
+        let treeStatus: Status, xyStatus: Status;
 
         do {
             if (!treeComplete) {

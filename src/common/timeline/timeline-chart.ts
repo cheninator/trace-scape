@@ -38,10 +38,11 @@ export class TimelineChart implements IChart {
             for (let state of event.states) {
                 let style = this.colorMapping[state.value];
                 if (style !== undefined) {
+                    let resolution = (visibleWindow.max - visibleWindow.min) / visibleWindow.count;
                     let start = Math.max(state.startTime, visibleWindow.min);
-                    let x = Math.round((start - visibleWindow.min) / visibleWindow.count);
+                    let x = Math.round((start - visibleWindow.min) / resolution);
                     let y = (event.entryID + 1) * 20;
-                    let width = Math.round(state.duration / visibleWindow.count);
+                    let width = Math.round(state.duration / resolution);
                     let height = 15;
 
                     eventGraphic.beginFill(style, 1);
