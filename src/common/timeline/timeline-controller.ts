@@ -10,13 +10,17 @@ import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
 import { TimelineRequestFilter } from './../filter/timeline-request-filter';
 import { BaseRequestFilter } from './../filter/base-request-filter';
+import { ModelResponse } from '../protocol/model-response';
+import { Status } from './../protocol/model-response';
 import { VisibleWindow } from './../visible-window';
 import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
-import { ModelResponse } from '../protocol/model-response';
 
 export class TimelineController {
+
+    private readonly WAIT_BEFORE_REQUEST = 700;
+    private readonly ZOOM_PERCENT = 0.05;
 
     private modelProvider_: ITimelineModelProvider;
     private visibleWindow_: VisibleWindow;
@@ -35,6 +39,12 @@ export class TimelineController {
             max: this.modelProvider_.trace.end,
             count: viewWidth
         };
+        this.viewModel_ = {
+            entries: new Array(),
+            events: new Array(),
+            arrows: new Array(),
+            context: this.visibleWindow_
+        }
 
         this.initKeys();
         window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
@@ -44,26 +54,37 @@ export class TimelineController {
     public async inflate(visibleWindow?: VisibleWindow) {
         if (visibleWindow !== undefined) {
             this.visibleWindow_ = visibleWindow;
+            this.viewModel_.context = this.visibleWindow_;
         }
-
-        await this.updateTree();
-
-        let events = await this.modelProvider_.fetchEvents(<TimelineRequestFilter> {
-            start: this.visibleWindow_.min,
-            end: this.visibleWindow_.max,
-            count: this.visibleWindow_.count,
-            entries: this.viewModel_.entries.map((entry) => entry.id)
-        });
-
-        this.viewModel_.events = events.model;
-        window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
+        this.update();
     }
     
     get viewModel() {
         return this.viewModel_;
     }
 
-    private async updateTree() {
+    private async update() {
+        let treeComplete = false;
+        let eventComplete = false;
+        let treeStatus: Status, eventStatus: Status;
+
+        do {
+            if (!treeComplete) {
+                treeStatus = await this.updateTree();
+                treeComplete = (treeStatus === Status.COMPLETED);
+            }
+
+            if (!eventComplete) {
+                eventStatus = await this.updateData();
+                eventComplete = (treeStatus === Status.COMPLETED);
+            }
+
+            window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
+            await Utils.wait(this.WAIT_BEFORE_REQUEST);
+        } while (!(treeComplete && eventComplete));
+    }
+
+    private async updateTree() : Promise <Status> {
         let filter: BaseRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
@@ -71,19 +92,11 @@ export class TimelineController {
         };
 
         let response = await this.modelProvider_.fetchEntries(filter);
-        if (this.viewModel_ === undefined) {
-            this.viewModel_ = {
-                entries: response.model,
-                events: new Array(),
-                arrows: new Array(),
-                context: this.visibleWindow_
-            };
-        } else {
-            this.viewModel_.entries = response.model;
-        }
+        this.viewModel_.entries = response.model;
+        return response.status;
     }
 
-    private async updateViewModelEvents() {
+    private async updateData() : Promise <Status> {
         let filter: TimelineRequestFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
@@ -93,45 +106,45 @@ export class TimelineController {
 
         let response = await this.modelProvider_.fetchEvents(filter);
         this.viewModel_.events = response.model;
-        window.dispatchEvent(new Event(eventType.TIMEGRAPH_CHANGED));
+        return response.status;
     }
 
     private resetRange(e: CustomEvent) {
         this.visibleWindow_.min = this.modelProvider_.trace.start;
         this.visibleWindow_.max = this.modelProvider_.trace.end;
-        this.updateViewModelEvents();
+        this.update();
     }
 
     private rangeSelected(e: CustomEvent) {
         this.visibleWindow_.min = e.detail.start.x;
         this.visibleWindow_.max = e.detail.end.x;
-        this.updateViewModelEvents();
+        this.update();
     }
 
     public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.95));
-        this.updateViewModelEvents();
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 - this.ZOOM_PERCENT)));
+        this.update();
     }
 
     public zoomOut() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.05));
-        this.updateViewModelEvents();
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 + this.ZOOM_PERCENT)));
+        this.update();
     }
 
     public panLeft() {
-        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * 0.05;
+        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
-        this.updateViewModelEvents();
+        this.update();
     }
 
     public panRight() {
-        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * 0.05;
+        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
-        this.updateViewModelEvents();
+        this.update();
     }
 
     private initKeys() {

@@ -102,6 +102,18 @@ export class XYController {
         } while (!(treeComplete && xyComplete));
     }
 
+    private async updateTree(): Promise<Status> {
+        let filter: BaseRequestFilter = {
+            start: this.visibleWindow_.min,
+            end: this.visibleWindow_.max,
+            count: this.visibleWindow_.count,
+        };
+
+        let response = await this.modelProvider_.fetchEntries(filter);
+        this.viewModel_.entries = response.model;
+        return response.status;
+    }
+
     private async updateData(): Promise<Status> {
         let filter: XYRequestFilter = {
             start: this.visibleWindow_.min,
@@ -112,18 +124,6 @@ export class XYController {
 
         let response = await this.modelProvider_.fetchData(filter);
         this.viewModel_.series = response.model;
-        return response.status;
-    }
-
-    private async updateTree(): Promise<Status> {
-        let filter: BaseRequestFilter = {
-            start: this.visibleWindow_.min,
-            end: this.visibleWindow_.max,
-            count: this.visibleWindow_.count,
-        };
-
-        let response = await this.modelProvider_.fetchEntries(filter);
-        this.viewModel_.entries = response.model;
         return response.status;
     }
 
