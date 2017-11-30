@@ -4,13 +4,13 @@
   "description": "A trace viewer built with web technologies",
   "main": "main.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "npm run clean && tsc && gulp build && webpack --devtool source-map",
     "bundle": "echo",
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
-    "desktop": "electron bin/electron/main.js",
-    "start": "npm run clean && tsc && npm run build && webpack --devtool source-map && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
-    "start:desktop": "npm run clean && tsc && npm run build && webpack && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
+    "desktop": "electron bin/electron/main.js --enable-logging",
+    "start": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
+    "start:desktop": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "web": "lite-server"
   },
