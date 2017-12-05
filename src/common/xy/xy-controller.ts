@@ -19,6 +19,7 @@ import { Key } from './../key';
 export class XYController {
 
     private readonly WAIT_BEFORE_REQUEST = 700;
+    private readonly ZOOM_PERCENT = 0.1;
 
     private modelProvider_: IXYModelProvider;
     private visibleWindow_: VisibleWindow;
@@ -39,8 +40,8 @@ export class XYController {
             title: '',
             entries: new Array(),
             series: new Array()
-        }
-        
+        };
+
         this.initKeys();
         window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
         window.addEventListener(eventType.RESET_RANGE, this.resetRange.bind(this));
@@ -59,13 +60,27 @@ export class XYController {
 
     public zoomIn() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 0.90));
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 - this.ZOOM_PERCENT)));
         this.update();
     }
 
     public zoomOut() {
         let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * 1.10));
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 + this.ZOOM_PERCENT)));
+        this.update();
+    }
+
+    public panLeft() {
+        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
+        this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
+        this.update();
+    }
+
+    public panRight() {
+        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
+        this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
+        this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
         this.update();
     }
 

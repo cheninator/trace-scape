@@ -44,7 +44,7 @@ export class TimelineController {
             events: new Array(),
             arrows: new Array(),
             context: this.visibleWindow_
-        }
+        };
 
         this.initKeys();
         window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
@@ -58,7 +58,7 @@ export class TimelineController {
         }
         this.update();
     }
-    
+
     get viewModel() {
         return this.viewModel_;
     }

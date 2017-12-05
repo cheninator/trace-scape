@@ -29,7 +29,7 @@ export class TimelineChart implements IChart {
         let visibleWindow = this.viewModel_.context;
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.eventGraphics[event.entryID];
-            
+
             for (let state of event.states) {
                 let color = this.timelinePresentation_.getColorOfState(state.value);
                 if (color !== undefined) {
