@@ -7,8 +7,8 @@
  */
 
  export interface IDictionary<T> {
-    add(key: string, value: T);
-    remove(key: string);
+    add(key: string, value: T): void;
+    remove(key: string): void;
     contains(key: string): boolean;
     count(): number;
     get(key: string): T;
@@ -17,7 +17,7 @@
  export class Dictionary<T> implements IDictionary<T> {
 
     private items_ : { [key: string] : T };
-    private count_;
+    private count_: number;
 
     constructor() {
         this.items_ = {};
