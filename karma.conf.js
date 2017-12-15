@@ -6,7 +6,7 @@ module.exports = function(config) {
         frameworks: ['mocha', 'chai'],
         files: [
             'node_modules/jquery/**/jquery.min.js',
-            'test/*.ts'
+            'test/xy/test-disks-io.spec.ts'
         ],
         exclude: [
         ],

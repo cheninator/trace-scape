@@ -6,12 +6,12 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Trace } from './../src/common/model/trace';
-import { TraceModelProvider } from './../src/common/protocol/trace-model-provider';
-import { KernelMemoryModelProvider } from './../src/common/protocol/xy/kernel-memory-model-provider';
-import { XYRequestFilter } from './../src/common/filter/xy-request-filter';
-import { BaseRequestFilter } from '../src/common/filter/base-request-filter';
-import { Utils } from '../src/common/utils';
+import { Trace } from './../../src/common/model/trace';
+import { TraceModelProvider } from './../../src/common/protocol/trace-model-provider';
+import { KernelMemoryModelProvider } from './../../src/common/protocol/xy/kernel-memory-model-provider';
+import { XYRequestFilter } from './../../src/common/filter/xy-request-filter';
+import { BaseRequestFilter } from './../../src/common/filter/base-request-filter';
+import { Utils } from './../../src/common/utils';
 
 const DEFAULT_REPETITION = 10;
 

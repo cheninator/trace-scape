@@ -12,7 +12,7 @@ import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../model/trace';
 
 export class DiskIOComponent implements IComponent {
-    
+
     private diskModelProvider_: DiskModelProvider;
     private readonly id_ = 'disk';
 

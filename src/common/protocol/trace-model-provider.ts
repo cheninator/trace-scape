@@ -27,7 +27,7 @@ export class TraceModelProvider implements ITraceModelProvider {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
-                    type: 'GET',
+                    method: 'GET',
                     url: `${this.serverUrl_}/traces`,
                     success: (response) => {
                         resolve(<Array<Trace>> response);
@@ -65,7 +65,7 @@ export class TraceModelProvider implements ITraceModelProvider {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
-                    type: 'DELETE',
+                    method: 'DELETE',
                     url: `${this.serverUrl_}/traces/${name}`,
                     success: (response, status, xhr) => {
                         resolve(true);

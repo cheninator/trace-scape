@@ -33,7 +33,7 @@ export class Key {
             this.isDown_ = true;
             this.isUp_ = false;
         }
-        event.preventDefault();
+        e.preventDefault();
     }
 
     private upHandler(e: KeyboardEvent) {
@@ -44,6 +44,6 @@ export class Key {
             this.isDown_ = false;
             this.isUp_ = true;
         }
-        event.preventDefault();
+        e.preventDefault();
     }
 }
