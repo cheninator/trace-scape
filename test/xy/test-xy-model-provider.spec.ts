@@ -6,12 +6,13 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { suite } from 'mocha-typescript';
 import { Trace } from './../../src/common/model/trace';
 import { TraceModelProvider, ITraceModelProvider } from './../../src/common/protocol/trace-model-provider';
 import { XYRequestFilter } from './../../src/common/filter/xy-request-filter';
 import { BaseRequestFilter } from './../../src/common/filter/base-request-filter';
-import { suite } from 'mocha-typescript';
 import { IXYModelProvider } from '../../src/common/protocol/xy-model-provider';
+import { Utils } from './../../src/common/utils';
 
 export abstract class BaseXYModelProviderTest {
 
@@ -28,14 +29,6 @@ export abstract class BaseXYModelProviderTest {
         this.trace = await this.traceModelProvider.putTrace(this.getTraceName(), this.getTracePath());
 
         this.modelProvider = this.getModelProvider();
-    }
-
-    public async after() {
-        await this.traceModelProvider.removeTrace(this.getTraceName());
-
-        delete this.modelProvider;
-        delete this.traceModelProvider;
-        delete this.trace;
     }
 
     protected abstract getModelProvider(): IXYModelProvider;
@@ -56,9 +49,10 @@ export abstract class BaseXYModelProviderTest {
         let iteration = repeat === undefined ? this.DEFAULT_REPETITION : repeat;
         for (let i = 0; i < iteration; ++i) {
             let start = performance.now();
-            await this.modelProvider.fetchData(filter);
+            console.log(await this.modelProvider.fetchData(filter));
             let stop = performance.now();
             times.push(stop - start);
+            Utils.wait(500);
         }
         this.printStats(`${testDescription}: ${count} points`, times);
     }
@@ -74,9 +68,10 @@ export abstract class BaseXYModelProviderTest {
         let iteration = repeat === undefined ? this.DEFAULT_REPETITION : repeat;
         for (let i = 0; i < iteration; ++i) {
             let start = performance.now();
-            await this.modelProvider.fetchEntries(filter);
+            console.log(await this.modelProvider.fetchEntries(filter));
             let stop = performance.now();
             times.push(stop - start);
+            Utils.wait(500);
         }
         this.printStats(`${testDescription}: ${count} entries`, times);
     }
@@ -84,6 +79,8 @@ export abstract class BaseXYModelProviderTest {
     protected printStats(title: string, times: Array<number>) {
         let sum = times.reduce((previous, current) => current += previous);
         let avg = sum / times.length;
+        console.log("");
+        console.log("");
         console.log("----- " + title + " -----");
         console.log("Average time : " + avg + " ms.");
         console.log("Median time : " + this.median(times) + " ms.");
