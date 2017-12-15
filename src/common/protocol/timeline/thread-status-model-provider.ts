@@ -13,7 +13,7 @@ import { Trace } from './../../model/trace';
 import { ITimelineModelProvider } from './../timeline-model-provider';
 import { ModelResponse } from './../model-response';
 
-export class ControlFlowModelProvider implements ITimelineModelProvider {
+export class ThreadStatusModelProvider implements ITimelineModelProvider {
 
     private serverUrl_: string;
     private readonly trace_: Trace;

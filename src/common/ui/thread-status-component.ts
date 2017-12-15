@@ -7,17 +7,17 @@
  */
 
 import { IComponent } from './component';
-import { ControlFlowModelProvider } from './../protocol/timeline/control-flow-model-provider';
+import { ThreadStatusModelProvider } from './../protocol/timeline/thread-status-model-provider';
 import { TimelineWidget } from './../timeline/timeline-widget';
 import { Trace } from './../model/trace';
 
-export class ControlFlowComponent implements IComponent {
+export class ThreadStatusComponent implements IComponent {
 
-    private modelProvider_: ControlFlowModelProvider;
+    private modelProvider_: ThreadStatusModelProvider;
     private readonly id_ = 'control-flow';
 
     constructor(serverUrl: string, trace: Trace) {
-        this.modelProvider_ = new ControlFlowModelProvider(serverUrl, trace);
+        this.modelProvider_ = new ThreadStatusModelProvider(serverUrl, trace);
     }
 
     get html(): string {

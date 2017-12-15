@@ -10,7 +10,7 @@ import { LayoutManager } from './layout-manager';
 import { CpuUsageComponent } from './ui/cpu-usage-component';
 import { DiskIOComponent } from './ui/disk-io-component';
 import { KernelMemoryComponent } from './ui/kernel-memory-component';
-import { ControlFlowComponent } from './ui/control-flow-component';
+import { ThreadStatusComponent } from './ui/thread-status-component';
 import { Trace } from './model/trace';
 
 async function main() {
@@ -33,7 +33,7 @@ async function main() {
     layoutManager.addComponent(new CpuUsageComponent(serverUrl, trace));
     layoutManager.addComponent(new DiskIOComponent(serverUrl, trace));
     layoutManager.addComponent(new KernelMemoryComponent(serverUrl, trace));
-    layoutManager.addComponent(new ControlFlowComponent(serverUrl, trace));
+    layoutManager.addComponent(new ThreadStatusComponent(serverUrl, trace));
 
     layoutManager.init();
 }

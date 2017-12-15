@@ -7,8 +7,15 @@
  */
 
 import { Trace } from './../model/trace';
+import { STATUS_CODES } from 'http';
 
-export class TraceModelProvider {
+export interface ITraceModelProvider {
+    getTraces(): Promise<Array<Trace>>;
+    putTrace(name: string, path: string): Promise<Trace>;
+    removeTrace(name: string): Promise<boolean>;
+}
+
+export class TraceModelProvider implements ITraceModelProvider {
 
     private serverUrl_: string;
 
@@ -45,6 +52,23 @@ export class TraceModelProvider {
                     },
                     success: (response) => {
                         resolve(<Trace> response);
+                    },
+                    error: (xhr, status, error) => {
+                        reject(error);
+                    },
+                }
+            );
+        });
+    }
+
+    public removeTrace(name: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            $.ajax(
+                {
+                    type: 'DELETE',
+                    url: `${this.serverUrl_}/traces/${name}`,
+                    success: (response, status, xhr) => {
+                        resolve(true);
                     },
                     error: (xhr, status, error) => {
                         reject(error);
