@@ -60,7 +60,7 @@
 
     public values(): Array<T> {
         let values = new Array();
- 
+
         for (let prop in this.items_) {
             if (this.items_.hasOwnProperty(prop)) {
                 values.push(this.items_[prop]);
