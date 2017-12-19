@@ -30,10 +30,6 @@ export class TimelinePresentation {
         6: 15
     };
 
-    constructor() {
-
-    }
-
     public getColorOfState(state: number) {
         return this.colorMapping[state];
     }

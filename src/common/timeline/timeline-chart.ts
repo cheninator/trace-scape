@@ -9,7 +9,7 @@
 import { TimelineViewModel } from './timeline-viewmodel';
 import { TimelinePresentation } from './timeline-presentation';
 import { colors } from './../ui/colors';
-import { IChart } from './../base/IChart';
+import { IChart } from './../base/chart';
 import { IDictionary, Dictionary } from './../base/dictionary';
 
 export class TimelineChart implements IChart {
@@ -19,14 +19,14 @@ export class TimelineChart implements IChart {
     private viewModel_: TimelineViewModel;
     private timelinePresentation_: TimelinePresentation;
     private rows_: IDictionary<PIXI.Graphics>;
-    
+
     private nbRows_: number;
 
     constructor(height: number) {
         this.graphicsContainer = new PIXI.Container();
         this.timelinePresentation_ = new TimelinePresentation();
         this.rows_ = new Dictionary();
-        
+
         /* This is arbitrary for the moment */
         this.nbRows_ = height / 10;
     }

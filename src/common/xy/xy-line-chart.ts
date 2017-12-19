@@ -7,7 +7,7 @@
  */
 
 import { TimeFormatter } from './../formatter/time-formatter';
-import { IChart } from './../base/IChart';
+import { IChart } from './../base/chart';
 import { colorPalette } from './../ui/colors';
 import { XYViewModel } from './xy-viewmodel';
 import { eventType } from './../events';
