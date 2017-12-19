@@ -33,7 +33,7 @@ export class TimelineWidget {
         this.application_ = new PIXI.Application(options);
 
         this.timelineController_ = new TimelineController(canvas.width, modelProvider);
-        this.timelineChart_ = new TimelineChart();
+        this.timelineChart_ = new TimelineChart(canvas.height);
         this.timelineRuler_ = new TimelineRuler(0, 0, canvas.width, canvas.height);
 
         window.addEventListener(eventType.TIMEGRAPH_CHANGED, this.viewModelChanged.bind(this));

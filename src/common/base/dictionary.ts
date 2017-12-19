@@ -9,9 +9,11 @@
  export interface IDictionary<T> {
     add(key: string, value: T): void;
     remove(key: string): void;
+    clear(): void;
     contains(key: string): boolean;
     count(): number;
     get(key: string): T;
+    values(): Array<T>;
  }
 
  export class Dictionary<T> implements IDictionary<T> {
@@ -43,11 +45,27 @@
         delete this.items_[key];
     }
 
+    public clear() {
+        delete this.items_;
+        this.items_ = {};
+    }
+
     public count(): number {
         return this.count_;
     }
 
     public get(key: string): T {
         return this.items_[key];
+    }
+
+    public values(): Array<T> {
+        let values = new Array();
+ 
+        for (let prop in this.items_) {
+            if (this.items_.hasOwnProperty(prop)) {
+                values.push(this.items_[prop]);
+            }
+        }
+        return values;
     }
  }

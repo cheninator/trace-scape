@@ -10,26 +10,35 @@ import { TimelineViewModel } from './timeline-viewmodel';
 import { TimelinePresentation } from './timeline-presentation';
 import { colors } from './../ui/colors';
 import { IChart } from './../base/IChart';
+import { IDictionary, Dictionary } from './../base/dictionary';
 
 export class TimelineChart implements IChart {
 
     public graphicsContainer: PIXI.Container;
-    private eventGraphics: Array<PIXI.Graphics>;
 
     private viewModel_: TimelineViewModel;
     private timelinePresentation_: TimelinePresentation;
+    private rows_: IDictionary<PIXI.Graphics>;
+    
+    private nbRows_: number;
 
-    constructor() {
+    constructor(height: number) {
         this.graphicsContainer = new PIXI.Container();
         this.timelinePresentation_ = new TimelinePresentation();
+        this.rows_ = new Dictionary();
+        
+        /* This is arbitrary for the moment */
+        this.nbRows_ = height / 10;
     }
 
     public draw() {
         this.clear();
         let visibleWindow = this.viewModel_.context;
         for (let event of this.viewModel_.events) {
-            let eventGraphic = this.eventGraphics[event.entryID];
-
+            let eventGraphic = this.rows_.get(event.entryID.toString());
+            if (eventGraphic === undefined) {
+                continue;
+            }
             for (let state of event.states) {
                 let color = this.timelinePresentation_.getColorOfState(state.value);
                 if (color !== undefined) {
@@ -48,21 +57,21 @@ export class TimelineChart implements IChart {
     }
 
     public clear() {
-        if (this.eventGraphics !== undefined) {
-            this.eventGraphics.forEach((e: PIXI.Graphics) => e.clear());
-        }
+        this.rows_.values().forEach(e => e.clear());
     }
 
     set model(model: TimelineViewModel) {
-        if (model !== undefined) {
-            this.viewModel_ = model;
+        if (model === undefined) {
+            return;
+        }
 
-            this.eventGraphics = new Array(this.viewModel_.entries.length);
-            this.graphicsContainer.removeChildren();
-            for (let i = 0; i < model.entries.length; ++i) {
-                this.eventGraphics[i] = new PIXI.Graphics();
-                this.graphicsContainer.addChild(this.eventGraphics[i]);
-            }
+        this.viewModel_ = model;
+        this.rows_.clear();
+
+        for (let i = 1; i <= this.nbRows_; ++i) {
+            let graphics = new PIXI.Graphics();
+            this.rows_.add(i.toString(), graphics);
+            this.graphicsContainer.addChild(graphics);
         }
     }
 }
