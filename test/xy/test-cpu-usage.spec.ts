@@ -14,14 +14,14 @@ import { suite, test, timeout } from 'mocha-typescript';
 @suite("CPU usage model provider")
 export class CpuUsageModelProviderTest extends BaseXYModelProviderTest {
 
-    private traceName = 'huge_trace';
-    private baseTracePath = '/home/yonni/Documents/traces/ctf/src/main/resources';
+    private traceName = 'many-threads';
+    private baseTracePath = '/home/yonni/Documents/traces';
     private testTitle = 'CPU usage test';
 
     public async before() {
         await super.before();
     }
-
+/*
     @test("queries the xy entries to the CPU usage endpoint from trace start to trace end", timeout(50000))
     public async query_entries() {
         await this.queryEntries(100, 20, this.testTitle);
@@ -29,24 +29,24 @@ export class CpuUsageModelProviderTest extends BaseXYModelProviderTest {
 
     @test("queries 10 xy points to the CPU usage endpoint from trace start to trace end", timeout(50000))
     public async query_10_points() {
-        await this.queryXY(10, 20, this.testTitle);
+        await this.queryXY(10, 1, this.testTitle);
     }
 
     @test("queries 100 xy points to the CPU usage endpoint from trace start to trace end", timeout(50000))
     public async query_100_points() {
-        await this.queryXY(100, 20, this.testTitle);
+        await this.queryXY(100, 1, this.testTitle);
     }
-
+*/
     @test("queries 1000 xy points to the CPU usage endpoint from trace start to trace end", timeout(500000))
     public async query_1000_points() {
-        await this.queryXY(1000, 10, this.testTitle);
+        await this.queryXY(1000, 1, this.testTitle);
     }
-
+/*
     @test("queries 10000 xy points to the CPU usage endpoint from trace start to trace end", timeout(5000000))
     public async query_10000_points() {
         await this.queryXY(10000, 5, this.testTitle);
     }
-
+*/
     protected getModelProvider(): IXYModelProvider {
         return new CpuUsageModelProvider(this.serverUrl, this.trace);
     }

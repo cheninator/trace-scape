@@ -14,8 +14,8 @@ import { suite, test, timeout } from 'mocha-typescript';
 @suite("Disks IO Activity model provider")
 export class DisksIOModelProviderTest extends BaseXYModelProviderTest {
 
-    private traceName = 'huge_trace';
-    private baseTracePath = '/home/yonni/Documents/traces/ctf/src/main/resources';
+    private traceName = 'kernel_vm';
+    private baseTracePath = '/home/yonni/Documents/traces';
     private testTitle = 'Disks IO activity test';
 
     public async before() {

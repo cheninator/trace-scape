@@ -109,7 +109,7 @@ export class XYController {
 
             if (!xyComplete) {
                 xyStatus = await this.updateData();
-                xyComplete = (treeStatus === Status.COMPLETED);
+                xyComplete = (xyStatus === Status.COMPLETED);
             }
 
             window.dispatchEvent(new Event(eventType.VIEW_MODEL_CHANGED));

@@ -14,8 +14,8 @@ import { suite, test, timeout } from 'mocha-typescript';
 @suite("Kernel memory usage model provider")
 export class KernelMemoryModelProviderTest extends BaseXYModelProviderTest {
 
-    private traceName = 'huge_trace';
-    private baseTracePath = '/home/yonni/Documents/traces/ctf/src/main/resources';
+    private traceName = 'kernel_vm';
+    private baseTracePath = '/home/yonni/Documents/traces';
     private testTitle = 'Kernel memory usage test';
 
     public async before() {
