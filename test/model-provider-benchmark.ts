@@ -9,7 +9,7 @@
 import { Trace } from './../src/common/model/trace';
 import { PerformanceMeter } from './performance-meter';
 import { IXYModelProvider } from '../src/common/protocol/xy-model-provider';
-import { BaseRequestFilter } from './../src/common/filter/base-request-filter';
+import { TimeQueryFilter } from './../src/common/filter/time-query-filter';
 import { XYRequestFilter } from './../src/common/filter/xy-request-filter';
 import { ModelResponse } from './../src/common/protocol/model-response';
 import { XYEntries } from './../src/common/xy/xy-viewmodel';
@@ -18,7 +18,7 @@ export abstract class ModelProviderBenchmark {
 
     protected abstract getModelProvider(trace: Trace): IXYModelProvider
 
-    protected getQueryFilter(trace: Trace, numberOfPoints: number, ids: number[]): BaseRequestFilter {
+    protected getQueryFilter(trace: Trace, numberOfPoints: number, ids: number[]): TimeQueryFilter {
         return <XYRequestFilter> {
             start: trace.start,
             end: trace.end,

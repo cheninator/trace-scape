@@ -6,8 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-export interface BaseRequestFilter {
-    start: number;
-    end: number;
-    count: number;
+import { TimeQueryFilter } from "./time-query-filter";
+
+export interface SelectionTimeQueryFilter extends TimeQueryFilter{
+    entries: Array<number>;
 }

@@ -9,7 +9,7 @@
 import { IXYModelProvider } from './../xy-model-provider';
 import { ModelResponse } from './../model-response';
 import { XYEntries, XYSeries } from './../../xy/xy-viewmodel';
-import { BaseRequestFilter } from './../../filter/base-request-filter';
+import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { XYRequestFilter } from './../../filter/xy-request-filter';
 import { Trace } from './../../model/trace';
 
@@ -28,7 +28,7 @@ export class DiskModelProvider implements IXYModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries(filter: BaseRequestFilter): Promise<ModelResponse<Array<XYEntries>>> {
+    public fetchEntries(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYEntries>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {

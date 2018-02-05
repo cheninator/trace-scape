@@ -7,8 +7,8 @@
  */
 
 import { TimelineRowModel, TimelineEntry, TimelineArrow, TimelineState } from './../../timeline/timeline-viewmodel';
-import { TimelineRequestFilter } from './../../filter/timeline-request-filter';
-import { BaseRequestFilter } from './../../filter/base-request-filter';
+import { SelectionTimeQueryFilter } from './../../filter/selection-time-query-filter';
+import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITimelineModelProvider } from './../timeline-model-provider';
 import { ModelResponse } from './../model-response';
@@ -29,7 +29,7 @@ export class ProtoControlFlowModelProvider implements ITimelineModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries(filter: BaseRequestFilter) : Promise<ModelResponse<Array<TimelineEntry>>> {
+    public fetchEntries(filter: TimeQueryFilter) : Promise<ModelResponse<Array<TimelineEntry>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
@@ -49,7 +49,7 @@ export class ProtoControlFlowModelProvider implements ITimelineModelProvider {
         });
     }
 
-    public fetchEvents(filter: TimelineRequestFilter) : Promise<ModelResponse<Array<TimelineRowModel>>> {
+    public fetchEvents(filter: SelectionTimeQueryFilter) : Promise<ModelResponse<Array<TimelineRowModel>>> {
         return new Promise((resolve, reject) => {
             let req = new XMLHttpRequest();
             req.open("POST", `${this.serverUrl_}/tracecompass/traces/${this.trace.name}/ControlFlowView/events`, true);

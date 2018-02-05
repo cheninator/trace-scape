@@ -6,8 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { BaseRequestFilter } from './base-request-filter';
+import { TimeQueryFilter } from './time-query-filter';
 
-export interface XYRequestFilter extends BaseRequestFilter {
+export interface XYRequestFilter extends TimeQueryFilter {
     ids: Array<number>;
 }

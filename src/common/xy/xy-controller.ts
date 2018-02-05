@@ -7,7 +7,7 @@
  */
 
 import { IXYModelProvider } from './../protocol/xy-model-provider';
-import { BaseRequestFilter } from './../filter/base-request-filter';
+import { TimeQueryFilter } from './../filter/time-query-filter';
 import { XYRequestFilter } from './../filter/xy-request-filter';
 import { Status } from '../protocol/model-response';
 import { VisibleWindow } from './../visible-window';
@@ -118,7 +118,7 @@ export class XYController {
     }
 
     private async updateTree(): Promise<Status> {
-        let filter: BaseRequestFilter = {
+        let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.visibleWindow_.count,

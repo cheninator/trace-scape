@@ -8,8 +8,8 @@
 
 import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
-import { TimelineRequestFilter } from './../filter/timeline-request-filter';
-import { BaseRequestFilter } from './../filter/base-request-filter';
+import { SelectionTimeQueryFilter } from './../filter/selection-time-query-filter';
+import { TimeQueryFilter } from './../filter/time-query-filter';
 import { ModelResponse } from '../protocol/model-response';
 import { Status } from './../protocol/model-response';
 import { VisibleWindow } from './../visible-window';
@@ -85,7 +85,7 @@ export class TimelineController {
     }
 
     private async updateTree() : Promise <Status> {
-        let filter: BaseRequestFilter = {
+        let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.visibleWindow_.count,
@@ -97,7 +97,7 @@ export class TimelineController {
     }
 
     private async updateData() : Promise <Status> {
-        let filter: TimelineRequestFilter = {
+        let filter: SelectionTimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.visibleWindow_.count,
