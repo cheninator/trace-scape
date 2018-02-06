@@ -8,13 +8,13 @@
 
 import { IXYModelProvider } from './../protocol/xy-model-provider';
 import { TimeQueryFilter } from './../filter/time-query-filter';
-import { XYRequestFilter } from './../filter/xy-request-filter';
 import { Status } from '../protocol/model-response';
 import { VisibleWindow } from './../visible-window';
 import { XYViewModel } from './xy-viewmodel';
 import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
+import { SelectionTimeQueryFilter } from '../filter/selection-time-query-filter';
 
 export class XYController {
 
@@ -124,20 +124,20 @@ export class XYController {
             count: this.visibleWindow_.count,
         };
 
-        let response = await this.modelProvider_.fetchEntries(filter);
+        let response = await this.modelProvider_.fetchTree(filter);
         this.viewModel_.entries = response.model;
         return response.status;
     }
 
     private async updateData(): Promise<Status> {
-        let filter: XYRequestFilter = {
+        let filter: SelectionTimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.visibleWindow_.count,
-            ids: this.viewModel_.entries.map((entry) => entry.id)
+            items: this.viewModel_.entries.map((entry) => entry.id)
         };
 
-        let response = await this.modelProvider_.fetchData(filter);
+        let response = await this.modelProvider_.fetchXY(filter);
         this.viewModel_.series = response.model;
         return response.status;
     }

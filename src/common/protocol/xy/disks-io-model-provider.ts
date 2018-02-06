@@ -10,8 +10,8 @@ import { IXYModelProvider } from './../xy-model-provider';
 import { ModelResponse } from './../model-response';
 import { XYEntries, XYSeries } from './../../xy/xy-viewmodel';
 import { TimeQueryFilter } from './../../filter/time-query-filter';
-import { XYRequestFilter } from './../../filter/xy-request-filter';
 import { Trace } from './../../model/trace';
+import { ITreeModel } from '../../model/tree-model';
 
 export class DiskModelProvider implements IXYModelProvider {
 
@@ -28,7 +28,7 @@ export class DiskModelProvider implements IXYModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYEntries>>> {
+    public fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {
@@ -48,7 +48,7 @@ export class DiskModelProvider implements IXYModelProvider {
         });
     }
 
-    public fetchData(filter: XYRequestFilter): Promise<ModelResponse<Array<XYSeries>>> {
+    public fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYSeries>>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {

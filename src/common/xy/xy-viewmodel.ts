@@ -6,6 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { ITreeModel } from './../model/tree-model';
+
 export interface XYViewModel {
     title: string;
     entries: Array<XYEntries>;
@@ -19,7 +21,5 @@ export interface XYSeries {
 }
 
 // TO COMPLETE
-export interface XYEntries {
-    id: number;
-    parentId: number;
+export interface XYEntries extends ITreeModel {
 }

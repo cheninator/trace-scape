@@ -101,7 +101,7 @@ export class TimelineController {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
             count: this.visibleWindow_.count,
-            entries: this.viewModel_.entries.map((entry) => entry.id)
+            items: this.viewModel_.entries.map((entry) => entry.id)
         };
 
         let response = await this.modelProvider_.fetchEvents(filter);

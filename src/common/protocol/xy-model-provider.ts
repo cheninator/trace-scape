@@ -7,13 +7,12 @@
  */
 
 import { ModelResponse } from './model-response';
-import { XYEntries, XYSeries } from './../xy/xy-viewmodel';
+import { ITreeModelProvider } from './tree-model-provider';
+import { XYSeries } from './../xy/xy-viewmodel';
 import { TimeQueryFilter } from './../filter/time-query-filter';
-import { XYRequestFilter } from './../filter/xy-request-filter';
 import { Trace } from './../model/trace';
 
-export interface IXYModelProvider {
+export interface IXYModelProvider extends ITreeModelProvider {
     readonly trace: Trace;
-    fetchEntries(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYEntries>>>;
-    fetchData(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYSeries>>>;
+    fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYSeries>>>;
 }

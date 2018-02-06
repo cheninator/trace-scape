@@ -8,9 +8,8 @@
 
 import { Trace } from './../../src/common/model/trace';
 import { TraceModelProvider, ITraceModelProvider } from './../../src/common/protocol/trace-model-provider';
-import { ModelProviderBenchmark } from './../model-provider-benchmark';
 
-export abstract class TimelineModelProviderBenchmark extends ModelProviderBenchmark {
+export abstract class TimelineModelProviderBenchmark {
 
     protected readonly serverUrl = 'http://localhost:8080/tracecompass';
 
@@ -22,9 +21,11 @@ export abstract class TimelineModelProviderBenchmark extends ModelProviderBenchm
         let traceModelProvider = new TraceModelProvider(this.serverUrl);
         let trace = await traceModelProvider.putTrace(traceName, tracePath);
 
+        /*
         await this.executeBenchmark(trace, 10, 10);
         await this.executeBenchmark(trace, 10, 100);
         await this.executeBenchmark(trace, 10, 1000);
         await this.executeBenchmark(trace, 10, 10000);
+        */
     }
 }

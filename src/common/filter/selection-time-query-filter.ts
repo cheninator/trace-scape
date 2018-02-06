@@ -9,5 +9,5 @@
 import { TimeQueryFilter } from "./time-query-filter";
 
 export interface SelectionTimeQueryFilter extends TimeQueryFilter{
-    entries: Array<number>;
+    items: Array<number>;
 }

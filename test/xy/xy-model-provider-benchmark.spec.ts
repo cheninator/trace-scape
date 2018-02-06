@@ -8,11 +8,18 @@
 
 import { Trace } from './../../src/common/model/trace';
 import { TraceModelProvider, ITraceModelProvider } from './../../src/common/protocol/trace-model-provider';
-import { ModelProviderBenchmark } from './../model-provider-benchmark';
+import { SelectionTimeQueryFilter } from './../../src/common/filter/selection-time-query-filter';
+import { IXYModelProvider } from './../../src/common/protocol/xy-model-provider';
+import { TimeQueryFilter } from './../../src/common/filter/time-query-filter';
+import { ModelResponse } from './../../src/common/protocol/model-response';
+import { ITreeModel } from './../../src/common/model/tree-model';
+import { PerformanceMeter } from './../performance-meter';
 
-export abstract class XYModelProviderBenchmark extends ModelProviderBenchmark {
+export abstract class XYModelProviderBenchmark {
 
     protected readonly serverUrl = 'http://localhost:8080/tracecompass';
+
+    protected abstract getModelProvider(trace: Trace): IXYModelProvider
 
     protected async testManyThreads() {
 
@@ -26,5 +33,51 @@ export abstract class XYModelProviderBenchmark extends ModelProviderBenchmark {
         await this.executeBenchmark(trace, 10, 100);
         await this.executeBenchmark(trace, 10, 1000);
         await this.executeBenchmark(trace, 10, 10000);
+    }
+
+    protected getQueryFilter(trace: Trace, numberOfPoints: number, ids: number[]): TimeQueryFilter {
+        return <SelectionTimeQueryFilter> {
+            start: trace.start,
+            end: trace.end,
+            count: numberOfPoints,
+            items: ids
+        };
+    }
+
+    protected async executeBenchmark(trace: Trace, repetition: number, numberOfPoints: number) {
+        /* Entries benchmark */
+        let entriesResponse = await this.executeFetchEntriesBenchmark(trace, repetition, numberOfPoints);
+
+        /* XY benchmark. We query for all series */
+        let ids = entriesResponse.model.map(x => x.id);
+        await this.executeFetchXYBenchmark(trace, repetition, numberOfPoints, ids);
+    }
+
+    private async executeFetchEntriesBenchmark(trace: Trace, repetition: number, numberOfPoints: number): Promise<ModelResponse<ITreeModel[]>> {
+        let filter = this.getQueryFilter(trace, numberOfPoints, new Array());
+        let modelProvider = this.getModelProvider(trace);
+
+        let pm = new PerformanceMeter(`ENTRIES BENCHMARK (${numberOfPoints} points)`);
+        let entriesResponse: ModelResponse<ITreeModel[]>;
+        for (let i = 0; i < repetition; ++i) {
+            pm.start();
+            entriesResponse = await modelProvider.fetchTree(filter);
+            pm.stop();
+        }
+        pm.commit();
+        return entriesResponse;
+    }
+
+    private async executeFetchXYBenchmark(trace: Trace, repetition: number, numberOfPoints: number, ids: number[]) {
+        let filter = this.getQueryFilter(trace, numberOfPoints, ids);
+        let modelProvider = this.getModelProvider(trace);
+        
+        let pm = new PerformanceMeter(`XY BENCHMARK (${numberOfPoints} points)`);
+        for (let i = 0; i < repetition; ++i) {
+            pm.start();
+            await modelProvider.fetchData(filter);
+            pm.stop();
+        }
+        pm.commit();
     }
 }
