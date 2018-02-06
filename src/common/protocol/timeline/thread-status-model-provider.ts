@@ -12,6 +12,7 @@ import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITimelineModelProvider } from './../timeline-model-provider';
 import { ModelResponse } from './../model-response';
+import { ITreeModel } from '../../model/tree-model';
 
 export class ThreadStatusModelProvider implements ITimelineModelProvider {
 
@@ -27,7 +28,7 @@ export class ThreadStatusModelProvider implements ITimelineModelProvider {
         return this.trace_;
     }
 
-    public fetchEntries(filter: TimeQueryFilter) : Promise<ModelResponse<Array<TimelineEntry>>> {
+    public fetchTree(filter: TimeQueryFilter) : Promise<ModelResponse<ITreeModel[]>> {
         return new Promise((resolve, reject) => {
             $.ajax(
                 {

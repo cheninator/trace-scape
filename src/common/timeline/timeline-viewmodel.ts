@@ -7,6 +7,7 @@
  */
 
 import { VisibleWindow } from './../visible-window';
+import { ITreeModel } from '../model/tree-model';
 
 export interface TimelineViewModel {
     entries: Array<TimelineEntry>;
@@ -15,9 +16,7 @@ export interface TimelineViewModel {
     context: VisibleWindow;
 }
 
-export interface TimelineEntry {
-    id: number;
-    parentId: number;
+export interface TimelineEntry extends ITreeModel {
     startTime: number;
     endTime: number;
     name: string;

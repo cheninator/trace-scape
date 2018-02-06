@@ -11,10 +11,10 @@ import { SelectionTimeQueryFilter } from './../filter/selection-time-query-filte
 import { TimeQueryFilter } from './../filter/time-query-filter';
 import { Trace } from './../model/trace';
 import { ModelResponse } from './model-response';
+import { ITreeModelProvider } from './tree-model-provider';
 
-export interface ITimelineModelProvider {
+export interface ITimelineModelProvider extends ITreeModelProvider {
     readonly trace: Trace;
-    fetchEntries(filter: TimeQueryFilter): Promise<ModelResponse<Array<TimelineEntry>>>;
     fetchEvents(filter: SelectionTimeQueryFilter): Promise<ModelResponse<Array<TimelineRowModel>>>;
     fetchArrows(): Promise<TimelineArrow>;
 }

@@ -91,8 +91,8 @@ export class TimelineController {
             count: this.visibleWindow_.count,
         };
 
-        let response = await this.modelProvider_.fetchEntries(filter);
-        this.viewModel_.entries = response.model;
+        let response = await this.modelProvider_.fetchTree(filter);
+        this.viewModel_.entries = <TimelineEntry[]> response.model;
         return response.status;
     }
 
