@@ -19,7 +19,7 @@ export abstract class XYModelProviderBenchmark {
 
     protected readonly serverUrl = 'http://localhost:8080/tracecompass';
 
-    protected abstract getModelProvider(trace: Trace): IXYModelProvider
+    protected abstract getModelProvider(trace: Trace): IXYModelProvider;
 
     protected async testManyThreads() {
 
@@ -53,7 +53,8 @@ export abstract class XYModelProviderBenchmark {
         await this.executeFetchXYBenchmark(trace, repetition, numberOfPoints, ids);
     }
 
-    private async executeFetchEntriesBenchmark(trace: Trace, repetition: number, numberOfPoints: number): Promise<ModelResponse<ITreeModel[]>> {
+    private async executeFetchEntriesBenchmark(trace: Trace, repetition: number, numberOfPoints: number)
+                    : Promise<ModelResponse<ITreeModel[]>> {
         let filter = this.getQueryFilter(trace, numberOfPoints, new Array());
         let modelProvider = this.getModelProvider(trace);
 
@@ -71,11 +72,11 @@ export abstract class XYModelProviderBenchmark {
     private async executeFetchXYBenchmark(trace: Trace, repetition: number, numberOfPoints: number, ids: number[]) {
         let filter = this.getQueryFilter(trace, numberOfPoints, ids);
         let modelProvider = this.getModelProvider(trace);
-        
+
         let pm = new PerformanceMeter(`XY BENCHMARK (${numberOfPoints} points)`);
         for (let i = 0; i < repetition; ++i) {
             pm.start();
-            await modelProvider.fetchData(filter);
+            await modelProvider.fetchXY(filter);
             pm.stop();
         }
         pm.commit();

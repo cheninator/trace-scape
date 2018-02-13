@@ -8,7 +8,7 @@
 
 import { CpuUsageModelProvider } from './../../src/common/protocol/xy/cpu-usage-model-provider';
 import { IXYModelProvider } from '../../src/common/protocol/xy-model-provider';
-import { XYModelProviderBenchmark } from './xy-model-provider-benchmark.spec';
+import { XYModelProviderBenchmark } from './xy-model-provider-benchmark';
 import { suite, test, timeout } from 'mocha-typescript';
 import { Trace } from './../../src/common/model/trace';
 

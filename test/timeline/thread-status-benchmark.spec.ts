@@ -6,6 +6,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { Trace } from './../../src/common/model/trace';
 import { suite, test, timeout } from 'mocha-typescript';
 import { ThreadStatusModelProvider } from './../../src/common/protocol/timeline/thread-status-model-provider';
 import { TimelineModelProviderBenchmark } from './timeline-model-provider-benchmark';
@@ -14,7 +15,12 @@ import { ITimelineModelProvider } from '../../src/common/protocol/timeline-model
 @suite("Thread Status model provider")
 export class ThreadStatusProviderBenchmark extends TimelineModelProviderBenchmark {
 
-    private traceName = 'huge_trace';
-    private baseTracePath = '/home/yonni/Documents/traces/ctf/src/main/resources';
-    private testTitle = 'Thread Status test';
+    protected getModelProvider(trace: Trace): ITimelineModelProvider {
+        return new ThreadStatusModelProvider(this.serverUrl, trace);
+    }
+
+    @test("Many-Threads benchmark", timeout(5000000))
+    public async runManyThreads() {
+        await this.testManyThreads();
+    }
 }
