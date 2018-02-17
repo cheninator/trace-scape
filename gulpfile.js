@@ -15,7 +15,6 @@ var modules = [
     'bootstrap/**/bootstrap.min.js',
     'chart.js/**/Chart.min.js',
     'golden-layout/**/goldenlayout.min.js',
-    'jquery/**/jquery.min.js',
     'pixi.js/**/pixi.min.js'
 ];
 

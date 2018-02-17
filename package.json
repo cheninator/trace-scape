@@ -27,12 +27,10 @@
     "golden-layout": "^1.5.9",
     "google-protobuf": "^3.5.0",
     "grpc-web-client": "^0.4.0",
-    "jquery": "^3.2.1",
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.10",
-    "@types/jquery": "^3.2.16",
     "@types/google-protobuf": "^3.2.7",
     "@types/mocha": "^2.2.44",
     "@types/pixi.js": "^4.5.7",

@@ -7,8 +7,10 @@
  */
 
 export interface Trace {
-    id: string;
+    UUID: string;
     name: string;
     start: number;
     end: number;
+    path: string;
+    nbEvents: number;
 }
