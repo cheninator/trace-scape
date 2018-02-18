@@ -7,11 +7,12 @@
     "build": "npm run clean && tsc && gulp build && webpack --devtool source-map",
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
-    "desktop": "electron bin/electron/main.js --enable-logging",
+    "desktop": "electron bin/src/electron/main.js --enable-logging",
     "proto": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./src/common/protocol/protobuf --ts_out=service=true:./src/common/protocol/protobuf -I ./src/common/protocol/protobuf ./src/common/protocol/protobuf/xy.proto",
     "start": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "start:desktop": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
     "test": "karma start karma.conf.js",
+    "tsc": "tsc",
     "web": "lite-server"
   },
   "repository": {

@@ -5,7 +5,6 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
-            'node_modules/jquery/**/jquery.min.js',
             'test/xy/test-disks-io.spec.ts',
             'test/xy/test-kernel-memory.spec.ts',
             'test/xy/test-cpu-usage.spec.ts'

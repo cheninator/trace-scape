@@ -31,23 +31,7 @@ export class ProtoControlFlowModelProvider implements ITimelineModelProvider {
     }
 
     public fetchTree(filter: TimeQueryFilter) : Promise<ModelResponse<ITreeModel[]>> {
-        return new Promise((resolve, reject) => {
-            $.ajax(
-                {
-                    type: 'GET',
-                    url: `${this.serverUrl_}/traces/${this.trace_.name}/ControlFlowView`,
-                    contentType: 'application/x-www-form-urlencoded',
-                    data: filter,
-                    success: (response) => {
-                        let obj = <ModelResponse<Array<TimelineEntry>>> response;
-                        resolve(obj);
-                    },
-                    error: (xhr, status, error) => {
-                        reject(error);
-                    },
-                }
-            );
-        });
+        return null;
     }
 
     public fetchEvents(filter: SelectionTimeQueryFilter) : Promise<ModelResponse<Array<TimelineRowModel>>> {
@@ -88,7 +72,7 @@ export class ProtoControlFlowModelProvider implements ITimelineModelProvider {
         });
     }
 
-    public fetchArrows() : Promise<TimelineArrow> {
+    public fetchArrows(filter: TimeQueryFilter) : Promise<ModelResponse<TimelineArrow[]>> {
         return null;
     }
 }

@@ -22,9 +22,11 @@ export interface TimelineEntry extends ITreeModel {
     name: string;
 }
 
-// TODO
 export interface TimelineArrow {
-
+    sourceId: number;
+    destinationId: number;
+    startTime: number;
+    duration: number;
 }
 
 export interface TimelineRowModel {
