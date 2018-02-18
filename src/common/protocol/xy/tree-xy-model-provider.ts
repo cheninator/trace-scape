@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 École Polytechnique de Montréal
+ * Copyright (C) 2018 École Polytechnique de Montréal
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,15 @@ import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITreeModel } from '../../model/tree-model';
 import { Http } from './../../base/http';
+import { SelectionTimeQueryFilter } from '../../filter/selection-time-query-filter';
 
 export class TreeXYModelProvider implements IXYModelProvider {
 
     private readonly serverUrl_: string;
-    private readonly trace_: Trace;
+    private trace_: Trace;
     private readonly providerID_: string;
 
-    constructor(serverUrl: string, trace: Trace, providerId) {
+    constructor(serverUrl: string, trace: Trace, providerId: string) {
         this.serverUrl_ = serverUrl;
         this.trace_ = trace;
         this.providerID_ = providerId;
@@ -31,43 +32,42 @@ export class TreeXYModelProvider implements IXYModelProvider {
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
-        let url = `${this.serverUrl_}/traces/${this.trace_.name}/providers/${this.providerID_}/tree`;
-        return <ModelResponse<ITreeModel[]>> await Http.get(url);
+        let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/tree`;
+        let params = new URLSearchParams();
+        params.set('start', filter.start.toString());
+        params.set('end', filter.end.toString());
+        params.set('nb', filter.count.toString());
+
+        let res = await Http.get(url, params);
+        this.trace_ = <Trace> res.trace;
+        return <ModelResponse<ITreeModel[]>> res.response;
     }
 
-    public fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
-        let url = `${this.serverUrl_}/traces/${this.trace_.name}/${this.providerID_}/xy`;
+    public async fetchXY(filter: SelectionTimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
+        let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/xy`;
+        let params = new URLSearchParams();
+        params.set('start', filter.start.toString());
+        params.set('end', filter.start < filter.end ? filter.end.toString() : (filter.start + 10).toString());
+        params.set('nb', filter.count.toString());
 
+        for (let item of filter.items) {
+            params.append('ids', item.toString());
+        }
+        let res = await Http.get(url, params);
 
-        return new Promise((resolve, reject) => {
-            $.ajax(
-                {
-                    type: 'POST',
-                    url: `${this.serverUrl_}/traces/${this.trace_.name}/${this.providerID_}/xy`,
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(filter),
-                    success: (response: any) => {
-                        let series = new Array();
-                        for (let i in response.model.ydata) {
-                            series.push({
-                                name: response.model.ydata[i].name,
-                                x: response.model.xaxis,
-                                y: response.model.ydata[i].data
-                            });
-                        }
+        let model: XYSeries[] = new Array();
+        for (let datum in res.response.model.data) {
+            model.push(<XYSeries> {
+                name: res.response.model.data[datum].name,
+                x: res.response.model.data[datum].xaxis,
+                y: res.response.model.data[datum].data
+            });
+        }
 
-                        let obj: ModelResponse<Array<XYSeries>> = {
-                            status: response.status,
-                            statusMessage: response.statusMessage,
-                            model: series
-                        };
-                        resolve(obj);
-                    },
-                    error: (xhr, status, error) => {
-                        reject(error);
-                    },
-                }
-            );
-        });
+        return <ModelResponse<XYSeries[]>> {
+            model: model,
+            status: res.response.status,
+            statusMessage: res.response.statusMessage
+        };
     }
 }

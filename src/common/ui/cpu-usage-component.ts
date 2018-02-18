@@ -7,17 +7,19 @@
  */
 
 import { IComponent } from './component';
-import { CpuUsageModelProvider } from './../protocol/xy/cpu-usage-model-provider';
 import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../model/trace';
+import { TreeXYModelProvider } from '../protocol/xy/tree-xy-model-provider';
+import { IXYModelProvider } from '../protocol/xy-model-provider';
 
 export class CpuUsageComponent implements IComponent {
 
-    private cpuModelProvider_: CpuUsageModelProvider;
+    private cpuModelProvider_: IXYModelProvider;
     private readonly id_ = 'cpu';
 
     constructor(serverUrl: string, trace: Trace) {
-        this.cpuModelProvider_ = new CpuUsageModelProvider(serverUrl, trace);
+        const providerId = 'org.eclipse.tracecompass.analysis.os.linux.core.cpuusage.CpuUsageDataProvider';
+        this.cpuModelProvider_ = new TreeXYModelProvider(serverUrl, trace, providerId);
     }
 
     get html(): string {

@@ -23,7 +23,7 @@ async function main() {
 
     if (traces.length === 0) {
         let name = 'kernel';
-        let path = `/home/yonni/Documents/traces/ctf/src/main/resources/${name}`;
+        let path = `/home/yonni/Documents/traces/${name}`;
         trace = await traceModelProvider.putTrace(name, path);
     } else {
         trace = traces[0];

@@ -7,17 +7,19 @@
  */
 
 import { IComponent } from './component';
-import { KernelMemoryModelProvider } from './../protocol/xy/kernel-memory-model-provider';
 import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../model/trace';
+import { IXYModelProvider } from '../protocol/xy-model-provider';
+import { TreeXYModelProvider } from './../protocol/xy/tree-xy-model-provider';
 
 export class KernelMemoryComponent implements IComponent {
-    
-    private memoryModelProvider_: KernelMemoryModelProvider;
+
+    private memoryModelProvider_: IXYModelProvider;
     private readonly id_ = 'mem';
 
     constructor(serverUrl: string, trace: Trace) {
-        this.memoryModelProvider_ = new KernelMemoryModelProvider(serverUrl, trace);
+        let providerId = 'org.eclipse.tracecompass.analysis.os.linux.core.kernelmemoryusage';
+        this.memoryModelProvider_ = new TreeXYModelProvider(serverUrl, trace, providerId);
     }
 
     get html(): string {

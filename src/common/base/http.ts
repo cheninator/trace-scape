@@ -9,20 +9,20 @@
 export class Http {
 
     private static request(method: string, url: string, body?: any, options?: RequestInit) {
-
         return fetch(url, options || {
             method: method,
             mode: 'cors',
             headers: new Headers({
                 'Content-Type': 'application/x-www-form-urlencoded'
             }),
-            body: body.toString()
+            body: body !== undefined ? body.toString() : undefined
         }).then(r => r.text())
         .then(text => text ? JSON.parse(text) : null);
     }
 
     public static async get(url: string, body?: any, options?: RequestInit): Promise<any> {
-        return this.request('GET', url, body, options);
+        let finalUrl = body !== undefined ? `${url}?${body.toString()}` : url;
+        return this.request('GET', finalUrl, undefined, options);
     }
 
     public static async post(url: string, body: any, options?: RequestInit): Promise<any> {

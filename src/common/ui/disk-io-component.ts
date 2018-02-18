@@ -7,17 +7,19 @@
  */
 
 import { IComponent } from './component';
-import { DiskModelProvider } from './../protocol/xy/disks-io-model-provider';
 import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../model/trace';
+import { IXYModelProvider } from '../protocol/xy-model-provider';
+import { TreeXYModelProvider } from './../protocol/xy/tree-xy-model-provider';
 
 export class DiskIOComponent implements IComponent {
 
-    private diskModelProvider_: DiskModelProvider;
+    private diskModelProvider_: IXYModelProvider;
     private readonly id_ = 'disk';
 
     constructor(serverUrl: string, trace: Trace) {
-        this.diskModelProvider_ = new DiskModelProvider(serverUrl, trace);
+        let providerId = 'org.eclipse.tracecompass.analysis.os.linux.core.inputoutput.DisksIODataProvider';
+        this.diskModelProvider_ = new TreeXYModelProvider(serverUrl, trace, providerId);
     }
 
     get html(): string {

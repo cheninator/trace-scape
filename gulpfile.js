@@ -12,28 +12,15 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
-    'bootstrap/**/bootstrap.min.js',
     'chart.js/**/Chart.min.js',
     'golden-layout/**/goldenlayout.min.js',
     'pixi.js/**/pixi.min.js'
 ];
 
 var styles = [
-    'bootstrap/**/bootstrap.min.css',
     'golden-layout/**/goldenlayout-base.css',
     'golden-layout/**/goldenlayout-dark-theme.css'
 ];
-
-var libs = [
-    'protobuf-3.4.0/google-protobuf.js',
-];
-
-/* External libraries */
-gulp.task("libs", () => {
-    return gulp.src(libs, {cwd: "libs/**"})
-        .pipe(flatten())
-		.pipe(gulp.dest(`${buildPath}/libs`));
-});
 
 /* Node modules */
 gulp.task("modules", () => {
@@ -53,4 +40,4 @@ gulp.task('css', () => {
         .pipe(gulp.dest(`${buildPath}/styles`));
 });
 
-gulp.task('build', [ 'templates', 'modules', 'libs', 'css' ]);
+gulp.task('build', [ 'templates', 'modules', 'css' ]);
