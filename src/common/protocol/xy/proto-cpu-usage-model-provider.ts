@@ -9,14 +9,15 @@
 import { grpc, Code, BrowserHeaders } from 'grpc-web-client';
 
 import { IXYModelProvider } from './../xy-model-provider';
-import { ModelResponse } from './../model-response';
+import { ModelResponse, Status } from './../model-response';
 import { XYEntries, XYSeries } from './../../xy/xy-viewmodel';
 import { TimeQueryFilter } from './../../filter/time-query-filter';
+import { SelectionTimeQueryFilter } from './../../filter/selection-time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITreeModel } from '../../model/tree-model';
-import { CpuUsageService } from './../protobuf/xy_pb_service';
-import { TimeRequestFilter, SelectionTimeRequestFilter } from './../protobuf/xy_pb';
-import { TreeXYModelResponse, XYModelResponse } from './../protobuf/xy_pb';
+import { CpuUsageService } from './../gRPC/xy_pb_service';
+import { TimeRequestFilter, SelectionTimeRequestFilter } from './../gRPC/xy_pb';
+import { TreeXYModelResponse, XYModelResponse } from './../gRPC/xy_pb';
 
 export class ProtoCpuUsageModelProvider implements IXYModelProvider {
 
@@ -35,17 +36,32 @@ export class ProtoCpuUsageModelProvider implements IXYModelProvider {
     public fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
         return new Promise((resolve, reject) => {
             const request = new TimeRequestFilter();
+            request.setStart(filter.start);
+            request.setEnd(filter.end);
+            request.setCount(filter.count);
+
+            let modelResponse: ModelResponse<ITreeModel[]>;
             grpc.invoke(CpuUsageService.fetchTree, {
                 request: request,
                 host: this.serverUrl_,
                 onMessage: (message: TreeXYModelResponse) => {
-                    console.log("Got response: ");
-                    console.log(message.toObject());
+                    let tree: ITreeModel[] = new Array();
+                    for (let model of message.getModelList()) {
+                        tree.push({
+                            id: model.getId(),
+                            parentId: model.getParentid()
+                        });
+                    }
+
+                    modelResponse = {
+                        status: Status[message.getStatus()],
+                        statusMessage: message.getStatusmessage(),
+                        model: tree
+                    };
                 },
                 onEnd: (code, msg: string | undefined, trailers) => {
                     if (code === Code.OK) {
-                        console.log("All ok");
-                        resolve();
+                        resolve(modelResponse);
                     } else {
                         console.log("Hit an error", code, msg, trailers);
                         reject();
@@ -55,28 +71,37 @@ export class ProtoCpuUsageModelProvider implements IXYModelProvider {
         });
     }
 
-    public fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYSeries>>> {
+    public fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
         return new Promise((resolve, reject) => {
             const request = new SelectionTimeRequestFilter();
-            request.setStart(0);
-            request.setEnd(1000);
-            request.setItemsList(new Array());
-            request.setCount(10);
+            request.setStart(filter.start);
+            request.setEnd(filter.end);
+            request.setCount(filter.count);
+            request.setItemsList((<SelectionTimeQueryFilter> filter).items);
+
+            let modelResponse: ModelResponse<XYSeries[]>;
             grpc.invoke(CpuUsageService.fetchXY, {
                 request: request,
-                debug: true,
                 host: this.serverUrl_,
                 onMessage: (message: XYModelResponse) => {
-                    console.log("Got response: ", message.toObject());
-                },
-                onHeaders: (header: BrowserHeaders) => {
-                    console.log("onHeaders");
-                    console.log(header);
+                    let series: XYSeries[] = new Array();
+                    for (let model of message.getModelList()) {
+                        series.push({
+                            x: model.getXList(),
+                            y: model.getYList(),
+                            name: model.getName()
+                        });
+                    }
+
+                    modelResponse = {
+                        status: Status[message.getStatus()],
+                        statusMessage: message.getStatusmessage(),
+                        model: series
+                    };
                 },
                 onEnd: (code, msg: string, trailers) => {
                     if (code === Code.OK) {
-                        console.log("All ok");
-                        resolve();
+                        resolve(modelResponse);
                     } else {
                         console.log("Hit an error", code, msg, trailers);
                         reject(msg);

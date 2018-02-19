@@ -181,7 +181,7 @@ export namespace TreeXYModelResponse {
   }
 }
 
-export class Trace extends jspb.Message {
+export class ProtoTrace extends jspb.Message {
   getId(): string;
   setId(value: string): void;
 
@@ -195,16 +195,16 @@ export class Trace extends jspb.Message {
   setEnd(value: number): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Trace.AsObject;
-  static toObject(includeInstance: boolean, msg: Trace): Trace.AsObject;
+  toObject(includeInstance?: boolean): ProtoTrace.AsObject;
+  static toObject(includeInstance: boolean, msg: ProtoTrace): ProtoTrace.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Trace, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Trace;
-  static deserializeBinaryFromReader(message: Trace, reader: jspb.BinaryReader): Trace;
+  static serializeBinaryToWriter(message: ProtoTrace, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProtoTrace;
+  static deserializeBinaryFromReader(message: ProtoTrace, reader: jspb.BinaryReader): ProtoTrace;
 }
 
-export namespace Trace {
+export namespace ProtoTrace {
   export type AsObject = {
     id: string,
     name: string,

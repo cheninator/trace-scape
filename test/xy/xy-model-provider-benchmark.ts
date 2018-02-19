@@ -21,12 +21,16 @@ export abstract class XYModelProviderBenchmark {
 
     protected abstract getModelProvider(trace: Trace): IXYModelProvider;
 
+    protected getTraceModelProvider(): ITraceModelProvider {
+        return new TraceModelProvider(this.serverUrl);
+    }
+
     protected async testManyThreads() {
 
         let traceName = 'many-threads';
         let tracePath = `/home/yonni/Documents/traces/${traceName}`;
 
-        let traceModelProvider = new TraceModelProvider(this.serverUrl);
+        let traceModelProvider = this.getTraceModelProvider();
         let trace = await traceModelProvider.putTrace(traceName, tracePath);
 
         await this.executeBenchmark(trace, 10, 10);
@@ -49,8 +53,8 @@ export abstract class XYModelProviderBenchmark {
         let entriesResponse = await this.executeFetchEntriesBenchmark(trace, repetition, numberOfPoints);
 
         /* XY benchmark. We query for all series */
-        let ids = entriesResponse.model.map(x => x.id);
-        await this.executeFetchXYBenchmark(trace, repetition, numberOfPoints, ids);
+        //let ids = entriesResponse.model.map(x => x.id);
+        await this.executeFetchXYBenchmark(trace, repetition, numberOfPoints, new Array());
     }
 
     private async executeFetchEntriesBenchmark(trace: Trace, repetition: number, numberOfPoints: number)

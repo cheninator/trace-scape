@@ -18,7 +18,7 @@ message SelectionTimeRequestFilter {
 message XYSeries {
     string name = 1;
     repeated int64 x = 2;
-    repeated int32 y = 3;
+    repeated double y = 3;
 }
 
 message XYModelResponse {
@@ -38,7 +38,7 @@ message TreeXYModelResponse {
     string statusMessage = 3;
 }
 
-message Trace {
+message ProtoTrace {
     string id = 1;
     string name = 2;
     int64 start = 3;
@@ -60,6 +60,6 @@ service CpuUsageService {
 }
 
 service TraceService {
-    rpc getTraces(EmptyParameters) returns (Trace) {}
-    rpc openTrace(TraceParameters) returns (Trace) {}
+    rpc getTraces(EmptyParameters) returns (ProtoTrace) {}
+    rpc openTrace(TraceParameters) returns (ProtoTrace) {}
 }

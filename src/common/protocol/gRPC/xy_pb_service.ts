@@ -33,7 +33,7 @@ export namespace TraceService {
     static readonly requestStream = false;
     static readonly responseStream = false;
     static readonly requestType = xy_pb.EmptyParameters;
-    static readonly responseType = xy_pb.Trace;
+    static readonly responseType = xy_pb.ProtoTrace;
   }
   export class openTrace {
     static readonly methodName = "openTrace";
@@ -41,6 +41,6 @@ export namespace TraceService {
     static readonly requestStream = false;
     static readonly responseStream = false;
     static readonly requestType = xy_pb.TraceParameters;
-    static readonly responseType = xy_pb.Trace;
+    static readonly responseType = xy_pb.ProtoTrace;
   }
 }
