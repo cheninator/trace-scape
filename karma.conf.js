@@ -5,9 +5,10 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
-            'test/xy/test-disks-io.spec.ts',
-            'test/xy/test-kernel-memory.spec.ts',
-            'test/xy/test-cpu-usage.spec.ts'
+            'test/timeline/thread-status-benchmark.spec.ts',
+            'test/xy/cpu-usage-benchmark.spec.ts',
+            'test/xy/disks-io-benchmark.spec.ts',
+            'test/xy/kernel-memory-benchmark.spec.ts',
         ],
         exclude: [
         ],
@@ -26,7 +27,7 @@ module.exports = function(config) {
         colors: true,
         logLevel: config.LOG_DEBUG,
         autoWatch: false,
-        browsers: ['Chromium'],
+        browsers: ['Chromium', 'Chrome'],
         singleRun: false
     })
 }

@@ -43,16 +43,20 @@ export class TreeXYModelProvider implements IXYModelProvider {
         return <ModelResponse<ITreeModel[]>> res.response;
     }
 
-    public async fetchXY(filter: SelectionTimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
+    public async fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/xy`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
         params.set('end', filter.start < filter.end ? filter.end.toString() : (filter.start + 10).toString());
         params.set('nb', filter.count.toString());
 
-        for (let item of filter.items) {
-            params.append('ids', item.toString());
+        let castFilter = <SelectionTimeQueryFilter> filter;
+        if (castFilter.items) {
+            for (let item of castFilter.items) {
+                params.append('ids', item.toString());
+            }
         }
+
         let res = await Http.get(url, params);
 
         let model: XYSeries[] = new Array();
