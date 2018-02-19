@@ -7,12 +7,13 @@
     "build": "npm run clean && tsc && npm run protojs && gulp build && webpack --devtool source-map",
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
-    "desktop": "electron bin/electron/main.js --enable-logging",
+    "desktop": "electron bin/src/electron/main.js --enable-logging",
     "protojs": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./bin/src/common/protocol/protobuf --ts_out=service=true:./src/common/protocol/protobuf -I ./src/common/protocol/protobuf ./src/common/protocol/protobuf/xy.proto",
     "proto-java": "protoc --plugin=protoc-gen-grpc-java=./src/common/protocol/protoc-gen-grpc-java -I=./src/common/protocol/ --grpc-java_out=. --java_out=. ./src/common/protocol/xy.proto",
     "start": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "start:desktop": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
     "test": "karma start karma.conf.js",
+    "tsc": "tsc",
     "web": "lite-server"
   },
   "repository": {
@@ -22,19 +23,17 @@
   "author": "Yonni Chen",
   "license": "Apache-2.0",
   "dependencies": {
-    "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
     "concurrently": "3.5.0",
     "golden-layout": "^1.5.9",
     "google-protobuf": "^3.5.0",
     "grpc-web-client": "^0.4.0",
-    "jquery": "^3.2.1",
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.10",
-    "@types/jquery": "^3.2.16",
     "@types/google-protobuf": "^3.2.7",
+    "@types/jquery": "^3.3.0",
     "@types/mocha": "^2.2.44",
     "@types/pixi.js": "^4.5.7",
     "chai": "^4.1.2",

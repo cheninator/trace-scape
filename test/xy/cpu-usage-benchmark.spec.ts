@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { CpuUsageModelProvider } from './../../src/common/protocol/xy/cpu-usage-model-provider';
+import { TreeXYModelProvider } from './../../src/common/protocol/xy/tree-xy-model-provider';
 import { IXYModelProvider } from '../../src/common/protocol/xy-model-provider';
 import { XYModelProviderBenchmark } from './xy-model-provider-benchmark';
 import { suite, test, timeout } from 'mocha-typescript';
@@ -21,6 +21,7 @@ export class CpuUsageModelProviderBenchmark extends XYModelProviderBenchmark {
     }
 
     protected getModelProvider(trace: Trace): IXYModelProvider {
-        return new CpuUsageModelProvider(this.serverUrl, trace);
+        const providerId = 'org.eclipse.tracecompass.analysis.os.linux.core.cpuusage.CpuUsageDataProvider';
+        return new TreeXYModelProvider(this.serverUrl, trace, providerId);
     }
 }

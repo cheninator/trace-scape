@@ -7,12 +7,13 @@
  */
 
 import { Trace } from './../model/trace';
-import { STATUS_CODES } from 'http';
+import { Http } from './../base/http';
 
 export interface ITraceModelProvider {
-    getTraces(): Promise<Array<Trace>>;
+    getTraces(): Promise<Trace[]>;
+    getTrace(traceId: string): Promise<Trace>;
     putTrace(name: string, path: string): Promise<Trace>;
-    removeTrace(name: string): Promise<boolean>;
+    removeTrace(traceId: string): Promise<boolean>;
 }
 
 export class TraceModelProvider implements ITraceModelProvider {
@@ -23,58 +24,23 @@ export class TraceModelProvider implements ITraceModelProvider {
         this.serverUrl_ = serverUrl;
     }
 
-    public getTraces(): Promise<Array<Trace>> {
-        return new Promise((resolve, reject) => {
-            $.ajax(
-                {
-                    method: 'GET',
-                    url: `${this.serverUrl_}/traces`,
-                    success: (response) => {
-                        resolve(<Array<Trace>> response);
-                    },
-                    error: (xhr, status, error) => {
-                        reject(error);
-                    },
-                }
-            );
-        });
+    public async getTraces(): Promise<Trace[]> {
+        return <Trace[]> await Http.get(`${this.serverUrl_}/traces`);
     }
 
-    public putTrace(name: string, path: string): Promise<Trace> {
-        return new Promise((resolve, reject) => {
-            $.ajax(
-                {
-                    type: 'POST',
-                    contentType: 'application/x-www-form-urlencoded',
-                    url: `${this.serverUrl_}/traces/${name}`,
-                    data: {
-                        path: path
-                    },
-                    success: (response) => {
-                        resolve(<Trace> response);
-                    },
-                    error: (xhr, status, error) => {
-                        reject(error);
-                    },
-                }
-            );
-        });
+    public async getTrace(traceId: string): Promise<Trace> {
+        return <Trace> await Http.get(`${this.serverUrl_}/traces/${traceId}`);
     }
 
-    public removeTrace(name: string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            $.ajax(
-                {
-                    method: 'DELETE',
-                    url: `${this.serverUrl_}/traces/${name}`,
-                    success: (response, status, xhr) => {
-                        resolve(true);
-                    },
-                    error: (xhr, status, error) => {
-                        reject(error);
-                    },
-                }
-            );
-        });
+    public async putTrace(name: string, path: string): Promise<Trace> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('name', name);
+        params.set('path', path);
+
+        return <Trace> await Http.post(`${this.serverUrl_}/traces`, params);
+    }
+
+    public async removeTrace(traceId: string): Promise<boolean> {
+        return <boolean> await Http.delete(`${this.serverUrl_}/traces/${traceId}`);
     }
 }

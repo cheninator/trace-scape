@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { DiskModelProvider } from './../../src/common/protocol/xy/disks-io-model-provider';
+import { TreeXYModelProvider } from './../../src/common/protocol/xy/tree-xy-model-provider';
 import { IXYModelProvider } from '../../src/common/protocol/xy-model-provider';
 import { XYModelProviderBenchmark } from './xy-model-provider-benchmark';
 import { suite, test, timeout } from 'mocha-typescript';
@@ -21,6 +21,7 @@ export class DisksIOModelProviderBenchmark extends XYModelProviderBenchmark {
     }
 
     protected getModelProvider(trace: Trace): IXYModelProvider {
-        return new DiskModelProvider(this.serverUrl, trace);
+        let providerId = 'org.eclipse.tracecompass.analysis.os.linux.core.inputoutput.DisksIODataProvider';
+        return new TreeXYModelProvider(this.serverUrl, trace, providerId);
     }
 }

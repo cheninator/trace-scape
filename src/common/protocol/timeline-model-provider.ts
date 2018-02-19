@@ -16,5 +16,5 @@ import { ITreeModelProvider } from './tree-model-provider';
 export interface ITimelineModelProvider extends ITreeModelProvider {
     readonly trace: Trace;
     fetchEvents(filter: SelectionTimeQueryFilter): Promise<ModelResponse<Array<TimelineRowModel>>>;
-    fetchArrows(): Promise<TimelineArrow>;
+    fetchArrows(filter: TimeQueryFilter): Promise<ModelResponse<TimelineArrow[]>>;
 }

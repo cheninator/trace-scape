@@ -4,7 +4,6 @@
         "class-name": true,
         "curly": true,
         "eofline": true,
-        "forin": true,
         "indent": [
             true,
             "spaces"
@@ -47,7 +46,7 @@
         "no-var-keyword": true,
         "object-literal-sort-keys": false,
         "cyclomatic-complexity": [ true, 20 ],
-        "max-line-length": [ true, 120 ],
+        "max-line-length": [ true, 150 ],
         "no-unsafe-finally": true,
         "one-line": [
             false,

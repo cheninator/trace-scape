@@ -7,17 +7,19 @@
  */
 
 import { IComponent } from './component';
-import { ThreadStatusModelProvider } from './../protocol/timeline/thread-status-model-provider';
+import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
+import { TreeTimelineModelProvider } from './../protocol/timeline/tree-timeline-model-provider';
 import { TimelineWidget } from './../timeline/timeline-widget';
 import { Trace } from './../model/trace';
 
 export class ThreadStatusComponent implements IComponent {
 
-    private modelProvider_: ThreadStatusModelProvider;
+    private modelProvider_: ITimelineModelProvider;
     private readonly id_ = 'control-flow';
 
     constructor(serverUrl: string, trace: Trace) {
-        this.modelProvider_ = new ThreadStatusModelProvider(serverUrl, trace);
+        let providerId = 'org.eclipse.tracecompass.internal.analysis.os.linux.core.threadstatus.ThreadStatusDataProvider';
+        this.modelProvider_ = new TreeTimelineModelProvider(serverUrl, trace, providerId);
     }
 
     get html(): string {
