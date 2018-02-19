@@ -181,3 +181,75 @@ export namespace TreeXYModelResponse {
   }
 }
 
+export class Trace extends jspb.Message {
+  getId(): string;
+  setId(value: string): void;
+
+  getName(): string;
+  setName(value: string): void;
+
+  getStart(): number;
+  setStart(value: number): void;
+
+  getEnd(): number;
+  setEnd(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Trace.AsObject;
+  static toObject(includeInstance: boolean, msg: Trace): Trace.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Trace, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Trace;
+  static deserializeBinaryFromReader(message: Trace, reader: jspb.BinaryReader): Trace;
+}
+
+export namespace Trace {
+  export type AsObject = {
+    id: string,
+    name: string,
+    start: number,
+    end: number,
+  }
+}
+
+export class EmptyParameters extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EmptyParameters.AsObject;
+  static toObject(includeInstance: boolean, msg: EmptyParameters): EmptyParameters.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: EmptyParameters, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EmptyParameters;
+  static deserializeBinaryFromReader(message: EmptyParameters, reader: jspb.BinaryReader): EmptyParameters;
+}
+
+export namespace EmptyParameters {
+  export type AsObject = {
+  }
+}
+
+export class TraceParameters extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  getPath(): string;
+  setPath(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TraceParameters.AsObject;
+  static toObject(includeInstance: boolean, msg: TraceParameters): TraceParameters.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: TraceParameters, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TraceParameters;
+  static deserializeBinaryFromReader(message: TraceParameters, reader: jspb.BinaryReader): TraceParameters;
+}
+
+export namespace TraceParameters {
+  export type AsObject = {
+    name: string,
+    path: string,
+  }
+}
+
