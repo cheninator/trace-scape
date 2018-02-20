@@ -4,7 +4,7 @@
   "description": "A trace viewer built with web technologies",
   "main": "main.js",
   "scripts": {
-    "build": "npm run clean && tsc && npm run protojs && gulp build && webpack --devtool source-map",
+    "build": "npm run clean && tsc && gulp build && webpack --devtool source-map",
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
     "desktop": "electron bin/src/electron/main.js --enable-logging",
@@ -26,13 +26,13 @@
     "chart.js": "^2.7.1",
     "concurrently": "3.5.0",
     "golden-layout": "^1.5.9",
-    "google-gRPC": "^3.5.0",
+    "google-protobuf": "^3.5.0",
     "grpc-web-client": "^0.4.0",
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.10",
-    "@types/google-gRPC": "^3.2.7",
+    "@types/google-protobuf": "^3.2.7",
     "@types/jquery": "^3.3.0",
     "@types/mocha": "^2.2.44",
     "@types/pixi.js": "^4.5.7",

@@ -10,15 +10,15 @@ import { colors } from './../ui/colors';
 
 export class TimelinePresentation {
 
-    private readonly colorMapping = {
-        0: colors.DIM_GREY,
-        1: colors.LA_RIOJA,
-        2: colors.ISLAMIC_GREEN,
-        3: colors.MEDIUM_BLUE,
-        4: colors.RUBY,
-        5: colors.TENNE,
-        6: colors.VERY_LIGHT_GREY
-    };
+    private readonly colorMapping = [
+        colors.DIM_GREY,
+        colors.LA_RIOJA,
+        colors.ISLAMIC_GREEN,
+        colors.MEDIUM_BLUE,
+        colors.RUBY,
+        colors.TENNE,
+        colors.VERY_LIGHT_GREY
+    ]
 
     private readonly thicknessMapping = {
         0: 15,

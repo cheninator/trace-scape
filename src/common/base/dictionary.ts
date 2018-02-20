@@ -23,6 +23,7 @@
 
     constructor() {
         this.items_ = {};
+        this.count_ = 0;
     }
 
     public add(key: string, value: T) {
@@ -48,6 +49,7 @@
     public clear() {
         delete this.items_;
         this.items_ = {};
+        this.count_ = 0;
     }
 
     public count(): number {
