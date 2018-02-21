@@ -47,7 +47,7 @@ export class TreeXYModelProvider implements IXYModelProvider {
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/xy`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
-        params.set('end', filter.start < filter.end ? filter.end.toString() : (filter.start + 10).toString());
+        params.set('end', filter.end.toString());
         params.set('nb', filter.count.toString());
 
         let castFilter = <SelectionTimeQueryFilter> filter;

@@ -27,7 +27,7 @@
     }
 
     public add(key: string, value: T) {
-        if (this.items_.hasOwnProperty(key)) {
+        if (this.contains(key)) {
             throw new Error("Key already exists");
         }
         this.items_[key] = value;

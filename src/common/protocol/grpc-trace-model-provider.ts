@@ -14,7 +14,7 @@ import { Trace } from './../model/trace';
 import { ProtoTrace } from './gRPC/xy_pb';
 import { ITraceModelProvider } from './trace-model-provider';
 
-export class TraceModelProvider implements ITraceModelProvider {
+export class GRPCTraceModelProvider implements ITraceModelProvider {
 
     private serverUrl_: string;
 

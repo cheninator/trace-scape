@@ -36,7 +36,7 @@ export class TreeTimelineModelProvider implements ITimelineModelProvider {
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/tree`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
-        params.set('end', filter.start < filter.end ? filter.end.toString() : (filter.start + 10).toString());
+        params.set('end', filter.end.toString());
         params.set('nb', filter.count.toString());
 
         let res = await Http.get(url, params);
@@ -48,7 +48,7 @@ export class TreeTimelineModelProvider implements ITimelineModelProvider {
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/states`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
-        params.set('end', filter.start < filter.end ? filter.end.toString() : (filter.start + 10).toString());
+        params.set('end', filter.end.toString());
         params.set('nb', filter.count.toString());
 
         for (let item of filter.items) {
@@ -63,7 +63,7 @@ export class TreeTimelineModelProvider implements ITimelineModelProvider {
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/arrows`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
-        params.set('end', filter.start < filter.end ? filter.end.toString() : (filter.start + 10).toString());
+        params.set('end', filter.end.toString());
         params.set('nb', filter.count.toString());
 
         let res = await Http.get(url, params);
