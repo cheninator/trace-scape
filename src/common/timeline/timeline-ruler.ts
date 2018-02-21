@@ -10,6 +10,8 @@ import { colors } from './../ui/colors';
 import { VisibleWindow } from './../visible-window';
 import { TimeFormatter } from './../formatter/time-formatter';
 
+import * as BigInteger from 'big-integer';
+
 export class TimelineRuler {
 
     private readonly lineWidth = 1;
@@ -70,8 +72,10 @@ export class TimelineRuler {
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 
-        let resolution = (this.context_.max - this.context_.min) / this.context_.count;
-        let time = TimeFormatter.fromNanos(this.context_.min + start * resolution);
+        let max = BigInteger(this.context_.max);
+        let min = BigInteger(this.context_.min);
+        let resolution = max.minus(min).divide(this.context_.count);
+        let time = TimeFormatter.fromNanos(min.plus(start).times(resolution).toJSNumber());
         let pixiText = new PIXI.Text(time, this.textStyle);
         pixiText.x = start + 5;
         pixiText.y = this.positionY_;

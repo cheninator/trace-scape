@@ -10,9 +10,9 @@ import { VisibleWindow } from './../visible-window';
 import { ITreeModel } from '../model/tree-model';
 
 export interface TimelineViewModel {
-    entries: Array<TimelineEntry>;
-    events: Array<TimelineRowModel>;
-    arrows: Array<TimelineArrow>;
+    entries: TimelineEntry[];
+    events: TimelineRowModel[];
+    arrows: TimelineArrow[];
     context: VisibleWindow;
 }
 
@@ -31,12 +31,12 @@ export interface TimelineArrow {
 
 export interface TimelineRowModel {
     entryID: number;
-    states: Array<TimelineState>;
+    states: TimelineState[];
 }
 
 export interface TimelineState {
-    startTime: number;
-    duration: number;
+    startTime: string;
+    duration: string;
     value: number;
     label: string;
 }

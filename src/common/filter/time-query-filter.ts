@@ -7,7 +7,7 @@
  */
 
 export interface TimeQueryFilter {
-    start: number;
-    end: number;
+    start: string;
+    end: string;
     count: number;
 }

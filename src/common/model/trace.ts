@@ -9,8 +9,8 @@
 export interface Trace {
     UUID: string;
     name: string;
-    start: number;
-    end: number;
+    start: string;
+    end: string;
     path: string;
     nbEvents: number;
 }

@@ -61,8 +61,8 @@ export class TraceModelProvider implements ITraceModelProvider {
                 host: this.serverUrl_,
                 onMessage: (message: ProtoTrace) => {
                     trace = {
-                        start: message.getStart(),
-                        end: message.getEnd(),
+                        start: message.getStart().toString(),
+                        end: message.getEnd().toString(),
                         UUID: message.getId(),
                         name: message.getName(),
                         nbEvents: 0,

@@ -23,6 +23,7 @@
   "author": "Yonni Chen",
   "license": "Apache-2.0",
   "dependencies": {
+    "big-integer": "^1.6.26",
     "chart.js": "^2.7.1",
     "concurrently": "3.5.0",
     "golden-layout": "^1.5.9",
@@ -31,6 +32,7 @@
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
+    "@types/big-integer": "^0.0.31",
     "@types/chai": "^4.0.10",
     "@types/google-protobuf": "^3.2.7",
     "@types/jquery": "^3.3.0",

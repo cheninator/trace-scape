@@ -36,8 +36,8 @@ export class ProtoCpuUsageModelProvider implements IXYModelProvider {
     public fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
         return new Promise((resolve, reject) => {
             const request = new TimeRequestFilter();
-            request.setStart(filter.start);
-            request.setEnd(filter.end);
+            request.setStart(Number(filter.start));
+            request.setEnd(Number(filter.end));
             request.setCount(filter.count);
 
             let modelResponse: ModelResponse<ITreeModel[]>;
@@ -74,8 +74,8 @@ export class ProtoCpuUsageModelProvider implements IXYModelProvider {
     public fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
         return new Promise((resolve, reject) => {
             const request = new SelectionTimeRequestFilter();
-            request.setStart(filter.start);
-            request.setEnd(filter.end);
+            request.setStart(Number(filter.start));
+            request.setEnd(Number(filter.end));
             request.setCount(filter.count);
             request.setItemsList((<SelectionTimeQueryFilter> filter).items);
 

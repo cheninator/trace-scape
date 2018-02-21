@@ -15,14 +15,14 @@ import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
 import { SelectionTimeQueryFilter } from '../filter/selection-time-query-filter';
+import * as BigInteger from 'big-integer';
+import { InteractiveController } from './../base/interactive-controller';
 
-export class XYController {
+export class XYController extends InteractiveController {
 
     private readonly WAIT_BEFORE_REQUEST = 700;
-    private readonly ZOOM_PERCENT = 0.1;
 
     private modelProvider_: IXYModelProvider;
-    private visibleWindow_: VisibleWindow;
     private viewModel_: XYViewModel;
 
     /* Key bindings */
@@ -30,6 +30,8 @@ export class XYController {
     private minus_: Key;
 
     constructor(viewWidth: number, modelProvider: IXYModelProvider) {
+        super();
+
         this.modelProvider_ = modelProvider;
         this.visibleWindow_ = {
             min: this.modelProvider_.trace.start,
@@ -58,32 +60,6 @@ export class XYController {
         this.update();
     }
 
-    public zoomIn() {
-        let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 - this.ZOOM_PERCENT)));
-        this.update();
-    }
-
-    public zoomOut() {
-        let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 + this.ZOOM_PERCENT)));
-        this.update();
-    }
-
-    public panLeft() {
-        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
-        this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
-        this.update();
-    }
-
-    public panRight() {
-        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
-        this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
-        this.update();
-    }
-
     private resetRange(e: CustomEvent) {
         this.visibleWindow_.min = this.modelProvider_.trace.start;
         this.visibleWindow_.max = this.modelProvider_.trace.end;
@@ -96,7 +72,7 @@ export class XYController {
         this.update();
     }
 
-    private async update() {
+    protected async update() {
         let treeComplete = false;
         let xyComplete = false;
         let treeStatus: Status, xyStatus: Status;

@@ -16,14 +16,15 @@ import { VisibleWindow } from './../visible-window';
 import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
+import * as BigInteger from 'big-integer';
+import { InteractiveController } from '../base/interactive-controller';
 
-export class TimelineController {
+export class TimelineController extends InteractiveController {
 
     private readonly WAIT_BEFORE_REQUEST = 700;
-    private readonly ZOOM_PERCENT = 0.05;
+    private readonly MAX_LONG = "9223372036854775807";
 
     private modelProvider_: ITimelineModelProvider;
-    private visibleWindow_: VisibleWindow;
     private viewModel_: TimelineViewModel;
 
     /* Key bindings */
@@ -33,6 +34,7 @@ export class TimelineController {
     private right_: Key;
 
     constructor(viewWidth: number, modelProvider: ITimelineModelProvider) {
+        super();
         this.modelProvider_ = modelProvider;
         this.visibleWindow_ = {
             min: this.modelProvider_.trace.start,
@@ -63,7 +65,7 @@ export class TimelineController {
         return this.viewModel_;
     }
 
-    private async update() {
+    protected async update() {
         let treeComplete = false;
         let eventComplete = false;
         let treeStatus: Status, eventStatus: Status;
@@ -86,8 +88,8 @@ export class TimelineController {
 
     private async updateTree() : Promise <Status> {
         let filter: TimeQueryFilter = {
-            start: this.visibleWindow_.min,
-            end: this.visibleWindow_.max,
+            start: "0",
+            end: this.MAX_LONG,
             count: this.visibleWindow_.count,
         };
 
@@ -118,32 +120,6 @@ export class TimelineController {
     private rangeSelected(e: CustomEvent) {
         this.visibleWindow_.min = e.detail.start.x;
         this.visibleWindow_.max = e.detail.end.x;
-        this.update();
-    }
-
-    public zoomIn() {
-        let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 - this.ZOOM_PERCENT)));
-        this.update();
-    }
-
-    public zoomOut() {
-        let delta = this.visibleWindow_.max - this.visibleWindow_.min;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.min + (delta * (1 + this.ZOOM_PERCENT)));
-        this.update();
-    }
-
-    public panLeft() {
-        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.max - delta);
-        this.visibleWindow_.min = Math.round(this.visibleWindow_.min - delta);
-        this.update();
-    }
-
-    public panRight() {
-        let delta = (this.visibleWindow_.max - this.visibleWindow_.min) * this.ZOOM_PERCENT;
-        this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
-        this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
         this.update();
     }
 

@@ -1,6 +1,6 @@
 
 export interface VisibleWindow {
-    min: number;
-    max: number;
+    min: string;
+    max: string;
     count: number;
 }
