@@ -15,13 +15,18 @@ import * as Highcharts from 'highcharts';
 
 export class XYLineChart implements IChart {
 
+    private readonly DEFAULT_TITLE = "XY line chart";
+
     private htmlElement_: HTMLElement;
     private chart_: Highcharts.ChartObject;
     private viewModel_: XYViewModel;
+    private title_: string;
 
-    constructor(htmlElement: HTMLElement) {
+    constructor(htmlElement: HTMLElement, title?: string) {
         this.htmlElement_ = htmlElement;
         this.initChart();
+
+        this.title_ = title === undefined ? this.DEFAULT_TITLE : title;
     }
 
     set viewModel(viewmodel: XYViewModel) {
@@ -54,7 +59,19 @@ export class XYLineChart implements IChart {
     private initChart() {
         this.chart_ = Highcharts.chart(this.htmlElement_, {
             title: {
-                text: 'This is a test'
+                text: this.title_
+            },
+            xAxis: {
+                labels: {
+                    formatter: function() {
+                        return TimeFormatter.fromNanos(this.value);
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ""
+                }
             }
         });
     }
