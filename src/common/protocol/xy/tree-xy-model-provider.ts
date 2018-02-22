@@ -8,7 +8,7 @@
 
 import { IXYModelProvider } from './../xy-model-provider';
 import { ModelResponse } from './../model-response';
-import { XYEntries, XYSeries } from './../../xy/xy-viewmodel';
+import { XYSeries } from './../../xy/xy-viewmodel';
 import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITreeModel } from '../../model/tree-model';
@@ -60,12 +60,14 @@ export class TreeXYModelProvider implements IXYModelProvider {
         let res = await Http.get(url, params);
 
         let model: XYSeries[] = new Array();
-        for (let datum in res.response.model.data) {
-            model.push(<XYSeries> {
-                name: res.response.model.data[datum].name,
-                x: res.response.model.data[datum].xaxis,
-                y: res.response.model.data[datum].data
-            });
+        if (res.response.model) {
+            for (let datum in res.response.model.data) {
+                model.push(<XYSeries> {
+                    name: res.response.model.data[datum].name,
+                    x: res.response.model.data[datum].xaxis,
+                    y: res.response.model.data[datum].data
+                });
+            }
         }
 
         return <ModelResponse<XYSeries[]>> {

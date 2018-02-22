@@ -17,10 +17,11 @@ export class XYWidget {
     private controller_: XYController;
 
     constructor(id: string, modelProvider: IXYModelProvider) {
-        let canvas = <HTMLCanvasElement> document.getElementById(id);
+        let element = document.getElementById(id);
+        this.chart_ = new XYLineChart(element);
 
-        this.chart_ = new XYLineChart(canvas.getContext('2d'));
-        this.controller_ = new XYController(canvas.width, modelProvider);
+        let infos = element.getBoundingClientRect();
+        this.controller_ = new XYController(Math.floor(infos.width), modelProvider);
 
         window.addEventListener(eventType.VIEW_MODEL_CHANGED, this.viewModelChanged.bind(this));
     }

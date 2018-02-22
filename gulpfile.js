@@ -12,14 +12,11 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
-    'chart.js/**/Chart.min.js',
-    'golden-layout/**/goldenlayout.min.js',
     'pixi.js/**/pixi.min.js'
 ];
 
 var styles = [
-    'golden-layout/**/goldenlayout-base.css',
-    'golden-layout/**/goldenlayout-dark-theme.css'
+    'golden-layout/**/*.css'
 ];
 
 /* Node modules */
