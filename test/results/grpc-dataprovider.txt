@@ -1,0 +1,43 @@
+fetchTree   1229.188713 ms
+fetchTree   48.962875 ms
+fetchTree   26.978022 ms
+fetchTree   19.795396 ms
+fetchTree   29.362861 ms
+fetchTree   15.269149 ms
+fetchTree   18.884817 ms
+fetchTree   17.568348 ms
+fetchTree   27.959158 ms
+fetchTree   23.502779 ms
+
+fetchXY     121.449858 ms
+fetchXY     113.533542 ms
+fetchXY     83.546939 ms
+fetchXY     99.943725 ms
+fetchXY     86.996347 ms
+fetchXY     95.543011 ms
+fetchXY     104.237767 ms
+fetchXY     90.374399 ms
+fetchXY     93.430076 ms
+fetchXY     89.226728 ms
+
+fetchXY     713.402388 ms
+fetchXY     679.481806 ms
+fetchXY     673.755005 ms
+fetchXY     619.595761 ms
+fetchXY     651.907391 ms
+fetchXY     625.608110 ms
+fetchXY     639.099596 ms
+fetchXY     627.062393 ms
+fetchXY     620.603017 ms
+fetchXY     629.479739 ms
+
+fetchXY     6408.261505 ms
+fetchXY     6206.445091 ms
+fetchXY     6015.702547 ms
+fetchXY     6030.532024 ms
+fetchXY     6073.366339 ms
+fetchXY     6056.937531 ms
+fetchXY     6058.153332 ms
+fetchXY     6069.979360 ms
+fetchXY     5977.589647 ms
+fetchXY     6129.255860 ms

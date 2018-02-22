@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message TimeRequestFilter {
+    int64 start = 1;
+    int64 end = 2;
+    int32 count = 3;
+}

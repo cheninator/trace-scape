@@ -1,0 +1,91 @@
+--- XY BENCHMARK (10 points) ---
+Average (Based on 10 repetitions): 84.01354359999999 ms
+178.390853 ms
+99.605077 ms
+85.69006 ms
+81.746526 ms
+111.009493 ms
+59.094494 ms
+54.465586 ms
+58.410652 ms
+56.35505 ms
+55.367645 ms
+
+--- XY BENCHMARK (100 points) ---
+Average (Based on 10 repetitions): 570.0493002999999 ms
+610.542359 ms
+574.783869 ms
+568.91779 ms
+569.629682 ms
+581.458805 ms
+557.741556 ms
+529.582615 ms
+537.415775 ms
+551.189423 ms
+619.231129 ms
+
+--- XY BENCHMARK (1000 points) ---
+Average (Based on 10 repetitions): 5453.703855199999 ms
+5939.478948 ms
+5423.646326 ms
+5516.153866 ms
+5350.381779 ms
+5393.522362 ms
+5424.062491 ms
+5369.670254 ms
+5329.420105 ms
+5413.553721 ms
+5377.1487 ms
+
+--- ENTRIES BENCHMARK (10 points) ---
+Average (Based on 10 repetitions): 0.07419189999999999 ms
+0.699827 ms
+0.010538 ms
+0.005247 ms
+0.004425 ms
+0.003966 ms
+0.003733 ms
+0.003607 ms
+0.003571 ms
+0.003501 ms
+0.003504 ms
+
+--- ENTRIES BENCHMARK (100 points) ---
+Average (Based on 10 repetitions): 0.0046766 ms
+0.017762 ms
+0.004243 ms
+0.003393 ms
+0.003183 ms
+0.00313 ms
+0.003075 ms
+0.003025 ms
+0.002945 ms
+0.002981 ms
+0.003029 ms
+
+
+--- ENTRIES BENCHMARK (1000 points) ---
+Average (Based on 10 repetitions): 0.0174395 ms
+0.019773 ms
+0.004375 ms
+0.003566 ms
+0.003361 ms
+0.00316 ms
+0.003215 ms
+0.003195 ms
+0.003241 ms
+0.07157 ms
+0.058939 ms
+
+--- ENTRIES BENCHMARK (10000 points) ---
+Average (Based on 10 repetitions): 0.0045483 ms
+0.017552 ms
+0.004106 ms
+0.003234 ms
+0.00304 ms
+0.00295 ms
+0.002939 ms
+0.002896 ms
+0.002891 ms
+0.002955 ms
+0.00292 ms

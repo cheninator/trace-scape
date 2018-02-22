@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message SelectionTimeRequestFilter {
+    int64 start = 1;
+    int64 end = 2;
+    int32 count = 3;
+    repeated int64 items = 4;
+}

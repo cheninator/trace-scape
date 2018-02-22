@@ -1,0 +1,38 @@
+--- XY BENCHMARK (10 points) ---
+Average (Based on 10 repetitions): 98.8998021 ms
+310.398068 ms
+71.987844 ms
+79.219835 ms
+84.952448 ms
+81.597381 ms
+68.524581 ms
+66.951919 ms
+82.277286 ms
+78.891882 ms
+64.196777 ms
+
+--- XY BENCHMARK (100 points) ---
+Average (Based on 10 repetitions): 564.1568667 ms
+718.821189 ms
+562.082121 ms
+551.207451 ms
+551.587415 ms
+541.221215 ms
+545.180801 ms
+548.260483 ms
+537.604024 ms
+541.991484 ms
+543.612484 ms
+
+--- XY BENCHMARK (1000 points) ---
+Average (Based on 10 repetitions): 5583.819437 ms
+5660.401356 ms
+5626.563743 ms
+5556.323396 ms
+5666.402857 ms
+5610.977929 ms
+5597.462963 ms
+5472.864185 ms
+5569.624653 ms
+5520.119539 ms
+5557.453749 ms
