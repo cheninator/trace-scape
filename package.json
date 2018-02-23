@@ -2,12 +2,11 @@
   "name": "trace-scape",
   "version": "1.0.0",
   "description": "A trace viewer built with web technologies",
-  "main": "main.js",
   "scripts": {
     "build": "npm run clean && tsc && gulp build && webpack --devtool source-map",
     "clean": "rimraf bin",
     "clean:modules": "rimraf node_modules",
-    "desktop": "electron bin/src/electron/main.js --enable-logging",
+    "desktop": "electron bin/src/electron/main.js",
     "start": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "start:desktop": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
     "test": "karma start karma.conf.js",
@@ -50,7 +49,6 @@
     "tslint": "^5.8.0",
     "tslint-eslint-rules": "^4.1.1",
     "ts-loader": "^3.2.0",
-    "ts-protoc-gen": "^0.4.0",
     "typescript": "^2.5.3",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.8.1"

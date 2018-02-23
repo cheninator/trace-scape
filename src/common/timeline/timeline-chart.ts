@@ -67,16 +67,14 @@ export class TimelineChart implements IChart {
 
         this.viewModel_ = model;
         this.rows_.clear();
-        console.log(this.viewModel_.entries);
-        console.log(this.viewModel_.events);
         for (let tree of this.viewModel_.entries) {
             if (this.rows_.count() < this.nbRows_) {
-                console.log("Hit");
-                let graphics = new PIXI.Graphics();
-                this.rows_.add(tree.id.toString(), graphics);
-                this.graphicsContainer.addChild(graphics);
+                if (!this.rows_.contains(tree.id.toString())) {
+                    let graphics = new PIXI.Graphics();
+                    this.rows_.add(tree.id.toString(), graphics);
+                    this.graphicsContainer.addChild(graphics);
+                }
             }
         }
-        console.log(this.rows_);
     }
 }

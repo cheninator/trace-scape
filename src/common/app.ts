@@ -5,6 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
+
 import { TraceModelProvider } from './protocol/trace-model-provider';
 import { LayoutManager } from './layout-manager';
 import { CpuUsageComponent } from './ui/cpu-usage-component';

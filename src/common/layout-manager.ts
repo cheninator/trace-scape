@@ -6,11 +6,10 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-/// <reference path="./../../node_modules/golden-layout/index.d.ts" />
+import * as GoldenLayout from 'golden-layout';
 
 import { IComponent } from './ui/component';
 import { DockComponent } from './ui/dock-component';
-import * as GoldenLayout from 'golden-layout';
 
 export class LayoutManager {
 

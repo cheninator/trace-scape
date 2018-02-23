@@ -6,12 +6,13 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import * as Highcharts from 'highcharts';
+
 import { TimeFormatter } from './../formatter/time-formatter';
 import { IChart } from './../base/chart';
 import { colorPalette } from './../ui/colors';
 import { XYViewModel } from './xy-viewmodel';
 import { eventType } from './../events';
-import * as Highcharts from 'highcharts';
 
 export class XYLineChart implements IChart {
 

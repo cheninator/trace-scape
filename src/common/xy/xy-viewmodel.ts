@@ -10,14 +10,14 @@ import { ITreeModel } from './../model/tree-model';
 
 export interface XYViewModel {
     title: string;
-    entries: Array<XYEntries>;
-    series: Array<XYSeries>;
+    entries: XYEntries[];
+    series: XYSeries[];
 }
 
 export interface XYSeries {
     name: string;
-    x: Array<number>;
-    y: Array<number>;
+    x: number[];
+    y: number[];
 }
 
 // TO COMPLETE
