@@ -27,7 +27,6 @@ export class NavigatorComponent implements IGoldenLayoutComponent {
             type: 'component',
             componentName: this.name_,
             componentState: { text: '' },
-            width: 10,
             isClosable: false,
         };
     }
