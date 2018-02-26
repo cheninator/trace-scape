@@ -8,87 +8,53 @@
 
 import * as GoldenLayout from 'golden-layout';
 
-import { IComponent } from './ui/component';
-import { DockComponent } from './ui/dock-component';
+import { IGoldenLayoutComponent } from './ui/component';
+import { NavigatorComponent } from './ui/navigator-component';
 
 export class LayoutManager {
 
-    private components_: Array<IComponent>;
-
+    private components_: IGoldenLayoutComponent[];
     private layout_: GoldenLayout;
     private config = {
-        content: [
-        {
+        content: [{
             type: 'row',
-            content: [
-                {
-                    type: 'component',
-                    componentName: 'dock',
-                    componentState: { label: 'Dock' },
-                    width: 10,
-                    isClosable: false,
-                    title: 'Project explorer'
-                },
-                {
-                    type: 'column',
-                    content: [
-                        {
-                            type: 'component',
-                            componentName: 'control-flow',
-                            componentState: { label: 'B' },
-                            height: 60
-                        },
-                        {
-                            type: 'row',
-                            content:
-                            [
-                                {
-                                    type: 'component',
-                                    componentName: 'disk',
-                                    componentState: { label: 'B' }
-                                },
-                                {
-                                    type: 'component',
-                                    componentName: 'cpu',
-                                    componentState: { label: 'B' }
-                                },
-                                {
-                                    type: 'component',
-                                    componentName: 'mem',
-                                    componentState: { label: 'B' }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+            content: new Array()
         }]
     };
 
     constructor() {
         this.layout_ = new GoldenLayout(this.config);
-
+        this.layout_.init();
         this.components_ = new Array();
-        this.components_.push(new DockComponent());
+        this.registerNavigatorComponent();
     }
 
-    public addComponent(component: IComponent) {
+    public addComponent(component: IGoldenLayoutComponent) {
         if (component !== undefined) {
             this.components_.push(component);
+            let configuration = component.itemConfiguration;
+            this.layout_.registerComponent(configuration.title, function(container: GoldenLayout.Container, componentState: any) {
+                container.getElement().html(component.html);
+            });
+            this.layout_.root.contentItems[0].contentItems[1].addChild(configuration);
         }
+    }
+
+    private registerNavigatorComponent() {
+        let component = new NavigatorComponent();
+        let configuration = component.itemConfiguration;
+        this.layout_.registerComponent(configuration.title, function(container: GoldenLayout.Container, componentState: any) {
+            container.getElement().html(component.html);
+        });
+        this.layout_.root.contentItems[0].addChild(configuration);
+
+        this.layout_.root.contentItems[0].addChild({
+            type: 'column',
+            content: new Array()
+        });
     }
 
     public init() {
-        this.registerComponents();
-        this.layout_.init();
         this.components_.forEach((c) => c.show());
-    }
-
-    private registerComponents() {
-        for (let component of this.components_) {
-            this.layout_.registerComponent(component.name, function(container: GoldenLayout.Container, componentState: any) {
-                container.getElement().html(component.html);
-            });
-        }
     }
 }

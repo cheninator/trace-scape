@@ -6,9 +6,10 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-export interface IComponent {
+import * as GoldenLayout from 'golden-layout';
+
+export interface IGoldenLayoutComponent {
     html: string;
-    name: string;
-    title: string;
+    itemConfiguration: GoldenLayout.ItemConfig;
     show(): void;
 }

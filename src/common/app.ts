@@ -10,7 +10,7 @@ import { TraceModelProvider } from './core/protocol/trace-model-provider';
 import { LayoutManager } from './layout-manager';
 import { TreeXYComponent } from './ui/tree-xy-component';
 import { ModelProviders } from './core/protocol/model-providers';
-import { ThreadStatusComponent } from './ui/thread-status-component';
+import { TreeTimelineComponent } from './ui/tree-timeline-component';
 import { Trace } from './core/model/trace';
 
 async function main() {
@@ -33,7 +33,7 @@ async function main() {
     layoutManager.addComponent(new TreeXYComponent(ModelProviders.CPU, serverUrl, trace));
     layoutManager.addComponent(new TreeXYComponent(ModelProviders.DISK, serverUrl, trace));
     layoutManager.addComponent(new TreeXYComponent(ModelProviders.KERNEL_MEMORY, serverUrl, trace));
-    layoutManager.addComponent(new ThreadStatusComponent(serverUrl, trace));
+    layoutManager.addComponent(new TreeTimelineComponent(ModelProviders.THREAD_STATUS, serverUrl, trace));
 
     layoutManager.init();
 }

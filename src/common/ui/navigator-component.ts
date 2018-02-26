@@ -6,27 +6,33 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { IComponent } from "./component";
+import * as GoldenLayout from 'golden-layout';
+import { IGoldenLayoutComponent } from "./component";
 
-export class DockComponent implements IComponent {
-    
+export class NavigatorComponent implements IGoldenLayoutComponent {
+
+    private name_ = "Project explorer";
+
     get html(): string {
-        return `            
+        return `
             <h3><img src="https://avatars1.githubusercontent.com/u/7333024?s=200&v=4" width="25" height="25"> trace2</h3>
             <h3><img src="https://avatars1.githubusercontent.com/u/7333024?s=200&v=4" width="25" height="25"> kernel vm</h3>
             <h3><img src="https://avatars1.githubusercontent.com/u/7333024?s=200&v=4" width="25" height="25"> kernel</h3>
         `;
     }
-    
-    get name(): string {
-        return 'dock';
-    }
 
-    get title(): string {
-        return "Trace Explorer";
+    get itemConfiguration(): GoldenLayout.ItemConfig {
+        return <GoldenLayout.ComponentConfig> {
+            title: this.name_,
+            type: 'component',
+            componentName: this.name_,
+            componentState: { text: '' },
+            width: 10,
+            isClosable: false,
+        };
     }
 
     public show() {
-        
+        return;
     }
 }
