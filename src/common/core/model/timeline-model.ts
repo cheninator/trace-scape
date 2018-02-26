@@ -6,14 +6,12 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { VisibleWindow } from './../visible-window';
 import { ITreeModel } from '../model/tree-model';
 
 export interface TimelineViewModel {
     entries: TimelineEntry[];
     events: TimelineRowModel[];
     arrows: TimelineArrow[];
-    context: VisibleWindow;
 }
 
 export interface TimelineEntry extends ITreeModel {

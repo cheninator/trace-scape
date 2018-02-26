@@ -7,7 +7,7 @@
  */
 
 import { colors } from './../ui/colors';
-import { Dictionary } from '../base/dictionary';
+import { Dictionary } from '../core/dictionary';
 
 export class TimelinePresentation {
 

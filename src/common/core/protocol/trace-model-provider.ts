@@ -7,7 +7,7 @@
  */
 
 import { Trace } from './../model/trace';
-import { Http } from './../base/http';
+import { Http } from './../http';
 
 export interface ITraceModelProvider {
     getTraces(): Promise<Trace[]>;

@@ -7,10 +7,10 @@
  */
 
 import { IComponent } from './component';
-import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
-import { TreeTimelineModelProvider } from './../protocol/timeline/tree-timeline-model-provider';
+import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
+import { TreeTimelineModelProvider } from './../core/protocol/timeline/tree-timeline-model-provider';
 import { TimelineWidget } from './../timeline/timeline-widget';
-import { Trace } from './../model/trace';
+import { Trace } from './../core/model/trace';
 
 export class ThreadStatusComponent implements IComponent {
 

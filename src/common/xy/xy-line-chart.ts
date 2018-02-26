@@ -8,9 +8,9 @@
 
 import * as Highcharts from 'highcharts';
 
-import { TimeFormatter } from './../formatter/time-formatter';
+import { TimeFormatter } from './../core/formatter/time-formatter';
 import { IChart } from './../base/chart';
-import { XYViewModel } from './xy-viewmodel';
+import { XYViewModel } from './../core/model/xy-model';
 import { eventType } from './../events';
 
 export class XYLineChart implements IChart {
@@ -30,7 +30,7 @@ export class XYLineChart implements IChart {
     set viewModel(viewmodel: XYViewModel) {
         if (viewmodel !== undefined) {
             this.viewModel_ = viewmodel;
-            this.chart_.setTitle({text: this.viewModel.title});
+            //this.chart_.setTitle({text: this.viewModel.title});
         }
     }
 
@@ -52,20 +52,42 @@ export class XYLineChart implements IChart {
     }
 
     public clear() {
-        this.chart_.series = [];
+        for (let i = 0; i < this.chart_.series.length; i++) {
+            this.chart_.series[0].remove();
+        }
+    }
+
+    private rangeSelected(e: Highcharts.ChartSelectionEvent) {
+        e.preventDefault();
+
+        window.dispatchEvent(new CustomEvent(eventType.RANGE_SELECTED, {
+            detail: {
+                start: e.xAxis[0].min,
+                end: e.xAxis[0].max
+            }
+        }));
     }
 
     private initChart() {
         this.chart_ = Highcharts.chart(this.htmlElement_, {
+            chart: {
+                zoomType: 'x',
+                events: {
+                    selection: this.rangeSelected
+                }
+            },
             title: {
                 text: this.DEFAULT_TITLE
+            },
+            credits: {
+                enabled: false
             },
             xAxis: {
                 labels: {
                     formatter: function() {
                         return TimeFormatter.fromNanos(this.value);
                     }
-                }
+                },
             },
             yAxis: {
                 title: {

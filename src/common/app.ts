@@ -6,13 +6,12 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { TraceModelProvider } from './protocol/trace-model-provider';
+import { TraceModelProvider } from './core/protocol/trace-model-provider';
 import { LayoutManager } from './layout-manager';
-import { CpuUsageComponent } from './ui/cpu-usage-component';
-import { DiskIOComponent } from './ui/disk-io-component';
-import { KernelMemoryComponent } from './ui/kernel-memory-component';
+import { TreeXYComponent } from './ui/tree-xy-component';
+import { ModelProviders } from './core/protocol/model-providers';
 import { ThreadStatusComponent } from './ui/thread-status-component';
-import { Trace } from './model/trace';
+import { Trace } from './core/model/trace';
 
 async function main() {
 
@@ -31,9 +30,9 @@ async function main() {
     }
 
     let layoutManager = new LayoutManager();
-    layoutManager.addComponent(new CpuUsageComponent(serverUrl, trace));
-    layoutManager.addComponent(new DiskIOComponent(serverUrl, trace));
-    layoutManager.addComponent(new KernelMemoryComponent(serverUrl, trace));
+    layoutManager.addComponent(new TreeXYComponent(ModelProviders.CPU, serverUrl, trace));
+    layoutManager.addComponent(new TreeXYComponent(ModelProviders.DISK, serverUrl, trace));
+    layoutManager.addComponent(new TreeXYComponent(ModelProviders.KERNEL_MEMORY, serverUrl, trace));
     layoutManager.addComponent(new ThreadStatusComponent(serverUrl, trace));
 
     layoutManager.init();

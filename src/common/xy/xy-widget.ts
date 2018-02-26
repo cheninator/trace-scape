@@ -7,7 +7,7 @@
  */
 
 import { XYLineChart } from './xy-line-chart';
-import { IXYModelProvider } from './../protocol/xy-model-provider';
+import { IXYModelProvider } from './../core/protocol/xy-model-provider';
 import { XYController } from './xy-controller';
 import { eventType } from './../events';
 
@@ -16,8 +16,7 @@ export class XYWidget {
     private chart_: XYLineChart;
     private controller_: XYController;
 
-    constructor(id: string, modelProvider: IXYModelProvider) {
-        let element = document.getElementById(id);
+    constructor(element: HTMLElement, modelProvider: IXYModelProvider) {
         this.chart_ = new XYLineChart(element);
 
         let infos = element.getBoundingClientRect();

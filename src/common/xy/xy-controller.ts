@@ -6,15 +6,15 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { SelectionTimeQueryFilter } from '../filter/selection-time-query-filter';
-import { InteractiveController } from '../base/interactive-controller';
-import { IXYModelProvider } from './../protocol/xy-model-provider';
-import { TimeQueryFilter } from './../filter/time-query-filter';
-import { Status } from '../protocol/model-response';
+import { SelectionTimeQueryFilter } from './../core/filter/selection-time-query-filter';
+import { InteractiveController } from './../base/interactive-controller';
+import { IXYModelProvider } from './../core/protocol/xy-model-provider';
+import { TimeQueryFilter } from './../core/filter/time-query-filter';
+import { Status } from './../core/protocol/model-response';
 import { VisibleWindow } from './../visible-window';
-import { XYViewModel } from './xy-viewmodel';
+import { XYViewModel } from './../core/model/xy-model';
 import { eventType } from './../events';
-import { Utils } from './../utils';
+import { Utils } from './../core/utils';
 import { Key } from './../key';
 
 export class XYController extends InteractiveController {
@@ -65,8 +65,8 @@ export class XYController extends InteractiveController {
     }
 
     private rangeSelected(e: CustomEvent) {
-        this.visibleWindow_.min = e.detail.start.x;
-        this.visibleWindow_.max = e.detail.end.x;
+        this.visibleWindow_.min = e.detail.start;
+        this.visibleWindow_.max = e.detail.end;
         this.update();
     }
 

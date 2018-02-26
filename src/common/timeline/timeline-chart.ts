@@ -6,17 +6,19 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { TimelineViewModel } from './timeline-viewmodel';
+import { TimelineViewModel } from './../core/model/timeline-model';
 import { TimelinePresentation } from './timeline-presentation';
 import { colors } from './../ui/colors';
 import { IChart } from './../base/chart';
-import { IDictionary, Dictionary } from './../base/dictionary';
-
+import { IDictionary, Dictionary } from './../core/dictionary';
+import { VisibleWindow } from '../visible-window';
 export class TimelineChart implements IChart {
 
     public graphicsContainer: PIXI.Container;
 
     private viewModel_: TimelineViewModel;
+    private context_: VisibleWindow;
+
     private timelinePresentation_: TimelinePresentation;
     private rows_: IDictionary<PIXI.Graphics>;
 
@@ -33,7 +35,7 @@ export class TimelineChart implements IChart {
 
     public draw() {
         this.clear();
-        let viewModelContext = this.viewModel_.context;
+        let i = 0;
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.rows_.get(event.entryID.toString());
             if (eventGraphic === undefined) {
@@ -44,16 +46,17 @@ export class TimelineChart implements IChart {
                 if (color === undefined) {
                     continue;
                 }
-                let resolution = (viewModelContext.max - viewModelContext.min) / viewModelContext.count;
-                let start = Math.max(state.startTime, viewModelContext.min);
-                let x = Math.round((start - viewModelContext.min) / resolution);
-                let y = (event.entryID + 1) * 20;
+                let resolution = (this.context_.max - this.context_.min) / this.context_.count;
+                let start = Math.max(state.startTime, this.context_.min);
+                let x = Math.round((start - this.context_.min) / resolution);
+                let y = (i + 1) * 20;
                 let width = Math.round(state.duration / resolution);
 
                 eventGraphic.beginFill(color, 1);
                 eventGraphic.drawRect(x, y, width, this.timelinePresentation_.getThicknessOfState(state.value));
                 eventGraphic.endFill();
             }
+            ++i;
         }
     }
 
@@ -76,5 +79,9 @@ export class TimelineChart implements IChart {
                 }
             }
         }
+    }
+
+    set context(context: VisibleWindow) {
+        this.context_ = context;
     }
 }

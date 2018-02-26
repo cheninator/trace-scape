@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
+import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
 import { TimelineController } from './timeline-controller';
 import { TimelineChart } from './timeline-chart';
 import { TimelineRuler } from './timeline-ruler';
@@ -27,7 +27,7 @@ export class TimelineWidget {
             height: canvas.height,
             view: canvas,
             antialias: false,
-            backgroundColor : 0x222222
+            backgroundColor : 0xffffff
         };
 
         this.application_ = new PIXI.Application(options);
@@ -49,9 +49,10 @@ export class TimelineWidget {
     private viewModelChanged(e: Event) {
         if (this.timelineController_.viewModel !== undefined) {
             this.timelineChart_.model = this.timelineController_.viewModel;
+            this.timelineChart_.context = this.timelineController_.context;
             this.timelineChart_.draw();
 
-            this.timelineRuler_.context = this.timelineController_.viewModel.context;
+            this.timelineRuler_.context = this.timelineController_.context;
             this.timelineRuler_.draw();
         }
     }

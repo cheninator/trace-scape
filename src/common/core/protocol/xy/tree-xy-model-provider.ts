@@ -8,11 +8,11 @@
 
 import { IXYModelProvider } from './../xy-model-provider';
 import { ModelResponse } from './../model-response';
-import { XYSeries } from './../../xy/xy-viewmodel';
+import { XYSeries } from './../../model/xy-model';
 import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITreeModel } from '../../model/tree-model';
-import { Http } from './../../base/http';
+import { Http } from './../../http';
 import { SelectionTimeQueryFilter } from '../../filter/selection-time-query-filter';
 
 export class TreeXYModelProvider implements IXYModelProvider {

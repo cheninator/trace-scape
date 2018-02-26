@@ -8,7 +8,7 @@
 
 import { ModelResponse } from './model-response';
 import { ITreeModelProvider } from './tree-model-provider';
-import { XYSeries } from './../xy/xy-viewmodel';
+import { XYSeries } from './../model/xy-model';
 import { TimeQueryFilter } from './../filter/time-query-filter';
 import { Trace } from './../model/trace';
 

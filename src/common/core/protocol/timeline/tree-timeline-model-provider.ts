@@ -6,14 +6,14 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { TimelineRowModel, TimelineEntry, TimelineArrow } from './../../timeline/timeline-viewmodel';
+import { TimelineRowModel, TimelineEntry, TimelineArrow } from './../../model/timeline-model';
 import { SelectionTimeQueryFilter } from './../../filter/selection-time-query-filter';
 import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITimelineModelProvider } from './../timeline-model-provider';
 import { ModelResponse } from './../model-response';
 import { ITreeModel } from '../../model/tree-model';
-import { Http } from './../../base/http';
+import { Http } from './../../http';
 
 
 export class TreeTimelineModelProvider implements ITimelineModelProvider {

@@ -6,22 +6,23 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { TimelineViewModel, TimelineEntry, TimelineArrow } from './timeline-viewmodel';
+import { TimelineViewModel, TimelineEntry, TimelineArrow } from './../core/model/timeline-model';
 import { InteractiveController } from './../base/interactive-controller';
-import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
-import { SelectionTimeQueryFilter } from './../filter/selection-time-query-filter';
-import { TimeQueryFilter } from './../filter/time-query-filter';
-import { ModelResponse } from '../protocol/model-response';
-import { Status } from './../protocol/model-response';
+import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
+import { SelectionTimeQueryFilter } from './../core/filter/selection-time-query-filter';
+import { TimeQueryFilter } from './../core/filter/time-query-filter';
+import { ModelResponse } from './../core/protocol/model-response';
+import { Status } from './../core/protocol/model-response';
 import { VisibleWindow } from './../visible-window';
 import { eventType } from './../events';
-import { Utils } from './../utils';
+import { Utils } from './../core/utils';
 import { Key } from './../key';
 
 
 export class TimelineController extends InteractiveController {
 
     private readonly WAIT_BEFORE_REQUEST = 700;
+    private readonly MAX_LONG = "9223372036854775807";
 
     private modelProvider_: ITimelineModelProvider;
     private viewModel_: TimelineViewModel;
@@ -43,8 +44,7 @@ export class TimelineController extends InteractiveController {
         this.viewModel_ = {
             entries: new Array(),
             events: new Array(),
-            arrows: new Array(),
-            context: this.visibleWindow_
+            arrows: new Array()
         };
 
         this.initKeys();
@@ -55,13 +55,16 @@ export class TimelineController extends InteractiveController {
     public inflate(visibleWindow?: VisibleWindow) {
         if (visibleWindow !== undefined) {
             this.visibleWindow_ = visibleWindow;
-            this.viewModel_.context = this.visibleWindow_;
         }
         this.update();
     }
 
     get viewModel() {
         return this.viewModel_;
+    }
+
+    get context() {
+        return this.visibleWindow_;
     }
 
     protected async update() {
@@ -88,7 +91,7 @@ export class TimelineController extends InteractiveController {
     private async updateTree(): Promise<Status> {
         let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,
-            end: "9223372036854775807",
+            end: this.MAX_LONG,
             count: this.visibleWindow_.count,
         };
 
@@ -129,8 +132,8 @@ export class TimelineController extends InteractiveController {
     }
 
     private rangeSelected(e: CustomEvent) {
-        this.visibleWindow_.min = e.detail.start.x;
-        this.visibleWindow_.max = e.detail.end.x;
+        this.visibleWindow_.min = e.detail.start;
+        this.visibleWindow_.max = e.detail.end;
         this.update();
     }
 

@@ -8,7 +8,7 @@
 
 import { colors } from './../ui/colors';
 import { VisibleWindow } from './../visible-window';
-import { TimeFormatter } from './../formatter/time-formatter';
+import { TimeFormatter } from './../core/formatter/time-formatter';
 
 export class TimelineRuler {
 
