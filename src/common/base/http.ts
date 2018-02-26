@@ -8,6 +8,13 @@
 
 export class Http {
 
+    private static handleErrors(response: Response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
     private static request(method: string, url: string, body?: any, options?: RequestInit) {
         return fetch(url, options || {
             method: method,
@@ -16,8 +23,8 @@ export class Http {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }),
             body: body !== undefined ? body.toString() : undefined
-        }).then(r => r.text())
-        .then(text => text ? JSON.parse(text) : null);
+        }).then(this.handleErrors)
+        .then(r => r.json());
     }
 
     public static async get(url: string, body?: any, options?: RequestInit): Promise<any> {

@@ -10,34 +10,33 @@ import * as Highcharts from 'highcharts';
 
 import { TimeFormatter } from './../formatter/time-formatter';
 import { IChart } from './../base/chart';
-import { colorPalette } from './../ui/colors';
 import { XYViewModel } from './xy-viewmodel';
 import { eventType } from './../events';
 
 export class XYLineChart implements IChart {
 
     private readonly DEFAULT_TITLE = "XY line chart";
+    private readonly DEFAULT_LOADING_MESSAGE = "Loading data...";
 
     private htmlElement_: HTMLElement;
     private chart_: Highcharts.ChartObject;
     private viewModel_: XYViewModel;
-    private title_: string;
 
-    constructor(htmlElement: HTMLElement, title?: string) {
+    constructor(htmlElement: HTMLElement) {
         this.htmlElement_ = htmlElement;
         this.initChart();
-
-        this.title_ = title === undefined ? this.DEFAULT_TITLE : title;
     }
 
     set viewModel(viewmodel: XYViewModel) {
         if (viewmodel !== undefined) {
             this.viewModel_ = viewmodel;
+            this.chart_.setTitle({text: this.viewModel.title});
         }
     }
 
     public draw() {
         this.clear();
+        this.chart_.showLoading(this.DEFAULT_LOADING_MESSAGE);
         for (let series of this.viewModel_.series) {
             let data = new Array();
             for (let i = 0; i < series.x.length; ++i) {
@@ -49,18 +48,17 @@ export class XYLineChart implements IChart {
             });
         }
         this.chart_.redraw();
+        this.chart_.hideLoading();
     }
 
     public clear() {
-        if (this.chart_ !== undefined) {
-            this.chart_.series = [];
-        }
+        this.chart_.series = [];
     }
 
     private initChart() {
         this.chart_ = Highcharts.chart(this.htmlElement_, {
             title: {
-                text: this.title_
+                text: this.DEFAULT_TITLE
             },
             xAxis: {
                 labels: {

@@ -6,6 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { SelectionTimeQueryFilter } from '../filter/selection-time-query-filter';
+import { InteractiveController } from '../base/interactive-controller';
 import { IXYModelProvider } from './../protocol/xy-model-provider';
 import { TimeQueryFilter } from './../filter/time-query-filter';
 import { Status } from '../protocol/model-response';
@@ -14,8 +16,6 @@ import { XYViewModel } from './xy-viewmodel';
 import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
-import { SelectionTimeQueryFilter } from '../filter/selection-time-query-filter';
-import { InteractiveController } from '../base/interactive-controller';
 
 export class XYController extends InteractiveController {
 
@@ -82,7 +82,7 @@ export class XYController extends InteractiveController {
             }
 
             if (!xyComplete) {
-                xyStatus = await this.updateData();
+                xyStatus = await this.updateXY();
                 xyComplete = (xyStatus === Status.COMPLETED);
             }
 
@@ -103,7 +103,7 @@ export class XYController extends InteractiveController {
         return response.status;
     }
 
-    private async updateData(): Promise<Status> {
+    private async updateXY(): Promise<Status> {
         let filter: SelectionTimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,

@@ -33,7 +33,7 @@ export class TimelineChart implements IChart {
 
     public draw() {
         this.clear();
-        let visibleWindow = this.viewModel_.context;
+        let viewModelContext = this.viewModel_.context;
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.rows_.get(event.entryID.toString());
             if (eventGraphic === undefined) {
@@ -41,17 +41,18 @@ export class TimelineChart implements IChart {
             }
             for (let state of event.states) {
                 let color = this.timelinePresentation_.getColorOfState(state.value);
-                if (color !== undefined) {
-                    let resolution = (visibleWindow.max - visibleWindow.min) / visibleWindow.count;
-                    let start = Math.max(state.startTime, visibleWindow.min);
-                    let x = Math.round((start - visibleWindow.min) / resolution);
-                    let y = (event.entryID + 1) * 20;
-                    let width = Math.round(state.duration / resolution);
-
-                    eventGraphic.beginFill(color, 1);
-                    eventGraphic.drawRect(x, y, width, this.timelinePresentation_.getThicknessOfState(state.value));
-                    eventGraphic.endFill();
+                if (color === undefined) {
+                    continue;
                 }
+                let resolution = (viewModelContext.max - viewModelContext.min) / viewModelContext.count;
+                let start = Math.max(state.startTime, viewModelContext.min);
+                let x = Math.round((start - viewModelContext.min) / resolution);
+                let y = (event.entryID + 1) * 20;
+                let width = Math.round(state.duration / resolution);
+
+                eventGraphic.beginFill(color, 1);
+                eventGraphic.drawRect(x, y, width, this.timelinePresentation_.getThicknessOfState(state.value));
+                eventGraphic.endFill();
             }
         }
     }
@@ -61,17 +62,16 @@ export class TimelineChart implements IChart {
     }
 
     set model(model: TimelineViewModel) {
-        if (model === undefined) {
-            return;
-        }
-
-        this.viewModel_ = model;
-        this.rows_.clear();
-        for (let tree of this.viewModel_.entries) {
-            if (this.rows_.count() < this.nbRows_) {
-                if (!this.rows_.contains(tree.id.toString())) {
+        if (model !== undefined) {
+            this.viewModel_ = model;
+            this.rows_.clear();
+            for (let entry of this.viewModel_.entries) {
+                if (this.nbRows_ < this.rows_.count()) {
+                    break;
+                }
+                if (!this.rows_.contains(entry.id.toString())) {
                     let graphics = new PIXI.Graphics();
-                    this.rows_.add(tree.id.toString(), graphics);
+                    this.rows_.add(entry.id.toString(), graphics);
                     this.graphicsContainer.addChild(graphics);
                 }
             }

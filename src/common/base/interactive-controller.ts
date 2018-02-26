@@ -13,6 +13,14 @@ export abstract class InteractiveController {
     private readonly ZOOM_PERCENT = 0.1;
     protected visibleWindow_: VisibleWindow;
 
+    constructor() {
+        this.visibleWindow_ = {
+            min: Number.MIN_SAFE_INTEGER,
+            max: Number.MAX_SAFE_INTEGER,
+            count: 1
+        };
+    }
+
     public abstract inflate(visibleWindow?: VisibleWindow): void;
 
     protected abstract update(): void;

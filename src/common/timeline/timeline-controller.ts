@@ -6,7 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { TimelineViewModel, TimelineEntry } from './timeline-viewmodel';
+import { TimelineViewModel, TimelineEntry, TimelineArrow } from './timeline-viewmodel';
+import { InteractiveController } from './../base/interactive-controller';
 import { ITimelineModelProvider } from './../protocol/timeline-model-provider';
 import { SelectionTimeQueryFilter } from './../filter/selection-time-query-filter';
 import { TimeQueryFilter } from './../filter/time-query-filter';
@@ -16,7 +17,6 @@ import { VisibleWindow } from './../visible-window';
 import { eventType } from './../events';
 import { Utils } from './../utils';
 import { Key } from './../key';
-import { InteractiveController } from './../base/interactive-controller';
 
 
 export class TimelineController extends InteractiveController {
@@ -52,7 +52,7 @@ export class TimelineController extends InteractiveController {
         window.addEventListener(eventType.RESET_RANGE, this.resetRange.bind(this));
     }
 
-    public async inflate(visibleWindow?: VisibleWindow) {
+    public inflate(visibleWindow?: VisibleWindow) {
         if (visibleWindow !== undefined) {
             this.visibleWindow_ = visibleWindow;
             this.viewModel_.context = this.visibleWindow_;
@@ -76,7 +76,7 @@ export class TimelineController extends InteractiveController {
             }
 
             if (!eventComplete) {
-                eventStatus = await this.updateData();
+                eventStatus = await this.updateEvents();
                 eventComplete = (treeStatus === Status.COMPLETED);
             }
 
@@ -85,7 +85,7 @@ export class TimelineController extends InteractiveController {
         } while (!(treeComplete && eventComplete));
     }
 
-    private async updateTree() : Promise <Status> {
+    private async updateTree(): Promise<Status> {
         let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: "9223372036854775807",
@@ -97,7 +97,7 @@ export class TimelineController extends InteractiveController {
         return response.status;
     }
 
-    private async updateData() : Promise <Status> {
+    private async updateEvents(): Promise<Status> {
         let filter: SelectionTimeQueryFilter = {
             start: this.visibleWindow_.min,
             end: this.visibleWindow_.max,
@@ -107,6 +107,18 @@ export class TimelineController extends InteractiveController {
 
         let response = await this.modelProvider_.fetchEvents(filter);
         this.viewModel_.events = response.model;
+        return response.status;
+    }
+
+    private async updateArrows(): Promise<Status> {
+        let filter: TimeQueryFilter = {
+            start: this.visibleWindow_.min,
+            end: this.visibleWindow_.max,
+            count: this.visibleWindow_.count,
+        };
+
+        let response = await this.modelProvider_.fetchArrows(filter);
+        this.viewModel_.arrows = <TimelineArrow[]> response.model;
         return response.status;
     }
 
