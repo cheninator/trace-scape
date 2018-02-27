@@ -6,8 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { InspireTree } from 'inspire-tree';
-import InspireTreeDom from 'inspire-tree-dom';
+import * as InspireTree from 'inspire-tree';
+import * as InspireTreeDom from 'inspire-tree-dom';
 
 export class TreeWidget {
 
@@ -18,14 +18,43 @@ export class TreeWidget {
     }
 
     public init() {
+
+        // @ts-ignore: Unreachable code error
         let tree = new InspireTree({
-            data: [{
-                text: 'A node'
-            }]
+            data: [
+                {
+                    text: 'A node',
+                    children: [
+                        {
+                            text: 'A child node'
+                        },
+                        {
+                            text: 'A child node'
+                        },
+                        {
+                            text: 'A child node'
+                        }
+                    ]
+                },
+                {
+                    text: 'A node'
+                },
+                {
+                    text: 'A node'
+                },{
+                    text: 'A node'
+                },
+            ]
         });
 
+        // @ts-ignore: Unreachable code error
         let treeDom = new InspireTreeDom(tree, {
             target: this.element_
         });
+
+        tree.on('node.dblclick', (event: MouseEvent, node: any) => {
+            console.log("Double click", node);
+        });
+
     }
 }

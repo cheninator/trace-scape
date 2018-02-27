@@ -42,6 +42,8 @@ export class LayoutManager {
 
     private registerNavigatorComponent() {
         let component = new NavigatorComponent();
+        this.components_.push(component);
+
         let configuration = component.itemConfiguration;
         this.layout_.registerComponent(configuration.title, function(container: GoldenLayout.Container, componentState: any) {
             container.getElement().html(component.html);
