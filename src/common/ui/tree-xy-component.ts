@@ -26,7 +26,11 @@ export class TreeXYComponent implements IGoldenLayoutComponent {
     }
 
     get html(): string {
-        return `<div id="${this.id_}"></div>`;
+        return `
+            <div class="row">
+                <div id="${this.id_}"></div>
+            </div>
+        `;
     }
 
     get itemConfiguration(): GoldenLayout.ItemConfig {

@@ -12,6 +12,7 @@ import { IGoldenLayoutComponent } from './component';
 import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
 import { TreeTimelineModelProviderFactory } from './../core/protocol/timeline/tree-timeline-model-provider-factory';
 import { TimelineWidget } from './../timeline/timeline-widget';
+import { TreeWidget } from './../base/tree-widget';
 import { Trace } from './../core/model/trace';
 
 export class TreeTimelineComponent implements IGoldenLayoutComponent {
@@ -25,7 +26,16 @@ export class TreeTimelineComponent implements IGoldenLayoutComponent {
     }
 
     get html(): string {
-        return `<canvas id="${this.id_}" width="1650" height="600"></canvas>`;
+        return `
+            <div class="row">
+                <div class="col-md-2">
+                    <div id="tree-${this.id_}"></div>
+                </div>
+                <div class="col-md-10">
+                    <canvas id="${this.id_}" width="1500" height="600"></canvas>
+                </div>
+            </div>
+        `;
     }
 
     get itemConfiguration(): GoldenLayout.ItemConfig {
@@ -38,7 +48,11 @@ export class TreeTimelineComponent implements IGoldenLayoutComponent {
     }
 
     public show(): void {
-        let timeline = new TimelineWidget(this.id_, this.modelProvider_);
+        let timeline = new TimelineWidget(document.getElementById(this.id_), this.modelProvider_);
         timeline.inflate();
+
+        let tree = new TreeWidget(document.getElementById(`tree-${this.id_}`));
+        //tree.init();
+        timeline.treeWidget = tree;
     }
 }

@@ -12,12 +12,14 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
+    'bootstrap/**/bootstrap.min.js',
     'pixi.js/**/pixi.min.js',
     'inspire-tree/**/inspire-tree.min.js',
     'inspire-tree-dom/**/inspire-tree-dom.min.js',    
 ];
 
 var styles = [
+    'bootstrap/**/*.css',
     'golden-layout/**/*.css',
     'inspire-tree-dom/**/*.css'
 ];

@@ -12,6 +12,7 @@ import { TimelineChart } from './timeline-chart';
 import { TimelineRuler } from './timeline-ruler';
 import { colors } from './../ui/colors';
 import { eventType } from './../events';
+import { TreeWidget } from '../base/tree-widget';
 
 export class TimelineWidget {
 
@@ -20,8 +21,10 @@ export class TimelineWidget {
     private timelineRuler_: TimelineRuler;
     private timelineChart_: TimelineChart;
 
-    constructor(id: string, modelProvider: ITimelineModelProvider) {
-        let canvas = <HTMLCanvasElement> document.getElementById(id);
+    private treeWidget_: TreeWidget;
+
+    constructor(element: HTMLElement, modelProvider: ITimelineModelProvider) {
+        let canvas = <HTMLCanvasElement> element;
         let options = {
             width: canvas.width,
             height: canvas.height,
@@ -46,6 +49,10 @@ export class TimelineWidget {
         this.timelineController_.inflate();
     }
 
+    set treeWidget(tree: TreeWidget) {
+        this.treeWidget_ = tree;
+    }
+
     private viewModelChanged(e: Event) {
         if (this.timelineController_.viewModel !== undefined) {
             this.timelineChart_.model = this.timelineController_.viewModel;
@@ -54,6 +61,8 @@ export class TimelineWidget {
 
             this.timelineRuler_.context = this.timelineController_.context;
             this.timelineRuler_.draw();
+
+            this.treeWidget_.treeModel = this.timelineController_.viewModel.entries;
         }
     }
 }

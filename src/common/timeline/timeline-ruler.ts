@@ -12,9 +12,10 @@ import { TimeFormatter } from './../core/formatter/time-formatter';
 
 export class TimelineRuler {
 
+    private readonly entryHeight = 25;
     private readonly lineWidth = 1;
     private readonly textStyle = new PIXI.TextStyle({
-        fill: colors.WHITE,
+        fill: colors.BLACK,
         fontSize: 13
     });
 
@@ -51,9 +52,9 @@ export class TimelineRuler {
 
     public draw() {
         this.clear();
-        this.rulerGraphics_.lineStyle(this.lineWidth, colors.WHITE);
-        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + 20);
-        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + 20);
+        this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
+        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + this.entryHeight);
+        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + this.entryHeight);
 
         let numberOfDelimitation = 5;
         let delta = this.width_ / numberOfDelimitation;
@@ -66,7 +67,7 @@ export class TimelineRuler {
     }
 
     private drawSeparation(start: number, height: number) {
-        this.rulerGraphics_.lineStyle(this.lineWidth, colors.WHITE);
+        this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
         this.rulerGraphics_.moveTo(start, this.positionY_);
         this.rulerGraphics_.lineTo(start, height);
 

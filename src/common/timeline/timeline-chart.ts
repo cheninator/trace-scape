@@ -14,6 +14,7 @@ import { IDictionary, Dictionary } from './../core/dictionary';
 import { VisibleWindow } from '../visible-window';
 export class TimelineChart implements IChart {
 
+    private readonly entryHeight = 25;
     public graphicsContainer: PIXI.Container;
 
     private viewModel_: TimelineViewModel;
@@ -35,7 +36,7 @@ export class TimelineChart implements IChart {
 
     public draw() {
         this.clear();
-        let i = 0;
+        let i = 1;
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.rows_.get(event.entryID.toString());
             if (eventGraphic === undefined) {
@@ -49,7 +50,7 @@ export class TimelineChart implements IChart {
                 let resolution = (this.context_.max - this.context_.min) / this.context_.count;
                 let start = Math.max(state.startTime, this.context_.min);
                 let x = Math.round((start - this.context_.min) / resolution);
-                let y = (i + 1) * 20;
+                let y = (i + 1) * this.entryHeight;
                 let width = Math.round(state.duration / resolution);
 
                 eventGraphic.beginFill(color, 1);
