@@ -9,17 +9,21 @@
 import * as GoldenLayout from 'golden-layout';
 import { IGoldenLayoutComponent } from "./component";
 import { TreeWidget } from './../base/tree-widget';
+import { ITreeModel } from '../core/model/tree-model';
 
 export class NavigatorComponent implements IGoldenLayoutComponent {
 
     private name_ = "Project explorer";
     private widget_: TreeWidget;
+    private treeModel_: ITreeModel[];
+
+    constructor() {
+        this.treeModel_ = new Array();
+        this.generateStubProject();
+    }
 
     get html(): string {
         return `
-            <h3><img src="https://avatars1.githubusercontent.com/u/7333024?s=200&v=4" width="25" height="25"> trace2</h3>
-            <h3><img src="https://avatars1.githubusercontent.com/u/7333024?s=200&v=4" width="25" height="25"> kernel vm</h3>
-            <h3><img src="https://avatars1.githubusercontent.com/u/7333024?s=200&v=4" width="25" height="25"> kernel</h3>
             <div id="tree"></div>
         `;
     }
@@ -37,6 +41,74 @@ export class NavigatorComponent implements IGoldenLayoutComponent {
     public show() {
         let element = document.getElementById("tree");
         this.widget_ = new TreeWidget(element);
-        this.widget_.init();
+        this.widget_.treeModel = this.treeModel_;
+    }
+
+    private generateStubProject() {
+        this.treeModel_.push({
+            id: 0,
+            name: "Project",
+            parentId: -1
+        });
+
+        this.treeModel_.push({
+            id: 1,
+            name: "kernel",
+            parentId: 0
+        });
+
+        this.treeModel_.push({
+            id: 2,
+            name: "many-threads",
+            parentId: 0
+        });
+
+        this.treeModel_.push({
+            id: 3,
+            name: "kernel_vm",
+            parentId: 0
+        });
+
+        this.treeModel_.push({
+            id: 4,
+            name: "trace2",
+            parentId: 0
+        });
+
+        this.treeModel_.push({
+            id: 5,
+            name: "Experiment",
+            parentId: 0
+        });
+
+        this.treeModel_.push({
+            id: 6,
+            name: "funky_trace",
+            parentId: 5
+        });
+
+        this.treeModel_.push({
+            id: 7,
+            name: "cyg-profile",
+            parentId: 5
+        });
+
+        this.treeModel_.push({
+            id: 8,
+            name: "Experiment 2",
+            parentId: 0
+        });
+
+        this.treeModel_.push({
+            id: 9,
+            name: "kernel",
+            parentId: 8
+        });
+
+        this.treeModel_.push({
+            id: 10,
+            name: "bug446190",
+            parentId: 8
+        });
     }
 }

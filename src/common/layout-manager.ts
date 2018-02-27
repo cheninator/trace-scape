@@ -72,6 +72,7 @@ export class LayoutManager {
             });
             let length = this.layout_.root.contentItems[0].contentItems[1].contentItems.length;
             row = this.layout_.root.contentItems[0].contentItems[1].contentItems[length - 1];
+            row.config.height = 30;
         }
         row.addChild(configuration);
     }

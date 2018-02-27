@@ -21,6 +21,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "bootstrap": "^4.0.0",
+    "bootstrap.native": "^2.0.21",
     "golden-layout": "^1.5.9",
     "highcharts": "^6.0.7",
     "inspire-tree": "^4.3.1",

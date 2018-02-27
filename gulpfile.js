@@ -12,8 +12,9 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
-    'bootstrap/**/bootstrap.min.js',
+    'bootstrap.native/**/bootstrap-native.min.js',
     'pixi.js/**/pixi.min.js',
+    'highcharts/**/exporting.js',
     'inspire-tree/**/inspire-tree.min.js',
     'inspire-tree-dom/**/inspire-tree-dom.min.js',    
 ];

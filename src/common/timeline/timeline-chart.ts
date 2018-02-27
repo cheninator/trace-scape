@@ -36,7 +36,7 @@ export class TimelineChart implements IChart {
 
     public draw() {
         this.clear();
-        let i = 1;
+        let i = 0;
         for (let event of this.viewModel_.events) {
             let eventGraphic = this.rows_.get(event.entryID.toString());
             if (eventGraphic === undefined) {
@@ -49,12 +49,14 @@ export class TimelineChart implements IChart {
                 }
                 let resolution = (this.context_.max - this.context_.min) / this.context_.count;
                 let start = Math.max(state.startTime, this.context_.min);
+                let rectHeight = this.timelinePresentation_.getThicknessOfState(state.value);
+
                 let x = Math.round((start - this.context_.min) / resolution);
-                let y = (i + 1) * this.entryHeight;
+                let y = ((i + 1) * this.entryHeight) + ((this.entryHeight - rectHeight) / 2);
                 let width = Math.round(state.duration / resolution);
 
                 eventGraphic.beginFill(color, 1);
-                eventGraphic.drawRect(x, y, width, this.timelinePresentation_.getThicknessOfState(state.value));
+                eventGraphic.drawRect(x, y, width, rectHeight);
                 eventGraphic.endFill();
             }
             ++i;

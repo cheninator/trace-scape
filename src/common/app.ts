@@ -13,13 +13,13 @@ import { ModelProviders } from './core/protocol/model-providers';
 import { TreeTimelineComponent } from './ui/tree-timeline-component';
 import { Trace } from './core/model/trace';
 
-async function main() {
+let serverUrl = 'http://localhost:8080/tracecompass';
+let trace: Trace;
 
-    let serverUrl = 'http://localhost:8080/tracecompass';
+async function main() {
 
     let traceModelProvider = new TraceModelProvider(serverUrl);
     let traces = await traceModelProvider.getTraces();
-    let trace: Trace;
 
     if (traces.length === 0) {
         let name = 'kernel';
@@ -30,10 +30,10 @@ async function main() {
     }
 
     let layoutManager = new LayoutManager();
+    layoutManager.addComponent(new TreeTimelineComponent(ModelProviders.THREAD_STATUS, serverUrl, trace));
     layoutManager.addComponent(new TreeXYComponent(ModelProviders.CPU, serverUrl, trace));
     layoutManager.addComponent(new TreeXYComponent(ModelProviders.DISK, serverUrl, trace));
     layoutManager.addComponent(new TreeXYComponent(ModelProviders.KERNEL_MEMORY, serverUrl, trace));
-    layoutManager.addComponent(new TreeTimelineComponent(ModelProviders.THREAD_STATUS, serverUrl, trace));
 
     layoutManager.init();
 }

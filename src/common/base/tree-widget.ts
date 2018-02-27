@@ -31,7 +31,7 @@ export class TreeWidget {
         this.tree_.removeAll();
         this.tree_.addNodes(nodes);
 
-        // @ts-ignore: Unreachable code error
+        // @ts-ignore: Broken definition type
         let treeDom = new InspireTreeDom(this.tree_, {
             target: this.element_
         });
@@ -61,7 +61,7 @@ export class TreeWidget {
             let node = dictionary.get(model.id.toString());
             if (model.parentId !== -1) {
                 let parentNode = dictionary.get(model.parentId.toString());
-                // @ts-ignore: Unreachable code error
+                // @ts-ignore: Broken definition type
                 parentNode.children.push(node);
             } else {
                 roots.push(node);
@@ -71,7 +71,7 @@ export class TreeWidget {
     }
 
     public init() {
-        // @ts-ignore: Unreachable code error
+        // @ts-ignore: Broken definition type
         this.tree_ = new InspireTree({});
 
         this.tree_.on('node.dblclick', (event: MouseEvent, node: any) => {

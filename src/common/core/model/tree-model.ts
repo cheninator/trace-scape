@@ -9,5 +9,5 @@
 export interface ITreeModel {
     id: number;
     parentId: number;
-    name?: string;
+    name: string;
 }

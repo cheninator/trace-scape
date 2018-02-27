@@ -27,9 +27,7 @@ export class TreeXYComponent implements IGoldenLayoutComponent {
 
     get html(): string {
         return `
-            <div class="row">
-                <div id="${this.id_}"></div>
-            </div>
+            <div id="${this.id_}" style="width: 100%; height: 100%"></div>
         `;
     }
 

@@ -69,12 +69,15 @@ export class XYLineChart implements IChart {
     }
 
     private initChart() {
+        let infos = this.htmlElement_.getBoundingClientRect();
         this.chart_ = Highcharts.chart(this.htmlElement_, {
             chart: {
                 zoomType: 'x',
                 events: {
                     selection: this.rangeSelected
-                }
+                },
+                width: infos.width,
+                height: infos.height
             },
             title: {
                 text: this.DEFAULT_TITLE
