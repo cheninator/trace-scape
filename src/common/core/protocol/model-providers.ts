@@ -15,4 +15,5 @@ export namespace ModelProviders {
     export const THREAD_STATUS = 'org.eclipse.tracecompass.internal.analysis.os.linux.core.threadstatus.ThreadStatusDataProvider';
     export const RESOURCES_STATUS = 'org.eclipse.tracecompass.internal.analysis.os.linux.core.threadstatus.ResourcesStatusDataProvider';
     export const CALLSTACK = 'org.eclipse.tracecompass.internal.tmf.core.callstack.provider.CallStackDataProvider';
+    export const CRITICAL_PATH = 'org.eclipse.tracecompass.analysis.graph.core.dataprovider.CriticalPathDataProvider';
 }

@@ -9,10 +9,10 @@
 import { TimelineViewModel } from './../core/model/timeline-model';
 import { TimelinePresentation } from './timeline-presentation';
 import { colors } from './../ui/colors';
-import { IChart } from './../base/chart';
 import { IDictionary, Dictionary } from './../core/dictionary';
 import { VisibleWindow } from '../visible-window';
-export class TimelineChart implements IChart {
+
+export class TimelineChart {
 
     private readonly entryHeight = 25;
     public graphicsContainer: PIXI.Container;

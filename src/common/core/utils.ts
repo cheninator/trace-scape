@@ -11,4 +11,7 @@ export class Utils {
     public static wait(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    public static readonly BIG_BANG = "0";
+    public static readonly ETERNITY = "9223372036854775807";
 }

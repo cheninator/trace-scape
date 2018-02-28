@@ -14,11 +14,15 @@ import { Trace } from './../core/model/trace';
 import { IXYModelProvider } from './../core/protocol/xy-model-provider';
 import { TreeXYModelProviderFactory } from './../core/protocol/xy/tree-xy-model-provider-factory';
 import { ModelProviders } from '../core/protocol/model-providers';
+import { TreeWidget } from '../base/tree-widget';
 
 export class TreeXYComponent implements IGoldenLayoutComponent {
 
     private modelProvider_: IXYModelProvider;
     private readonly id_: string;
+
+    private xyWidget_: XYWidget;
+    private treeWidget: TreeWidget;
 
     constructor(id: string, serverUrl: string, trace: Trace) {
         this.id_ = id;
@@ -41,7 +45,11 @@ export class TreeXYComponent implements IGoldenLayoutComponent {
     }
 
     public show() {
-        let widget = new XYWidget(document.getElementById(this.id_), this.modelProvider_);
-        widget.inflate();
+        this.xyWidget_ = new XYWidget(document.getElementById(this.id_), this.modelProvider_);
+        this.xyWidget_.inflate({
+            min: this.modelProvider_.trace.start,
+            max: this.modelProvider_.trace.end,
+            count: 500
+        });
     }
 }

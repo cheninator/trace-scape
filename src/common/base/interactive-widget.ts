@@ -7,11 +7,16 @@
  */
 
 import { VisibleWindow } from './../visible-window';
+import { Key } from './../key';
 
-export abstract class InteractiveController {
+export abstract class InteractiveWidget {
 
     private readonly ZOOM_PERCENT = 0.1;
     protected visibleWindow_: VisibleWindow;
+
+    /* Key bindings */
+    private plus_: Key;
+    private minus_: Key;
 
     constructor() {
         this.visibleWindow_ = {
@@ -49,5 +54,14 @@ export abstract class InteractiveController {
         this.visibleWindow_.max = Math.round(this.visibleWindow_.max + delta);
         this.visibleWindow_.min = Math.round(this.visibleWindow_.min + delta);
         this.update();
+    }
+
+    protected enableZoomByKeyboard(plus?: number, minus?: number) {
+        /* Key bindings for zoom */
+        this.plus_ = new Key(107);
+        this.plus_.press = this.zoomIn.bind(this);
+
+        this.minus_ = new Key(109);
+        this.minus_.press = this.zoomOut.bind(this);
     }
 }

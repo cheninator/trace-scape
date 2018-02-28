@@ -9,35 +9,31 @@
 import * as Highcharts from 'highcharts';
 
 import { TimeFormatter } from './../core/formatter/time-formatter';
-import { IChart } from './../base/chart';
-import { XYViewModel } from './../core/model/xy-model';
+import { XYSeries } from './../core/model/xy-model';
+import { IXYChart } from './../base/xy-chart';
 import { eventType } from './../events';
 
-export class XYLineChart implements IChart {
+export class XYLineChart implements IXYChart {
 
     private readonly DEFAULT_TITLE = "XY line chart";
     private readonly DEFAULT_LOADING_MESSAGE = "Loading data...";
 
     private htmlElement_: HTMLElement;
     private chart_: Highcharts.ChartObject;
-    private viewModel_: XYViewModel;
+    private title_: string;
 
     constructor(htmlElement: HTMLElement) {
         this.htmlElement_ = htmlElement;
         this.initChart();
     }
 
-    set viewModel(viewmodel: XYViewModel) {
-        if (viewmodel !== undefined) {
-            this.viewModel_ = viewmodel;
-            //this.chart_.setTitle({text: this.viewModel.title});
-        }
+    set title(title: string) {
+        this.title_ = title;
     }
 
-    public draw() {
-        this.clear();
+    public draw(xySeries: XYSeries[]) {
         this.chart_.showLoading(this.DEFAULT_LOADING_MESSAGE);
-        for (let series of this.viewModel_.series) {
+        for (let series of xySeries) {
             let data = new Array();
             for (let i = 0; i < series.x.length; ++i) {
                 data.push([series.x[i], series.y[i]]);
@@ -49,6 +45,11 @@ export class XYLineChart implements IChart {
         }
         this.chart_.redraw();
         this.chart_.hideLoading();
+    }
+
+    public redraw(series: XYSeries[]) {
+        this.clear();
+        this.draw(series);
     }
 
     public clear() {

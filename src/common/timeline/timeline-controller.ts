@@ -7,7 +7,7 @@
  */
 
 import { TimelineViewModel, TimelineEntry, TimelineArrow } from './../core/model/timeline-model';
-import { InteractiveController } from './../base/interactive-controller';
+import { InteractiveWidget } from './../base/interactive-widget';
 import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
 import { SelectionTimeQueryFilter } from './../core/filter/selection-time-query-filter';
 import { TimeQueryFilter } from './../core/filter/time-query-filter';
@@ -19,10 +19,9 @@ import { Utils } from './../core/utils';
 import { Key } from './../key';
 
 
-export class TimelineController extends InteractiveController {
+export class TimelineController extends InteractiveWidget {
 
     private readonly WAIT_BEFORE_REQUEST = 700;
-    private readonly MAX_LONG = "9223372036854775807";
 
     private modelProvider_: ITimelineModelProvider;
     private viewModel_: TimelineViewModel;
@@ -91,7 +90,7 @@ export class TimelineController extends InteractiveController {
     private async updateTree(): Promise<Status> {
         let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,
-            end: this.MAX_LONG,
+            end: Utils.ETERNITY,
             count: this.visibleWindow_.count,
         };
 
@@ -103,7 +102,7 @@ export class TimelineController extends InteractiveController {
     private async updateEvents(): Promise<Status> {
         let filter: SelectionTimeQueryFilter = {
             start: this.visibleWindow_.min,
-            end: this.visibleWindow_.max,
+            end: this.visibleWindow_.min === this.visibleWindow_.max ? Utils.ETERNITY : this.visibleWindow_.max,
             count: this.visibleWindow_.count,
             items: this.viewModel_.entries.map((entry) => entry.id)
         };

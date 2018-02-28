@@ -6,7 +6,11 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-export interface IChart {
-    draw(): void;
+import { XYSeries } from './../core/model/xy-model';
+
+export interface IXYChart {
+    title: string;
+    redraw(series: XYSeries[]): void;
+    draw(series: XYSeries[]): void;
     clear(): void;
 }
