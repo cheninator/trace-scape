@@ -25,9 +25,9 @@ export class PixiTimelineChart implements ITimelineChart {
     private chartContainer_: PIXI.Container;
     private rulerContainer_: PIXI.Container;
 
-    private visibleEntries_: TimelineEntry[];
-    private eventsGraphics_: PIXI.Graphics[];
-    private arrowsGraphics_: PIXI.Graphics[];
+    private visibleEntries_: TimelineEntry[] = new Array();
+    private eventsGraphics_: PIXI.Graphics[] = new Array();
+    private arrowsGraphics_: PIXI.Graphics[] = new Array();
 
     constructor(element: HTMLElement) {
         this.htmlElement_ = element;

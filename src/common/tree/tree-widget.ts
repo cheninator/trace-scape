@@ -27,6 +27,9 @@ export class TreeWidget extends Widget {
         super();
         this.treeViewer = new TreeViewer(element);
         this.modelProvider_ = modelProvider;
+
+        let box = element.getBoundingClientRect();
+        this.visibleWindow_.count = Math.floor(box.width);
     }
 
     public inflate(visibleWindow?: VisibleWindow) {

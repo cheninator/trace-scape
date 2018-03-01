@@ -23,11 +23,6 @@ export abstract class InteractiveWidget extends Widget {
 
     constructor() {
         super();
-        this.visibleWindow_ = {
-            min: Number.MIN_SAFE_INTEGER,
-            max: Number.MAX_SAFE_INTEGER,
-            count: 1
-        };
     }
 
     public zoomIn() {

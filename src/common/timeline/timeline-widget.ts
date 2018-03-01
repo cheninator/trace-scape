@@ -22,14 +22,20 @@ export class TimelineWidget extends InteractiveWidget {
     private timelineChart_: ITimelineChart;
     private modelProvider_: ITimelineModelProvider;
 
-    private visibleEntries_: TimelineEntry[];
-    private rowModels_: TimelineRowModel[];
-    private arrows_: TimelineArrow[];
+    private visibleEntries_: TimelineEntry[] = new Array();
+    private rowModels_: TimelineRowModel[] = new Array();
+    private arrows_: TimelineArrow[] = new Array();
 
     constructor(element: HTMLElement, modelProvider: ITimelineModelProvider) {
         super();
         this.timelineChart_ = new PixiTimelineChart(element);
         this.modelProvider_ = modelProvider;
+
+        let box = element.getBoundingClientRect();
+        this.visibleWindow_.min = this.modelProvider_.trace.start;
+        this.visibleWindow_.max = this.modelProvider_.trace.end;
+        this.visibleWindow_.count = Math.floor(box.width);
+
         this.init();
     }
 
@@ -48,6 +54,7 @@ export class TimelineWidget extends InteractiveWidget {
         let completed = false;
         let status: Status;
 
+        this.timelineChart_.context = this.visibleWindow_;
         do {
             status = await this.updateEvents();
 

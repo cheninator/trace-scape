@@ -16,6 +16,7 @@ import { TreeWidget } from './../tree/tree-widget';
 import { BaseGoldenLayoutComponent } from './component';
 import { ConfigComponent } from './config-component';
 import { EventType } from '../base/events';
+import { Utils } from '../core/utils';
 
 export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
@@ -25,11 +26,7 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
     constructor(config: ConfigComponent, trace: Trace) {
         super(config);
-        this.modelProvider_ = TreeTimelineModelProviderFactory.create(this.config_.serverUrl, trace, this.config_.serverUrl);
-
-        this.treeWidget_ = new TreeWidget(document.getElementById(`tree-${this.config_.id}`), this.modelProvider_);
-        this.timelineWidget_ = new TimelineWidget(document.getElementById(this.config_.id), this.modelProvider_);
-
+        this.modelProvider_ = TreeTimelineModelProviderFactory.create(this.config_.serverUrl, trace, this.config_.id);
         window.addEventListener(EventType.TREE_MODEL_CHANGED, this.treeModelChanged.bind(this));
     }
 
@@ -40,18 +37,25 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
                     <div id="tree-${this.config_.id}"></div>
                 </div>
                 <div class="col-md-10">
-                    <canvas id="${this.config_.id}"></canvas>
+                    <canvas id="${this.config_.id}" style="width: 100%; height: 100%"></canvas>
                 </div>
             </div>
         `;
     }
 
     public show(): void {
+        this.timelineWidget_ = new TimelineWidget(document.getElementById(this.config_.id), this.modelProvider_);
+        this.treeWidget_ = new TreeWidget(document.getElementById(`tree-${this.config_.id}`), this.modelProvider_);
+
         this.treeWidget_.inflate();
-        this.timelineWidget_.inflate();
+        Utils.wait(300).then(() => {
+            this.timelineWidget_.inflate();
+        });
     }
 
     private treeModelChanged(e: CustomEvent) {
-        this.timelineWidget_.visibleEntries = e.detail.model;
+        if (this.timelineWidget_ !== undefined) {
+            this.timelineWidget_.visibleEntries = e.detail.model;
+        }
     }
 }

@@ -12,6 +12,14 @@ export abstract class Widget {
     protected readonly WAIT_BEFORE_REQUEST = 700;
     protected visibleWindow_: VisibleWindow;
 
+    constructor() {
+        this.visibleWindow_ = {
+            min: 0,
+            max: Number.MAX_SAFE_INTEGER,
+            count: 1
+        };
+    }
+
     public abstract inflate(visibleWindow?: VisibleWindow): void;
     public abstract update(): void;
 }

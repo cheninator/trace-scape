@@ -30,7 +30,12 @@ async function main() {
     }
 
     let layoutManager = new LayoutManager();
-    //layoutManager.addComponent(new TreeTimelineComponent(ModelProviders.THREAD_STATUS, serverUrl, trace));
+
+    layoutManager.addComponent(new TreeTimelineComponent({
+        id: ModelProviders.THREAD_STATUS,
+        serverUrl: serverUrl,
+        name: "Thread Status"
+    }, trace));
 
     layoutManager.addComponent(new TreeXYComponent({
         id: ModelProviders.CPU,
