@@ -7,7 +7,7 @@
  */
 
 export interface VisibleWindow {
-    min: number;
-    max: number;
+    min: any;
+    max: any;
     count: number;
 }

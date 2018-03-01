@@ -29,6 +29,7 @@ export class TreeWidget extends Widget {
         this.modelProvider_ = modelProvider;
 
         let box = element.getBoundingClientRect();
+        this.visibleWindow_.max = Utils.ETERNITY;
         this.visibleWindow_.count = Math.floor(box.width);
     }
 
