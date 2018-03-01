@@ -7,7 +7,7 @@
  */
 
 import { VisibleWindow } from './../base/visible-window';
-import { eventType } from './../base/events';
+import { EventType } from './../base/events';
 import { Key } from './../base/key';
 import { Widget } from './widget';
 
@@ -73,7 +73,7 @@ export abstract class InteractiveWidget extends Widget {
     }
 
     protected listenForRangeSelection() {
-        window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
+        window.addEventListener(EventType.RANGE_SELECTED, this.rangeSelected.bind(this));
     }
 
     private rangeSelected(e: CustomEvent) {

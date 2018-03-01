@@ -8,8 +8,32 @@
 
 import * as GoldenLayout from 'golden-layout';
 
+import { ConfigComponent } from './config-component';
+
 export interface IGoldenLayoutComponent {
     html: string;
     itemConfiguration: GoldenLayout.ItemConfig;
     show(): void;
+}
+
+export abstract class BaseGoldenLayoutComponent implements IGoldenLayoutComponent {
+
+    protected readonly config_: ConfigComponent;
+
+    constructor(config: ConfigComponent) {
+        this.config_ = config;
+    }
+
+    get itemConfiguration(): GoldenLayout.ItemConfig {
+        return <GoldenLayout.ComponentConfig> {
+            id: this.config_.id,
+            title: this.config_.name,
+            type: 'component',
+            componentName: this.config_.name
+        };
+    }
+
+    public abstract html: string;
+
+    public abstract show(): void;
 }

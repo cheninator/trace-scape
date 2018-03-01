@@ -11,7 +11,7 @@ import * as Highcharts from 'highcharts';
 import { TimeFormatter } from './../core/formatter/time-formatter';
 import { XYSeries } from './../core/model/xy-model';
 import { IXYChart } from './../base/xy-chart';
-import { eventType } from './../base/events';
+import { EventType } from './../base/events';
 
 export class XYLineChart implements IXYChart {
 
@@ -61,7 +61,7 @@ export class XYLineChart implements IXYChart {
     private rangeSelected(e: Highcharts.ChartSelectionEvent) {
         e.preventDefault();
 
-        window.dispatchEvent(new CustomEvent(eventType.RANGE_SELECTED, {
+        window.dispatchEvent(new CustomEvent(EventType.RANGE_SELECTED, {
             detail: {
                 start: e.xAxis[0].min,
                 end: e.xAxis[0].max

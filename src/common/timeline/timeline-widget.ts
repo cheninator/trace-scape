@@ -33,6 +33,10 @@ export class TimelineWidget extends InteractiveWidget {
         this.init();
     }
 
+    set visibleEntries(visibleEntries: TimelineEntry[]) {
+        this.visibleEntries_ = visibleEntries;
+    }
+
     public inflate(visibleWindow?: VisibleWindow) {
         if (visibleWindow !== undefined) {
             this.visibleWindow_ = visibleWindow;

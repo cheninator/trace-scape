@@ -7,12 +7,12 @@
  */
 
 import * as Tree from 'inspire-tree';
-import * as InspireTreeDom from 'inspire-tree-dom';
+import * as TreeDom from 'inspire-tree-dom';
 
 import { NodeConfig, InspireTree } from 'inspire-tree';
 import { ITreeModel } from '../core/model/tree-model';
 import { Dictionary } from '../core/dictionary';
-import { eventType } from './../base/events';
+import { EventType } from './../base/events';
 
 export class TreeViewer {
 
@@ -32,7 +32,14 @@ export class TreeViewer {
         this.tree_.addNodes(nodes);
 
         // @ts-ignore: Broken definition type
-        let treeDom = new InspireTreeDom(this.tree_, {
+        let treeDom = new TreeDom(this.tree_, {
+            target: this.element_
+        });
+    }
+
+    public update() {
+        // @ts-ignore
+        let treeDom = new TreeDom(this.tree_, {
             target: this.element_
         });
     }
@@ -70,7 +77,7 @@ export class TreeViewer {
         return roots;
     }
 
-    public init() {
+    private init() {
         // @ts-ignore: Broken definition type
         this.tree_ = new Tree({});
 

@@ -6,23 +6,26 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { Widget } from '../base/widget';
+import { ITreeModel } from '../core/model/tree-model';
 import { ITreeModelProvider } from '../core/protocol/tree-model-provider';
+import { EventType } from './../base/events';
+import { VisibleWindow } from './../base/visible-window';
 import { TimeQueryFilter } from './../core/filter/time-query-filter';
 import { Status } from './../core/protocol/model-response';
-import { VisibleWindow } from './../base/visible-window';
-import { ITreeModel } from '../core/model/tree-model';
-import { Widget } from '../base/widget';
 import { Utils } from './../core/utils';
+import { TreeViewer } from './tree-viewer';
 
 export class TreeWidget extends Widget {
 
-    private element_: HTMLElement;
     private modelProvider_: ITreeModelProvider;
     private entries_: ITreeModel[] = new Array();
 
+    private treeViewer: TreeViewer;
+
     constructor(element: HTMLElement, modelProvider: ITreeModelProvider) {
         super();
-        this.element_ = element;
+        this.treeViewer = new TreeViewer(element);
         this.modelProvider_ = modelProvider;
     }
 
@@ -48,6 +51,13 @@ export class TreeWidget extends Widget {
                     completed = true;
                     break;
             }
+
+            window.dispatchEvent(new CustomEvent(EventType.TREE_MODEL_CHANGED, {
+                detail: {
+                    model: this.entries_
+                }
+            }));
+            this.treeViewer.update();
             await Utils.wait(this.WAIT_BEFORE_REQUEST);
         } while (!completed);
     }
@@ -61,6 +71,7 @@ export class TreeWidget extends Widget {
 
         let response = await this.modelProvider_.fetchTree(filter);
         this.entries_ = response.model;
+        this.treeViewer.treeModel = this.entries_;
         return response.status;
     }
 }

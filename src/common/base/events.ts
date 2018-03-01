@@ -6,9 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-export const eventType = {
-    VIEW_MODEL_CHANGED: 'viewModelChanged',
+export const EventType = {
+    TREE_MODEL_CHANGED: 'treeModelChanged',
     RANGE_SELECTED: 'rangeSelected',
     RESET_RANGE: 'resetRange',
-    TIMEGRAPH_CHANGED: 'timegraphChanged',
 };

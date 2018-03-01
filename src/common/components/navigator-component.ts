@@ -7,108 +7,51 @@
  */
 
 import * as GoldenLayout from 'golden-layout';
-import { IGoldenLayoutComponent } from "./component";
+
+import { ITreeModelProvider } from '../core/protocol/tree-model-provider';
+import { ProjectExplorerModelProvider } from './../core/protocol/project-explorer-model-provider';
 import { TreeWidget } from './../tree/tree-widget';
-import { ITreeModel } from '../core/model/tree-model';
+import { BaseGoldenLayoutComponent } from './component';
+import { ConfigComponent } from './config-component';
 
-export class NavigatorComponent implements IGoldenLayoutComponent {
+export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
-    private name_ = "Project explorer";
-    private widget_: TreeWidget;
-    private treeModel_: ITreeModel[];
+    private static readonly configuration: ConfigComponent = {
+        id: "navigator",
+        name: "Project explorer",
+        serverUrl: ""
+    };
+
+    private treeWidget_: TreeWidget;
+    private modelProvider_: ITreeModelProvider;
 
     constructor() {
-        this.treeModel_ = new Array();
-        this.generateStubProject();
+        super(NavigatorComponent.configuration);
+        this.modelProvider_ = new ProjectExplorerModelProvider(this.config_.serverUrl);
     }
 
     get html(): string {
         return `
-            <div id="tree"></div>
+            <div id="${this.config_.id}"></div>
         `;
     }
 
     get itemConfiguration(): GoldenLayout.ItemConfig {
         return <GoldenLayout.ComponentConfig> {
-            title: this.name_,
+            id: this.config_.id,
+            title: this.config_.name,
             type: 'component',
-            componentName: this.name_,
-            componentState: { text: '' },
+            componentName: this.config_.name,
             isClosable: false,
         };
     }
 
     public show() {
-        let element = document.getElementById("tree");
-        this.widget_ = new TreeWidget(element);
-        this.widget_.treeModel = this.treeModel_;
-    }
-
-    private generateStubProject() {
-        this.treeModel_.push({
-            id: 0,
-            name: "Project",
-            parentId: -1
-        });
-
-        this.treeModel_.push({
-            id: 1,
-            name: "kernel",
-            parentId: 0
-        });
-
-        this.treeModel_.push({
-            id: 2,
-            name: "many-threads",
-            parentId: 0
-        });
-
-        this.treeModel_.push({
-            id: 3,
-            name: "kernel_vm",
-            parentId: 0
-        });
-
-        this.treeModel_.push({
-            id: 4,
-            name: "trace2",
-            parentId: 0
-        });
-
-        this.treeModel_.push({
-            id: 5,
-            name: "Experiment",
-            parentId: 0
-        });
-
-        this.treeModel_.push({
-            id: 6,
-            name: "funky_trace",
-            parentId: 5
-        });
-
-        this.treeModel_.push({
-            id: 7,
-            name: "cyg-profile",
-            parentId: 5
-        });
-
-        this.treeModel_.push({
-            id: 8,
-            name: "Experiment 2",
-            parentId: 0
-        });
-
-        this.treeModel_.push({
-            id: 9,
-            name: "kernel",
-            parentId: 8
-        });
-
-        this.treeModel_.push({
-            id: 10,
-            name: "bug446190",
-            parentId: 8
+        this.treeWidget_ = new TreeWidget(document.getElementById(this.config_.id), this.modelProvider_);
+        this.treeWidget_.inflate({
+            min: 0,
+            max: 100,
+            count: 10
         });
     }
 }
