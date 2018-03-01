@@ -8,7 +8,7 @@
 
 import * as GoldenLayout from 'golden-layout';
 import { IGoldenLayoutComponent } from "./component";
-import { TreeWidget } from './../base/tree-widget';
+import { TreeWidget } from './../tree/tree-widget';
 import { ITreeModel } from '../core/model/tree-model';
 
 export class NavigatorComponent implements IGoldenLayoutComponent {

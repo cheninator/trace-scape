@@ -6,8 +6,8 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { colors } from './../ui/colors';
-import { VisibleWindow } from './../visible-window';
+import { colors } from './../components/colors';
+import { VisibleWindow } from './../base/visible-window';
 import { TimeFormatter } from './../core/formatter/time-formatter';
 
 export class TimelineRuler {

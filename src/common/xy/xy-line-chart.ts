@@ -11,7 +11,7 @@ import * as Highcharts from 'highcharts';
 import { TimeFormatter } from './../core/formatter/time-formatter';
 import { XYSeries } from './../core/model/xy-model';
 import { IXYChart } from './../base/xy-chart';
-import { eventType } from './../events';
+import { eventType } from './../base/events';
 
 export class XYLineChart implements IXYChart {
 

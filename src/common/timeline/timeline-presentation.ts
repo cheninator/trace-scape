@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { colors } from './../ui/colors';
+import { colors } from './../components/colors';
 import { Dictionary } from '../core/dictionary';
 
 export class TimelinePresentation {

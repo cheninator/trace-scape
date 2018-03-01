@@ -8,31 +8,33 @@
 
 import * as GoldenLayout from 'golden-layout';
 
-import { IGoldenLayoutComponent } from './component';
-import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
 import { TreeTimelineModelProviderFactory } from './../core/protocol/timeline/tree-timeline-model-provider-factory';
+import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
 import { TimelineWidget } from './../timeline/timeline-widget';
-import { TreeWidget } from './../base/tree-widget';
+import { IGoldenLayoutComponent } from './component';
+import { ConfigComponent } from './config-component';
+import { TreeWidget } from './../tree/tree-widget';
 import { Trace } from './../core/model/trace';
 
 export class TreeTimelineComponent implements IGoldenLayoutComponent {
 
-    private modelProvider_: ITimelineModelProvider;
-    private readonly id_: string;
+    private readonly config_: ConfigComponent;
 
-    constructor(id: string, serverUrl: string, trace: Trace) {
-        this.id_ = id;
-        this.modelProvider_ = TreeTimelineModelProviderFactory.create(serverUrl, trace, this.id_);
+    private modelProvider_: ITimelineModelProvider;
+
+    constructor(config: ConfigComponent, trace: Trace) {
+        this.config_ = config;
+        this.modelProvider_ = TreeTimelineModelProviderFactory.create(this.config_.serverUrl, trace, this.config_.serverUrl);
     }
 
     get html(): string {
         return `
             <div class="row">
                 <div class="col-md-2">
-                    <div id="tree-${this.id_}"></div>
+                    <div id="tree-${this.config_.id}"></div>
                 </div>
                 <div class="col-md-10">
-                    <canvas id="${this.id_}" width="1500" height="600"></canvas>
+                    <canvas id="${this.config_.id}"></canvas>
                 </div>
             </div>
         `;
@@ -40,19 +42,20 @@ export class TreeTimelineComponent implements IGoldenLayoutComponent {
 
     get itemConfiguration(): GoldenLayout.ItemConfig {
         return <GoldenLayout.ComponentConfig> {
-            title: this.id_,
+            id: this.config_.id,
+            title: this.config_.name,
             type: 'component',
-            componentName: this.id_,
-            componentState: { text: '' }
+            componentName: this.config_.name
         };
     }
 
     public show(): void {
-        let timeline = new TimelineWidget(document.getElementById(this.id_), this.modelProvider_);
+        let tree = new TreeWidget(document.getElementById(`tree-${this.config_.id}`), this.modelProvider_);
+        /*
+        let timeline = new TimelineWidget(document.getElementById(this.config_.id), this.modelProvider_);
         timeline.inflate();
-
-        let tree = new TreeWidget(document.getElementById(`tree-${this.id_}`));
+        */
         //tree.init();
-        timeline.treeWidget = tree;
+        //timeline.treeWidget = tree;
     }
 }

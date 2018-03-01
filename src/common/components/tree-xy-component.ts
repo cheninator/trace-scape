@@ -8,44 +8,45 @@
 
 import * as GoldenLayout from 'golden-layout';
 
+import { TreeXYModelProviderFactory } from './../core/protocol/xy/tree-xy-model-provider-factory';
+import { IXYModelProvider } from './../core/protocol/xy-model-provider';
+import { ModelProviders } from '../core/protocol/model-providers';
 import { IGoldenLayoutComponent } from './component';
+import { ConfigComponent } from './config-component';
 import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../core/model/trace';
-import { IXYModelProvider } from './../core/protocol/xy-model-provider';
-import { TreeXYModelProviderFactory } from './../core/protocol/xy/tree-xy-model-provider-factory';
-import { ModelProviders } from '../core/protocol/model-providers';
-import { TreeWidget } from '../base/tree-widget';
+import { TreeWidget } from '../tree/tree-widget';
 
 export class TreeXYComponent implements IGoldenLayoutComponent {
 
-    private modelProvider_: IXYModelProvider;
-    private readonly id_: string;
+    private readonly config_: ConfigComponent;
 
     private xyWidget_: XYWidget;
     private treeWidget: TreeWidget;
+    private modelProvider_: IXYModelProvider;
 
-    constructor(id: string, serverUrl: string, trace: Trace) {
-        this.id_ = id;
-        this.modelProvider_ = TreeXYModelProviderFactory.create(serverUrl, trace, this.id_);
+    constructor(config: ConfigComponent, trace: Trace) {
+        this.config_ = config;
+        this.modelProvider_ = TreeXYModelProviderFactory.create(config.serverUrl, trace, this.config_.id);
     }
 
     get html(): string {
         return `
-            <div id="${this.id_}" style="width: 100%; height: 100%"></div>
+            <div id="${this.config_.id}" style="width: 100%; height: 100%"></div>
         `;
     }
 
     get itemConfiguration(): GoldenLayout.ItemConfig {
         return <GoldenLayout.ComponentConfig> {
-            title: this.id_,
+            id: this.config_.id,
+            title: this.config_.name,
             type: 'component',
-            componentName: this.id_,
-            componentState: { text: '' }
+            componentName: this.config_.name
         };
     }
 
     public show() {
-        this.xyWidget_ = new XYWidget(document.getElementById(this.id_), this.modelProvider_);
+        this.xyWidget_ = new XYWidget(document.getElementById(this.config_.id), this.modelProvider_);
         this.xyWidget_.inflate({
             min: this.modelProvider_.trace.start,
             max: this.modelProvider_.trace.end,

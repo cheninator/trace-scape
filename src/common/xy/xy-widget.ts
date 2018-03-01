@@ -6,21 +6,17 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { XYLineChart } from './xy-line-chart';
 import { SelectionTimeQueryFilter } from './../core/filter/selection-time-query-filter';
-import { InteractiveWidget } from './../base/interactive-widget';
-import { IXYChart } from './../base/xy-chart';
 import { IXYModelProvider } from './../core/protocol/xy-model-provider';
-import { Status } from './../core/protocol/model-response';
+import { InteractiveWidget } from './../base/interactive-widget';
 import { XYEntries, XYSeries } from './../core/model/xy-model';
-import { VisibleWindow } from './../visible-window';
-import { eventType } from './../events';
+import { Status } from './../core/protocol/model-response';
+import { VisibleWindow } from './../base/visible-window';
+import { XYLineChart } from './xy-line-chart';
+import { IXYChart } from './../base/xy-chart';
 import { Utils } from './../core/utils';
 
-
 export class XYWidget extends InteractiveWidget {
-
-    private readonly WAIT_BEFORE_REQUEST = 700;
 
     private xyChart_: IXYChart;
     private modelProvider_: IXYModelProvider;
@@ -36,6 +32,10 @@ export class XYWidget extends InteractiveWidget {
         this.init();
     }
 
+    set selectedEntries(selectedEntries: XYEntries[]) {
+        this.selectedEntries_ = selectedEntries;
+    }
+
     public inflate(visibleWindow?: VisibleWindow) {
         if (visibleWindow !== undefined) {
             this.visibleWindow_ = visibleWindow;
@@ -43,7 +43,7 @@ export class XYWidget extends InteractiveWidget {
         this.update();
     }
 
-    protected async update() {
+    public async update() {
         let completed = false;
         let status: Status;
 
@@ -78,13 +78,8 @@ export class XYWidget extends InteractiveWidget {
     }
 
     private init() {
-        window.addEventListener(eventType.RANGE_SELECTED, this.rangeSelected.bind(this));
+        this.listenForRangeSelection();
         this.enableZoomByKeyboard();
-    }
-
-    private rangeSelected(e: CustomEvent) {
-        this.visibleWindow_.min = e.detail.start;
-        this.visibleWindow_.max = e.detail.end;
-        this.update();
+        this.enablePanByKeyboard();
     }
 }

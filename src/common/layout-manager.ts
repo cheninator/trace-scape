@@ -8,9 +8,9 @@
 
 import * as GoldenLayout from 'golden-layout';
 
-import { IGoldenLayoutComponent } from './ui/component';
-import { NavigatorComponent } from './ui/navigator-component';
-import { TreeTimelineComponent } from './ui/tree-timeline-component';
+import { IGoldenLayoutComponent } from './components/component';
+import { NavigatorComponent } from './components/navigator-component';
+import { TreeTimelineComponent } from './components/tree-timeline-component';
 
 export class LayoutManager {
 
@@ -37,6 +37,8 @@ export class LayoutManager {
 
         this.components_.push(component);
         let configuration = component.itemConfiguration;
+
+        // @ts-ignore
         this.layout_.registerComponent(configuration.title, function(container: GoldenLayout.Container, componentState: any) {
             container.getElement().html(component.html);
         });

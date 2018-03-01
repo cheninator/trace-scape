@@ -6,19 +6,19 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import * as InspireTree from 'inspire-tree';
+import * as Tree from 'inspire-tree';
 import * as InspireTreeDom from 'inspire-tree-dom';
 
-import { NodeConfig } from 'inspire-tree';
+import { NodeConfig, InspireTree } from 'inspire-tree';
 import { ITreeModel } from '../core/model/tree-model';
 import { Dictionary } from '../core/dictionary';
-import { eventType } from './../events';
+import { eventType } from './../base/events';
 
-export class TreeWidget {
+export class TreeViewer {
 
     private element_: HTMLElement;
     private treeModel_: ITreeModel[];
-    private tree_: any;
+    private tree_: InspireTree;
 
     constructor(element: HTMLElement) {
         this.element_ = element;
@@ -72,7 +72,7 @@ export class TreeWidget {
 
     public init() {
         // @ts-ignore: Broken definition type
-        this.tree_ = new InspireTree({});
+        this.tree_ = new Tree({});
 
         this.tree_.on('node.dblclick', (event: MouseEvent, node: any) => {
             console.log("Double click", node);

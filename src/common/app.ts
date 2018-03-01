@@ -8,9 +8,9 @@
 
 import { TraceModelProvider } from './core/protocol/trace-model-provider';
 import { LayoutManager } from './layout-manager';
-import { TreeXYComponent } from './ui/tree-xy-component';
+import { TreeXYComponent } from './components/tree-xy-component';
 import { ModelProviders } from './core/protocol/model-providers';
-import { TreeTimelineComponent } from './ui/tree-timeline-component';
+import { TreeTimelineComponent } from './components/tree-timeline-component';
 import { Trace } from './core/model/trace';
 
 let serverUrl = 'http://localhost:8080/tracecompass';
@@ -30,10 +30,25 @@ async function main() {
     }
 
     let layoutManager = new LayoutManager();
-    layoutManager.addComponent(new TreeTimelineComponent(ModelProviders.THREAD_STATUS, serverUrl, trace));
-    layoutManager.addComponent(new TreeXYComponent(ModelProviders.CPU, serverUrl, trace));
-    layoutManager.addComponent(new TreeXYComponent(ModelProviders.DISK, serverUrl, trace));
-    layoutManager.addComponent(new TreeXYComponent(ModelProviders.KERNEL_MEMORY, serverUrl, trace));
+    //layoutManager.addComponent(new TreeTimelineComponent(ModelProviders.THREAD_STATUS, serverUrl, trace));
+
+    layoutManager.addComponent(new TreeXYComponent({
+        id: ModelProviders.CPU,
+        serverUrl: serverUrl,
+        name: "CPU Usage"
+    }, trace));
+
+    layoutManager.addComponent(new TreeXYComponent({
+        id: ModelProviders.DISK,
+        serverUrl: serverUrl,
+        name: "Disk I/O activiy"
+     }, trace));
+
+    layoutManager.addComponent(new TreeXYComponent({
+        id: ModelProviders.KERNEL_MEMORY,
+        serverUrl: serverUrl,
+        name: "Kernel memory usage"
+    }, trace));
 
     layoutManager.init();
 }
