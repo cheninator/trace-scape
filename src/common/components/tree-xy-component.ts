@@ -16,6 +16,8 @@ import { ConfigComponent } from './config-component';
 import { XYWidget } from './../xy/xy-widget';
 import { Trace } from './../core/model/trace';
 import { TreeWidget } from '../tree/tree-widget';
+import { EventType } from './../base/events';
+import { Utils } from './../core/utils';
 
 export class TreeXYComponent extends BaseGoldenLayoutComponent {
 
@@ -26,6 +28,7 @@ export class TreeXYComponent extends BaseGoldenLayoutComponent {
     constructor(config: ConfigComponent, trace: Trace) {
         super(config);
         this.modelProvider_ = TreeXYModelProviderFactory.create(config.serverUrl, trace, this.config_.id);
+        window.addEventListener(EventType.TREE_MODEL_CHANGED, this.treeModelChanged.bind(this));
     }
 
     get html(): string {
@@ -36,13 +39,19 @@ export class TreeXYComponent extends BaseGoldenLayoutComponent {
     }
 
     public show() {
-        this.xyWidget_ = new XYWidget(document.getElementById(this.config_.id), this.modelProvider_);
         this.treeWidget_ = new TreeWidget(document.getElementById(`tree-${this.config_.id}`), this.modelProvider_);
+        this.xyWidget_ = new XYWidget(document.getElementById(this.config_.id), this.modelProvider_);
 
-        this.xyWidget_.inflate({
-            min: this.modelProvider_.trace.start,
-            max: this.modelProvider_.trace.end,
-            count: 500
+        this.treeWidget_.hide();
+        this.treeWidget_.inflate();
+        Utils.wait(300).then(() => {
+            this.xyWidget_.inflate();
         });
+    }
+
+    private treeModelChanged(e: CustomEvent) {
+        if (this.xyWidget_ !== undefined) {
+            this.xyWidget_.selectedEntries = e.detail.model;
+        }
     }
 }

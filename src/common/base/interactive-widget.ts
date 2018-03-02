@@ -67,6 +67,14 @@ export abstract class InteractiveWidget extends Widget {
         this.right_.press = this.panRight.bind(this);
     }
 
+    public show() {
+        return;
+    }
+
+    public hide() {
+        return;
+    }
+
     protected listenForRangeSelection() {
         window.addEventListener(EventType.RANGE_SELECTED, this.rangeSelected.bind(this));
     }

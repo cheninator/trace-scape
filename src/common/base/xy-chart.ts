@@ -7,8 +7,9 @@
  */
 
 import { XYSeries } from './../core/model/xy-model';
+import { IShowable } from './showable';
 
-export interface IXYChart {
+export interface IXYChart extends IShowable {
     title: string;
     redraw(series: XYSeries[]): void;
     draw(series: XYSeries[]): void;

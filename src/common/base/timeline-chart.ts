@@ -8,8 +8,9 @@
 
 import { TimelineRowModel, TimelineArrow } from './../core/model/timeline-model';
 import { VisibleWindow } from './visible-window';
+import { IShowable } from './showable';
 
-export interface ITimelineChart {
+export interface ITimelineChart extends IShowable {
     context: VisibleWindow;
     redrawEvents(row: TimelineRowModel[]): void;
     drawEvents(row: TimelineRowModel[]): void;

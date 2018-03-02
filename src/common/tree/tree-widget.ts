@@ -66,6 +66,14 @@ export class TreeWidget extends Widget {
         } while (!completed);
     }
 
+    public show() {
+        this.treeViewer.show();
+    }
+
+    public hide() {
+        this.treeViewer.hide();
+    }
+
     private async updateTree() {
         let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,

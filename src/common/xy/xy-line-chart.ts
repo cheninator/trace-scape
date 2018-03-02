@@ -58,6 +58,14 @@ export class XYLineChart implements IXYChart {
         }
     }
 
+    public show() {
+        return;
+    }
+
+    public hide() {
+        return;
+    }
+
     private rangeSelected(e: Highcharts.ChartSelectionEvent) {
         e.preventDefault();
 

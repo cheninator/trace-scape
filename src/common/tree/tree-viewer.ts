@@ -13,8 +13,9 @@ import { NodeConfig, InspireTree } from 'inspire-tree';
 import { ITreeModel } from '../core/model/tree-model';
 import { Dictionary } from '../core/dictionary';
 import { EventType } from './../base/events';
+import { IShowable } from '../base/showable';
 
-export class TreeViewer {
+export class TreeViewer implements IShowable {
 
     private element_: HTMLElement;
     private treeModel_: ITreeModel[];
@@ -42,6 +43,14 @@ export class TreeViewer {
         let treeDom = new TreeDom(this.tree_, {
             target: this.element_
         });
+    }
+
+    public show() {
+        this.element_.style.display = 'block';
+    }
+
+    public hide() {
+        this.element_.style.display = 'none';
     }
 
     private buildTreeFromModel(models: ITreeModel[]) {

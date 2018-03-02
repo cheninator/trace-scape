@@ -29,6 +29,12 @@ export class XYWidget extends InteractiveWidget {
 
         this.xyChart_ = new XYLineChart(element);
         this.modelProvider_ = modelProvider;
+
+        let box = element.getBoundingClientRect();
+        this.visibleWindow_.min = this.modelProvider_.trace.start;
+        this.visibleWindow_.max = this.modelProvider_.trace.end;
+        this.visibleWindow_.count = Math.floor(box.width);
+
         this.init();
     }
 
@@ -62,6 +68,14 @@ export class XYWidget extends InteractiveWidget {
             this.xyChart_.redraw(this.xySeries);
             await Utils.wait(this.WAIT_BEFORE_REQUEST);
         } while (!completed);
+    }
+
+    public show() {
+        return;
+    }
+
+    public hide() {
+        return;
     }
 
     private async updateXY(): Promise<Status> {

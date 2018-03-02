@@ -7,8 +7,9 @@
  */
 
 import { VisibleWindow } from './../base/visible-window';
+import { IShowable } from './showable';
 
-export abstract class Widget {
+export abstract class Widget implements IShowable {
     protected readonly WAIT_BEFORE_REQUEST = 700;
     protected visibleWindow_: VisibleWindow;
 
@@ -22,4 +23,6 @@ export abstract class Widget {
 
     public abstract inflate(visibleWindow?: VisibleWindow): void;
     public abstract update(): void;
+    public abstract show(): void;
+    public abstract hide(): void;
 }

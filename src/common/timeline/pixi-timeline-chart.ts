@@ -97,6 +97,14 @@ export class PixiTimelineChart implements ITimelineChart {
         this.context_ = context;
     }
 
+    public show() {
+        return;
+    }
+
+    public hide() {
+        return;
+    }
+
     private init() {
         let infos = this.htmlElement_.getBoundingClientRect();
         let options = {
