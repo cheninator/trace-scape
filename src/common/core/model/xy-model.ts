@@ -8,12 +8,6 @@
 
 import { ITreeModel } from './../model/tree-model';
 
-export interface XYViewModel {
-    title: string;
-    entries: XYEntries[];
-    series: XYSeries[];
-}
-
 export interface XYSeries {
     name: string;
     x: number[];

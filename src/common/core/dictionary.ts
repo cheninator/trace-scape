@@ -13,7 +13,7 @@
     contains(key: string): boolean;
     count(): number;
     get(key: string): T;
-    values(): Array<T>;
+    values(): T[];
  }
 
  export class Dictionary<T> implements IDictionary<T> {
@@ -60,7 +60,7 @@
         return this.items_[key];
     }
 
-    public values(): Array<T> {
+    public values(): T[] {
         let values = new Array();
 
         for (let prop in this.items_) {

@@ -1,14 +1,14 @@
-var webpackConfig = require('./webpack.config');
+var webpackConfig = require('./../webpack.config');
 
 module.exports = function(config) {
     config.set({
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
-            'test/timeline/thread-status-benchmark.spec.ts',
-            'test/xy/cpu-usage-benchmark.spec.ts',
-            'test/xy/disks-io-benchmark.spec.ts',
-            'test/xy/kernel-memory-benchmark.spec.ts',
+            'timeline/thread-status-benchmark.spec.ts',
+            'xy/cpu-usage-benchmark.spec.ts',
+            'xy/disks-io-benchmark.spec.ts',
+            'xy/kernel-memory-benchmark.spec.ts',
         ],
         exclude: [
         ],

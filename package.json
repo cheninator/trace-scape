@@ -9,7 +9,7 @@
     "desktop": "electron bin/src/electron/main.js",
     "start": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run web\" ",
     "start:desktop": "npm run build && concurrently --kill-others \"tsc -w\" \"npm run desktop\" ",
-    "test": "karma start karma.conf.js",
+    "test": "karma start test/karma.conf.js",
     "tsc": "tsc",
     "web": "node bin/src/web/www.js"
   },

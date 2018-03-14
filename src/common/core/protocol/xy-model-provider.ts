@@ -14,5 +14,5 @@ import { Trace } from './../model/trace';
 
 export interface IXYModelProvider extends ITreeModelProvider {
     readonly trace: Trace;
-    fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<Array<XYSeries>>>;
+    fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>>;
 }

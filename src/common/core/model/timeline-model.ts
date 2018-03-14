@@ -8,16 +8,9 @@
 
 import { ITreeModel } from '../model/tree-model';
 
-export interface TimelineViewModel {
-    entries: TimelineEntry[];
-    events: TimelineRowModel[];
-    arrows: TimelineArrow[];
-}
-
 export interface TimelineEntry extends ITreeModel {
     startTime: number;
     endTime: number;
-    name: string;
 }
 
 export interface TimelineArrow {
@@ -25,6 +18,7 @@ export interface TimelineArrow {
     destinationId: number;
     startTime: number;
     duration: number;
+    value: number;
 }
 
 export interface TimelineRowModel {

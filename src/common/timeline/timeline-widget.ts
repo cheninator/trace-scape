@@ -22,9 +22,12 @@ export class TimelineWidget extends InteractiveWidget {
     private timelineChart_: ITimelineChart;
     private modelProvider_: ITimelineModelProvider;
 
+    /* View models */
     private visibleEntries_: TimelineEntry[] = new Array();
     private rowModels_: TimelineRowModel[] = new Array();
     private arrows_: TimelineArrow[] = new Array();
+
+    private showArrows: boolean;
 
     constructor(element: HTMLElement, modelProvider: ITimelineModelProvider) {
         super();
@@ -68,10 +71,15 @@ export class TimelineWidget extends InteractiveWidget {
             }
 
             this.timelineChart_.redrawEvents(this.rowModels_);
+
+            if (this.showArrows) {
+                let statusArrows = await this.updateArrows();
+                this.timelineChart_.redrawArrows(this.arrows_);
+            }
+
             await Utils.wait(this.WAIT_BEFORE_REQUEST);
         } while (!completed);
     }
-
 
     private async updateEvents(): Promise<Status> {
         let filter: SelectionTimeQueryFilter = {

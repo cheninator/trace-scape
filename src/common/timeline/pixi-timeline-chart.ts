@@ -78,7 +78,8 @@ export class PixiTimelineChart implements ITimelineChart {
     }
 
     public redrawArrows(arrows?: TimelineArrow[]): void {
-        throw new Error("Method not implemented.");
+        this.clearArrows();
+        this.drawArrows();
     }
 
     public drawArrows(arrows?: TimelineArrow[]): void {
