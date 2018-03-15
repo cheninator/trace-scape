@@ -12,14 +12,15 @@ var uglify = require('gulp-uglify');
 var buildPath = "./bin";
 
 var modules = [
+    'ag-grid/**/ag-grid.min.js',
     'bootstrap.native/**/bootstrap-native.min.js',
-    'pixi.js/**/pixi.min.js',
-    'highcharts/**/exporting.js',
     'inspire-tree/**/inspire-tree.min.js',
     'inspire-tree-dom/**/inspire-tree-dom.min.js',    
+    'pixi.js/**/pixi.min.js',
 ];
 
 var styles = [
+    'ag-grid/**/*.css',
     'bootstrap/**/*.css',
     'golden-layout/**/*.css',
     'inspire-tree-dom/**/*.css'

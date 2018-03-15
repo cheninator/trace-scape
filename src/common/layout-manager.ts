@@ -56,7 +56,11 @@ export class LayoutManager {
     }
 
     private addTimelineComponent(configuration: GoldenLayout.ItemConfig) {
-        this.layout_.root.contentItems[0].contentItems[1].addChild(configuration, 0);
+        if (this.layout_.root.contentItems[0].contentItems[1].contentItems.length === 0) {
+            this.layout_.root.contentItems[0].contentItems[1].addChild(configuration, 0);
+        } else {
+            this.layout_.root.contentItems[0].contentItems[1].contentItems[0].addChild(configuration);
+        }
     }
 
     private addXYComponent(configuration: GoldenLayout.ItemConfig) {

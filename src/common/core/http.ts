@@ -24,7 +24,8 @@ export class Http {
             }),
             body: body !== undefined ? body.toString() : undefined
         }).then(this.handleErrors)
-        .then(r => r.json());
+        .then(r => r.json())
+        .catch(e => console.error(e));
     }
 
     public static async get(url: string, body?: any, options?: RequestInit): Promise<any> {

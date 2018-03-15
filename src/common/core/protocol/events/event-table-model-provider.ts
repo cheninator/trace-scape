@@ -19,10 +19,10 @@ export class EventTableModelProvider implements IVirtualTableModelProvider {
     private trace_: Trace;
     private readonly providerID_: string;
 
-    constructor(serverUrl: string, trace: Trace, providerId: string) {
+    constructor(serverUrl: string, trace: Trace, providerId?: string) {
         this.serverUrl_ = serverUrl;
         this.trace_ = trace;
-        this.providerID_ = providerId;
+        this.providerID_ = providerId !== undefined ? providerId : '';
     }
 
     public async fetch(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>> {
