@@ -18,6 +18,8 @@ import { VirtualTableModel } from '../core/model/virtual-table-model';
 
 export class TableWidget extends Widget {
 
+    private readonly DEFAULT_COUNT = 30;
+
     private modelProvider_: IVirtualTableModelProvider;
     private tableModel_: VirtualTableModel;
 
@@ -27,16 +29,9 @@ export class TableWidget extends Widget {
         super();
         this.tableViewer_ = new TableViewer(element);
         this.modelProvider_ = modelProvider;
-
-        let box = element.getBoundingClientRect();
-        this.visibleWindow_.max = Utils.ETERNITY;
-        this.visibleWindow_.count = Math.floor(box.width);
     }
 
     public inflate(visibleWindow?: VisibleWindow) {
-        if (visibleWindow !== undefined) {
-            this.visibleWindow_ = visibleWindow;
-        }
         this.update();
     }
 
@@ -74,7 +69,7 @@ export class TableWidget extends Widget {
         let filter: VirtualTableQueryFilter = {
             index: 0,
             columns: new Array(),
-            count: 30
+            count: this.DEFAULT_COUNT
         };
 
         let response = await this.modelProvider_.fetch(filter);

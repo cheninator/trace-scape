@@ -8,7 +8,7 @@
 
 import { Http } from './../../http';
 import { Trace } from './../../model/trace';
-import { ModelResponse } from './../model-response';
+import { ModelResponse, Status } from './../model-response';
 import { IVirtualTableModelProvider } from './../virtual-table-model-provider';
 import { VirtualTableQueryFilter } from './../../filter/virtual-table-query-filter';
 import { VirtualTableModel } from './../../model/virtual-table-model';
@@ -32,6 +32,16 @@ export class EventTableModelProvider implements IVirtualTableModelProvider {
         params.set('size', filter.count.toString());
 
         let res = await Http.get(url, params);
-        return <ModelResponse<VirtualTableModel>> res.response;
+        let model: VirtualTableModel = {
+            index: res.low,
+            count: res.size,
+            columns: res.columns,
+            data: res.lines
+        };
+        return <ModelResponse<VirtualTableModel>> {
+            status: Status.COMPLETED,
+            statusMessage: Status.COMPLETED.toString(),
+            model: model
+        };
     }
 }

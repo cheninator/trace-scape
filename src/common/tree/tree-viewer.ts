@@ -21,6 +21,8 @@ export class TreeViewer implements IShowable {
     private treeModel_: ITreeModel[];
     private tree_: InspireTree;
 
+    private onDoubleClicked_: (node: ITreeModel) => void;
+
     constructor(element: HTMLElement) {
         this.element_ = element;
         this.init();
@@ -51,6 +53,14 @@ export class TreeViewer implements IShowable {
 
     public hide() {
         this.element_.style.display = 'none';
+    }
+
+    public listenForDoubleClick(callback: (node: ITreeModel) => void) {
+        this.onDoubleClicked_ = callback;
+        this.tree_.on('node.dblclick', (event: MouseEvent, node: any) => {
+            let clicked = this.treeModel_.filter(x => x.id.toString() === node.id)[0];
+            this.onDoubleClicked_(clicked);
+        });
     }
 
     private buildTreeFromModel(models: ITreeModel[]) {
@@ -89,9 +99,5 @@ export class TreeViewer implements IShowable {
     private init() {
         // @ts-ignore: Broken definition type
         this.tree_ = new Tree({});
-
-        this.tree_.on('node.dblclick', (event: MouseEvent, node: any) => {
-            console.log("Double click", node);
-        });
     }
 }

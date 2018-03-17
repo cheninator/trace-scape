@@ -6,15 +6,16 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Grid } from 'ag-grid';
-import { IShowable } from '../base/showable';
-import { VirtualTableModel } from '../core/model/virtual-table-model';
+import { Grid, GridOptions } from 'ag-grid';
+import { IShowable } from './../base/showable';
+import { VirtualTableModel } from './../core/model/virtual-table-model';
 
 export class TableViewer implements IShowable {
 
     private element_: HTMLElement;
     private tableModel_: VirtualTableModel;
     private grid_: Grid;
+    private gridOptions_: GridOptions;
 
     constructor(element: HTMLElement) {
         this.element_ = element;
@@ -26,23 +27,11 @@ export class TableViewer implements IShowable {
     }
 
     public update() {
-        this.grid_ = new Grid(this.element_, this.buildGridOptions());
-    }
-
-    public show() {
-        this.element_.style.display = 'block';
-    }
-
-    public hide() {
-        this.element_.style.display = 'none';
-    }
-
-    private buildGridOptions() {
         let columnDefs = new Array();
         let rowData = new Array();
 
         /* Build the column definitions */
-        for (let column in this.tableModel_.columns) {
+        for (let column of this.tableModel_.columns) {
             columnDefs.push({ headerName: column, field: column });
         }
 
@@ -56,18 +45,26 @@ export class TableViewer implements IShowable {
             rowData.push(row);
         }
 
-        return {
-            columnDefs: columnDefs,
-            rowData: rowData
-        };
+        this.gridOptions_.api.setColumnDefs(columnDefs);
+        this.gridOptions_.api.setRowData(rowData);
+        this.gridOptions_.api.refreshView();
+    }
+
+    public show() {
+        this.element_.style.display = 'block';
+    }
+
+    public hide() {
+        this.element_.style.display = 'none';
     }
 
     private init() {
-        let gridOptions = {
+        this.gridOptions_ = {
+            enableColResize: true,
             columnDefs: new Array(),
             rowData: new Array()
         };
 
-        this.grid_ = new Grid(this.element_, gridOptions);
+        this.grid_ = new Grid(this.element_, this.gridOptions_);
     }
 }
