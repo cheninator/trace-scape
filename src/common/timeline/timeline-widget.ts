@@ -108,6 +108,7 @@ export class TimelineWidget extends InteractiveWidget {
 
     private init() {
         this.listenForRangeSelection();
+        this.listenForVisibleWindowChange();
         this.enableZoomByKeyboard();
         this.enablePanByKeyboard();
     }

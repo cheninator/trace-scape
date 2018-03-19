@@ -10,4 +10,5 @@ export const EventType = {
     TREE_MODEL_CHANGED: 'treeModelChanged',
     RANGE_SELECTED: 'rangeSelected',
     RESET_RANGE: 'resetRange',
+    VISIBLE_WINDOW_CHANGED: 'visibleWindowChanged'
 };
