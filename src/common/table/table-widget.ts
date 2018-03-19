@@ -18,7 +18,7 @@ import { VirtualTableModel } from '../core/model/virtual-table-model';
 
 export class TableWidget extends Widget {
 
-    private readonly DEFAULT_COUNT = 30;
+    private readonly DEFAULT_COUNT = 100;
 
     private modelProvider_: IVirtualTableModelProvider;
     private tableModel_: VirtualTableModel;

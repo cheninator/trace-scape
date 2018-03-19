@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Grid, GridOptions } from 'ag-grid';
+import { Grid, GridOptions, Column } from 'ag-grid';
 import { IShowable } from './../base/showable';
 import { VirtualTableModel } from './../core/model/virtual-table-model';
 
@@ -47,7 +47,14 @@ export class TableViewer implements IShowable {
 
         this.gridOptions_.api.setColumnDefs(columnDefs);
         this.gridOptions_.api.setRowData(rowData);
-        this.gridOptions_.api.refreshView();
+
+        let columnsId = new Array();
+        this.gridOptions_.columnApi.getAllColumns().forEach((column: Column) => {
+            columnsId.push(column.getId());
+        });
+        this.gridOptions_.columnApi.autoSizeColumns(columnsId, null);
+
+        this.gridOptions_.api.refreshCells();
     }
 
     public show() {
