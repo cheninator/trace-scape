@@ -21,7 +21,8 @@ export class PixiTimelineChart implements ITimelineChart {
 
     /* Used for mouse paning */
     private isDragging_: boolean;
-    private oldPosition_: any;
+    private oldPosition_: PIXI.Point;
+    private originalPosition_: PIXI.Point;
     private data_: PIXI.interaction.InteractionData;
 
     private timelinePresentation_: TimelinePresentation;
@@ -125,10 +126,10 @@ export class PixiTimelineChart implements ITimelineChart {
         this.application_ = new PIXI.Application(options);
         this.chartContainer_ = new PIXI.Container();
         this.chartContainer_.interactive = true;
-        this.chartContainer_.on('pointerdown', this.onDragStart)
-                            .on('pointerup', this.onDragEnd)
-                            .on('pointerupoutside', this.onDragEnd)
-                            .on('pointermove', this.onDragMove);
+        this.chartContainer_.on('pointerdown', this.onDragStart.bind(this))
+                            .on('pointerup', this.onDragEnd.bind(this))
+                            .on('pointerupoutside', this.onDragEnd.bind(this))
+                            .on('pointermove', this.onDragMove.bind(this));
 
         this.rulerContainer_ = new PIXI.Container;
 
@@ -140,36 +141,33 @@ export class PixiTimelineChart implements ITimelineChart {
         this.isDragging_ = true;
         this.data_ = event.data;
         this.oldPosition_ = this.data_.getLocalPosition(event.currentTarget.parent);
+        this.originalPosition_ = this.oldPosition_;
     }
 
     private onDragEnd(event: PIXI.interaction.InteractionEvent) {
         this.isDragging_ = false;
         this.data_ = null;
+
+        let deltaX = -1 * this.oldPosition_.x - this.originalPosition_.x;
         this.oldPosition_ = null;
-/*
-        let bounds = event.currentTarget.getBounds();
+
         let resolution = (this.context_.max - this.context_.min) / this.context_.count;
-        let start = bounds.x * resolution;
-        let end = (bounds.x + bounds.width) * resolution;
+        let start = this.context_.min + (deltaX * resolution);
+        let end = this.context_.max + (deltaX * resolution);
 
         window.dispatchEvent(new CustomEvent(EventType.VISIBLE_WINDOW_CHANGED, {
             detail: {
-                start: start,
-                end: end
+                start: Math.round(start),
+                end: Math.round(end)
             }
         }));
-*/
     }
 
     private onDragMove(event: PIXI.interaction.InteractionEvent) {
         if (this.isDragging_) {
             let newPosition = this.data_.getLocalPosition(event.currentTarget.parent);
             let deltaX = newPosition.x - this.oldPosition_.x;
-            let deltaY = newPosition.y - this.oldPosition_.y;
-
             event.currentTarget.x += deltaX;
-            event.currentTarget.y += deltaY;
-
             this.oldPosition_ = newPosition;
         }
     }
