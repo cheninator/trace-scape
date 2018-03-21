@@ -32,6 +32,13 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
     get html(): string {
         return `
+            <form>
+                <div>
+                    <label>Upload a trace</label>
+                    <input type="file">
+                </div>
+                <button class="btn btn-outline-secondary btn-sm" type="submit">Upload</button>
+            </form>
             <div id="${this.config_.id}"></div>
         `;
     }

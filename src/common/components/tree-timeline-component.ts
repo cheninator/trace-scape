@@ -17,6 +17,7 @@ import { BaseGoldenLayoutComponent } from './component';
 import { ConfigComponent } from './config-component';
 import { EventType } from '../base/events';
 import { Utils } from '../core/utils';
+import { TimelineEntry } from '../core/model/timeline-model';
 
 export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
@@ -55,7 +56,7 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
     private treeModelChanged(e: CustomEvent) {
         if (this.timelineWidget_ !== undefined) {
-            this.timelineWidget_.visibleEntries = e.detail.model;
+            this.timelineWidget_.visibleEntries = this.treeWidget_.getNodes(25) as TimelineEntry[];
         }
     }
 }

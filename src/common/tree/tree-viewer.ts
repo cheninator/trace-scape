@@ -63,6 +63,16 @@ export class TreeViewer implements IShowable {
         });
     }
 
+    public getNodes(count: number): ITreeModel[] {
+        if (this.treeModel_ !== undefined) {
+            let flatten = this.tree_.flatten((node) => node).map(t => t["id"]);
+            let treeNodes = flatten.slice(0, count);
+
+            return this.treeModel_.filter((model) => treeNodes.indexOf(model.id.toString()) !== -1);
+        }
+        return new Array();
+    }
+
     private buildTreeFromModel(models: ITreeModel[]) {
         models.sort((a, b) => {
             if (a.parentId < b.parentId) {
