@@ -78,6 +78,10 @@ export class TreeWidget extends Widget {
         return this.treeViewer.getNodes(count);
     }
 
+    public expandAll() {
+        this.treeViewer.expandAll();
+    }
+
     private async updateTree() {
         let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,

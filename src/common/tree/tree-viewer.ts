@@ -73,6 +73,10 @@ export class TreeViewer implements IShowable {
         return new Array();
     }
 
+    public expandAll() {
+        this.tree_.expandDeep();
+    }
+
     private buildTreeFromModel(models: ITreeModel[]) {
         models.sort((a, b) => {
             if (a.parentId < b.parentId) {

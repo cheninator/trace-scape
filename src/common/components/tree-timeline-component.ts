@@ -33,9 +33,9 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
     get html(): string {
         return `
-            <div class="row">
+            <div class="row" style="height: inherit">
                 <div class="col-md-2">
-                    <div id="tree-${this.config_.id}"></div>
+                    <div id="tree-${this.config_.id}" style="overflow-y: scroll; max-height: 100%"></div>
                 </div>
                 <div class="col-md-10">
                     <canvas id="${this.config_.id}" style="width: 100%; height: 100%"></canvas>
@@ -57,6 +57,7 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
     private treeModelChanged(e: CustomEvent) {
         if (this.timelineWidget_ !== undefined) {
             this.timelineWidget_.visibleEntries = this.treeWidget_.getNodes(25) as TimelineEntry[];
+            this.treeWidget_.expandAll();
         }
     }
 }
