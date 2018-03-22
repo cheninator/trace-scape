@@ -13,6 +13,7 @@ import { colors } from './../components/colors';
 import { IDictionary, Dictionary } from './../core/dictionary';
 import { VisibleWindow } from '../base/visible-window';
 import { ITimelineChart } from '../base/timeline-chart';
+import { PixiTimelineRuler } from './pixi-timeline-ruler';
 
 export class PixiTimelineChart implements ITimelineChart {
 
@@ -26,11 +27,11 @@ export class PixiTimelineChart implements ITimelineChart {
     private data_: PIXI.interaction.InteractionData;
 
     private timelinePresentation_: TimelinePresentation;
+    private timelineRuler_: PixiTimelineRuler;
 
     private application_: PIXI.Application;
     private htmlElement_: HTMLElement;
     private chartContainer_: PIXI.Container;
-    private rulerContainer_: PIXI.Container;
 
     private visibleEntries_: TimelineEntry[] = new Array();
     private eventsGraphics_: PIXI.Graphics[] = new Array();
@@ -72,6 +73,8 @@ export class PixiTimelineChart implements ITimelineChart {
                 eventGraphic.endFill();
             }
         }
+
+        this.redrawRuler();
     }
 
     public redrawEvents(events: TimelineRowModel[]) {
@@ -101,8 +104,14 @@ export class PixiTimelineChart implements ITimelineChart {
         this.arrowsGraphics_.forEach(e => e.clear());
     }
 
+    private redrawRuler(): void {
+        this.timelineRuler_.clear();
+        this.timelineRuler_.draw();
+    }
+
     set context(context: VisibleWindow) {
         this.context_ = context;
+        this.timelineRuler_.context = context;
     }
 
     public show() {
@@ -131,9 +140,9 @@ export class PixiTimelineChart implements ITimelineChart {
                             .on('pointerupoutside', this.onDragEnd.bind(this))
                             .on('pointermove', this.onDragMove.bind(this));
 
-        this.rulerContainer_ = new PIXI.Container;
+        this.timelineRuler_ = new PixiTimelineRuler(0, 0, options.width, options.height);
 
-        this.application_.stage.addChild(this.rulerContainer_);
+        this.application_.stage.addChild(this.timelineRuler_.container);
         this.application_.stage.addChild(this.chartContainer_);
     }
 

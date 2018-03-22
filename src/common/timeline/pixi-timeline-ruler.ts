@@ -10,7 +10,7 @@ import { colors } from './../components/colors';
 import { VisibleWindow } from './../base/visible-window';
 import { TimeFormatter } from './../core/formatter/time-formatter';
 
-export class TimelineRuler {
+export class PixiTimelineRuler {
 
     private readonly entryHeight = 25;
     private readonly lineWidth = 1;
@@ -19,7 +19,7 @@ export class TimelineRuler {
         fontSize: 13
     });
 
-    public rulerContainer_: PIXI.Container;
+    private rulerContainer_: PIXI.Container;
     private rulerGraphics_: PIXI.Graphics;
     private context_: VisibleWindow;
 
@@ -42,6 +42,10 @@ export class TimelineRuler {
         this.heigth_ = heigth;
     }
 
+    get container() {
+        return this.rulerContainer_;
+    }
+
     set context(context: VisibleWindow) {
         this.context_ = context;
     }
@@ -53,8 +57,8 @@ export class TimelineRuler {
     public draw() {
         this.clear();
         this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
-        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + this.entryHeight);
-        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + this.entryHeight);
+        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + (this.entryHeight * 0.75));
+        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + (this.entryHeight * 0.75));
 
         let numberOfDelimitation = 5;
         let delta = this.width_ / numberOfDelimitation;
