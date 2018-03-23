@@ -149,7 +149,7 @@ export class PixiTimelineChart implements ITimelineChart {
     private onDragStart(event: PIXI.interaction.InteractionEvent) {
         this.isDragging_ = true;
         this.data_ = event.data;
-        this.oldPosition_ = this.data_.getLocalPosition(event.currentTarget.parent);
+        this.oldPosition_ = this.data_.getLocalPosition(this.chartContainer_.parent);
         this.originalPosition_ = this.oldPosition_;
     }
 
@@ -157,7 +157,7 @@ export class PixiTimelineChart implements ITimelineChart {
         this.isDragging_ = false;
         this.data_ = null;
 
-        let deltaX = -1 * this.oldPosition_.x - this.originalPosition_.x;
+        let deltaX = this.oldPosition_.x - this.originalPosition_.x;
         this.oldPosition_ = null;
 
         let resolution = (this.context_.max - this.context_.min) / this.context_.count;
@@ -176,7 +176,9 @@ export class PixiTimelineChart implements ITimelineChart {
         if (this.isDragging_) {
             let newPosition = this.data_.getLocalPosition(event.currentTarget.parent);
             let deltaX = newPosition.x - this.oldPosition_.x;
-            event.currentTarget.x += deltaX;
+
+            this.chartContainer_.x += deltaX;
+            this.timelineRuler_.container.x += deltaX;
             this.oldPosition_ = newPosition;
         }
     }

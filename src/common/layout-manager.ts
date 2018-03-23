@@ -84,7 +84,11 @@ export class LayoutManager {
     }
 
     private registerNavigatorComponent() {
-        let component = new NavigatorComponent();
+        let component = new NavigatorComponent({
+            id: "navigator",
+            name: "Project explorer",
+            serverUrl: ""
+        });
         this.components_.push(component);
 
         let configuration = component.itemConfiguration;

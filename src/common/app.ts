@@ -22,12 +22,13 @@ async function main() {
     let traceModelProvider = new TraceModelProvider(serverUrl);
     let traces = await traceModelProvider.getTraces();
 
-    if (traces.length === 0) {
-        let name = 'kernel';
+    let name = 'kernel';
+    let desiredTrace = traces.filter(t => t.name === name);
+    if (desiredTrace.length === 0) {
         let path = `/home/yonni/Documents/traces/${name}`;
         trace = await traceModelProvider.putTrace(name, path);
     } else {
-        trace = traces[0];
+        trace = desiredTrace[0];
     }
 
     let layoutManager = new LayoutManager();

@@ -16,17 +16,11 @@ import { ConfigComponent } from './config-component';
 
 export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
-    private static readonly configuration: ConfigComponent = {
-        id: "navigator",
-        name: "Project explorer",
-        serverUrl: ""
-    };
-
     private treeWidget_: TreeWidget;
     private modelProvider_: ITreeModelProvider;
 
-    constructor() {
-        super(NavigatorComponent.configuration);
+    constructor(config: ConfigComponent) {
+        super(config);
         this.modelProvider_ = new ProjectExplorerModelProvider(this.config_.serverUrl);
     }
 
