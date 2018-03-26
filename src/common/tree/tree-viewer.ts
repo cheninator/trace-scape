@@ -40,6 +40,14 @@ export class TreeViewer implements IShowable {
         });
     }
 
+    set onDoubleClick(onDoubleClick: (node: ITreeModel) => void) {
+        this.onDoubleClicked_ = onDoubleClick;
+        this.tree_.on('node.dblclick', (event: MouseEvent, node: any) => {
+            let clicked = this.treeModel_.filter(x => x.id.toString() === node.id)[0];
+            this.onDoubleClicked_(clicked);
+        });
+    }
+
     public update() {
         // @ts-ignore
         let treeDom = new TreeDom(this.tree_, {
@@ -53,14 +61,6 @@ export class TreeViewer implements IShowable {
 
     public hide() {
         this.element_.style.display = 'none';
-    }
-
-    public listenForDoubleClick(callback: (node: ITreeModel) => void) {
-        this.onDoubleClicked_ = callback;
-        this.tree_.on('node.dblclick', (event: MouseEvent, node: any) => {
-            let clicked = this.treeModel_.filter(x => x.id.toString() === node.id)[0];
-            this.onDoubleClicked_(clicked);
-        });
     }
 
     public getNodes(count: number): ITreeModel[] {

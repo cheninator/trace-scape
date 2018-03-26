@@ -13,23 +13,16 @@ import { TableComponent } from './components/table-component';
 import { ModelProviders } from './core/protocol/model-providers';
 import { TreeTimelineComponent } from './components/tree-timeline-component';
 import { Trace } from './core/model/trace';
+import { TraceManager } from './core/trace-manager';
 
 let serverUrl = 'http://localhost:8080/tracecompass';
-let trace: Trace;
 
 async function main() {
 
-    let traceModelProvider = new TraceModelProvider(serverUrl);
-    let traces = await traceModelProvider.getTraces();
-
+    let traceManager = new TraceManager(new TraceModelProvider(serverUrl));
     let name = 'kernel';
-    let desiredTrace = traces.filter(t => t.name === name);
-    if (desiredTrace.length === 0) {
-        let path = `/home/yonni/Documents/traces/${name}`;
-        trace = await traceModelProvider.putTrace(name, path);
-    } else {
-        trace = desiredTrace[0];
-    }
+    let path = `/home/yonni/Documents/traces/${name}`;
+    let trace = await traceManager.openTrace(name, path);
 
     let layoutManager = new LayoutManager();
 

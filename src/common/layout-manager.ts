@@ -87,7 +87,7 @@ export class LayoutManager {
         let component = new NavigatorComponent({
             id: "navigator",
             name: "Project explorer",
-            serverUrl: ""
+            serverUrl: "http://localhost:8080/tracecompass"
         });
         this.components_.push(component);
 

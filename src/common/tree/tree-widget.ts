@@ -33,6 +33,10 @@ export class TreeWidget extends Widget {
         this.visibleWindow_.count = Math.floor(box.width);
     }
 
+    set onDoubleClick(onDoubleClick: (node: ITreeModel) => void) {
+        this.treeViewer.onDoubleClick = onDoubleClick;
+    }
+
     public inflate(visibleWindow?: VisibleWindow) {
         if (visibleWindow !== undefined) {
             this.visibleWindow_ = visibleWindow;

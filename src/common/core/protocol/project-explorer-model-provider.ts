@@ -11,7 +11,8 @@ import { ITreeModelProvider } from './tree-model-provider';
 import { TimeQueryFilter } from './../filter/time-query-filter';
 import { Trace } from './../model/trace';
 import { ITreeModel } from '../model/tree-model';
-
+import { Http } from './../http';
+import { ProjectExplorerModel } from './../model/project-explorer-model';
 
 export class ProjectExplorerModelProvider implements ITreeModelProvider {
 
@@ -22,81 +23,32 @@ export class ProjectExplorerModelProvider implements ITreeModelProvider {
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
-        return new Promise<ModelResponse<ITreeModel[]>>((resolve, reject) => {
-            let treeModel: ITreeModel[] = new Array();
-            treeModel.push({
-                id: 0,
-                name: "Project",
-                parentId: -1
-            });
+        let traces: Trace[] = await Http.get(`${this.serverUrl_}/traces`);
+        let projectExplorer: ITreeModel[] = new Array();
 
-            treeModel.push({
-                id: 1,
-                name: "kernel",
-                parentId: 0
-            });
-
-            treeModel.push({
-                id: 2,
-                name: "many-threads",
-                parentId: 0
-            });
-
-            treeModel.push({
-                id: 3,
-                name: "kernel_vm",
-                parentId: 0
-            });
-
-            treeModel.push({
-                id: 4,
-                name: "trace2",
-                parentId: 0
-            });
-
-            treeModel.push({
-                id: 5,
-                name: "Experiment",
-                parentId: 0
-            });
-
-            treeModel.push({
-                id: 6,
-                name: "funky_trace",
-                parentId: 5
-            });
-
-            treeModel.push({
-                id: 7,
-                name: "cyg-profile",
-                parentId: 5
-            });
-
-            treeModel.push({
-                id: 8,
-                name: "Experiment 2",
-                parentId: 0
-            });
-
-            treeModel.push({
-                id: 9,
-                name: "kernel",
-                parentId: 8
-            });
-
-            treeModel.push({
-                id: 10,
-                name: "bug446190",
-                parentId: 8
-            });
-
-            let response: ModelResponse<ITreeModel[]> = {
-                model: treeModel,
-                status: Status.COMPLETED,
-                statusMessage: ""
-            };
-
-            resolve(response);
+        // Root node
+        projectExplorer.push(<ProjectExplorerModel> {
+            id: 0,
+            name: "Trace Project",
+            parentId: -1,
+            path: ""
         });
+
+        let i = 1;
+        for (let trace of traces) {
+            projectExplorer.push(<ProjectExplorerModel> {
+                id: i,
+                name: trace.name,
+                parentId: 0,
+                path: trace.path
+            });
+            ++i;
+        }
+
+        return <ModelResponse<ITreeModel[]>> {
+            model: projectExplorer,
+            status: Status.COMPLETED,
+            statusMessage: Status.COMPLETED.toString()
+        };
     }
 }

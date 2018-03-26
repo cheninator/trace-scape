@@ -13,6 +13,8 @@ import { ProjectExplorerModelProvider } from './../core/protocol/project-explore
 import { TreeWidget } from './../tree/tree-widget';
 import { BaseGoldenLayoutComponent } from './component';
 import { ConfigComponent } from './config-component';
+import { ITreeModel } from './../core/model/tree-model';
+import { ProjectExplorerModel } from './../core/model/project-explorer-model';
 
 export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
@@ -54,5 +56,9 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
             max: 100,
             count: 10
         });
+
+        this.treeWidget_.onDoubleClick = (model: ITreeModel) => {
+            console.log(model as ProjectExplorerModel);
+        };
     }
 }
