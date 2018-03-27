@@ -14,22 +14,26 @@ import { ITimelineModelProvider } from './../timeline-model-provider';
 import { ModelResponse } from './../model-response';
 import { ITreeModel } from '../../model/tree-model';
 import { Http } from './../../http';
+import { TraceBaseModelProvider } from './../trace-base-model-provider';
 
-
-export class TreeTimelineModelProvider implements ITimelineModelProvider {
+export class TreeTimelineModelProvider extends TraceBaseModelProvider implements ITimelineModelProvider {
 
     private serverUrl_: string;
-    private trace_: Trace;
     private readonly providerID_: string;
 
     constructor(serverUrl: string, trace: Trace, providerId: string) {
+        super(trace);
         this.serverUrl_ = serverUrl;
-        this.trace_ = trace;
         this.providerID_ = providerId;
+
+        this.listenForTraceChange();
     }
 
-    get trace() {
-        return this.trace_;
+    get visibleRange() {
+        return {
+            start: this.trace_.start,
+            end: this.trace_.end
+        };
     }
 
     public async fetchTree(filter: TimeQueryFilter) : Promise<ModelResponse<ITreeModel[]>> {

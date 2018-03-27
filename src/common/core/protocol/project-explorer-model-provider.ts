@@ -13,6 +13,7 @@ import { Trace } from './../model/trace';
 import { ITreeModel } from '../model/tree-model';
 import { Http } from './../http';
 import { ProjectExplorerModel } from './../model/project-explorer-model';
+import { Utils } from './../utils';
 
 export class ProjectExplorerModelProvider implements ITreeModelProvider {
 
@@ -20,6 +21,13 @@ export class ProjectExplorerModelProvider implements ITreeModelProvider {
 
     constructor(serverUrl: string) {
         this.serverUrl_ = serverUrl;
+    }
+
+    get visibleRange() {
+        return {
+            start: 0,
+            end: Utils.ETERNITY
+        };
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {

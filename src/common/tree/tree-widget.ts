@@ -86,6 +86,11 @@ export class TreeWidget extends Widget {
         this.treeViewer.expandAll();
     }
 
+    public resetVisibleWindow() {
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
+    }
+
     private async updateTree() {
         let filter: TimeQueryFilter = {
             start: this.visibleWindow_.min,

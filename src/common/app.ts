@@ -19,7 +19,7 @@ let serverUrl = 'http://localhost:8080/tracecompass';
 
 async function main() {
 
-    let traceManager = new TraceManager(new TraceModelProvider(serverUrl));
+    let traceManager = TraceManager.getInstance();
     let name = 'kernel';
     let path = `/home/yonni/Documents/traces/${name}`;
     let trace = await traceManager.openTrace(name, path);

@@ -28,7 +28,18 @@ export class TreeXYComponent extends BaseGoldenLayoutComponent {
     constructor(config: ConfigComponent, trace: Trace) {
         super(config);
         this.modelProvider_ = TreeXYModelProviderFactory.create(config.serverUrl, trace, this.config_.id);
+
         window.addEventListener(EventType.TREE_MODEL_CHANGED, this.treeModelChanged.bind(this));
+
+        window.addEventListener(EventType.MODEL_PROVIDER_CHANGED, async () => {
+            this.treeWidget_.resetVisibleWindow();
+            this.treeWidget_.update();
+
+            Utils.wait(300).then(() => {
+                this.xyWidget_.resetVisibleWindow();
+                this.xyWidget_.update();
+            });
+        });
     }
 
     get html(): string {

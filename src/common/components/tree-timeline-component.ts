@@ -29,6 +29,13 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
         super(config);
         this.modelProvider_ = TreeTimelineModelProviderFactory.create(this.config_.serverUrl, trace, this.config_.id);
         window.addEventListener(EventType.TREE_MODEL_CHANGED, this.treeModelChanged.bind(this));
+
+        window.addEventListener(EventType.MODEL_PROVIDER_CHANGED, async () => {
+            await this.treeWidget_.update();
+
+            this.timelineWidget_.resetVisibleWindow();
+            this.timelineWidget_.update();
+        });
     }
 
     get html(): string {

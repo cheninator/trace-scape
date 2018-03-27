@@ -53,8 +53,9 @@ export class XYLineChart implements IXYChart {
     }
 
     public clear() {
-        for (let i = 0; i < this.chart_.series.length; i++) {
-            this.chart_.series[0].remove();
+        let seriesLength = this.chart_.series.length;
+        for (let i = seriesLength - 1; i > -1; i--) {
+            this.chart_.series[i].remove();
         }
     }
 

@@ -10,9 +10,7 @@ import { ModelResponse } from './model-response';
 import { ITreeModelProvider } from './tree-model-provider';
 import { XYSeries } from './../model/xy-model';
 import { TimeQueryFilter } from './../filter/time-query-filter';
-import { Trace } from './../model/trace';
 
 export interface IXYModelProvider extends ITreeModelProvider {
-    readonly trace: Trace;
     fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>>;
 }

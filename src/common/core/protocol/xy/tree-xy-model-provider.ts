@@ -6,29 +6,34 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { IXYModelProvider } from './../xy-model-provider';
-import { ModelResponse } from './../model-response';
-import { XYSeries } from './../../model/xy-model';
-import { TimeQueryFilter } from './../../filter/time-query-filter';
-import { Trace } from './../../model/trace';
-import { ITreeModel } from '../../model/tree-model';
-import { Http } from './../../http';
 import { SelectionTimeQueryFilter } from '../../filter/selection-time-query-filter';
+import { ITreeModel } from '../../model/tree-model';
+import { TimeQueryFilter } from './../../filter/time-query-filter';
+import { Http } from './../../http';
+import { Trace } from './../../model/trace';
+import { XYSeries } from './../../model/xy-model';
+import { ModelResponse } from './../model-response';
+import { TraceBaseModelProvider } from './../trace-base-model-provider';
+import { IXYModelProvider } from './../xy-model-provider';
 
-export class TreeXYModelProvider implements IXYModelProvider {
+export class TreeXYModelProvider extends TraceBaseModelProvider implements IXYModelProvider {
 
     private readonly serverUrl_: string;
-    private trace_: Trace;
     private readonly providerID_: string;
 
     constructor(serverUrl: string, trace: Trace, providerId: string) {
+        super(trace);
         this.serverUrl_ = serverUrl;
-        this.trace_ = trace;
         this.providerID_ = providerId;
+
+        this.listenForTraceChange();
     }
 
-    get trace() {
-        return this.trace_;
+    get visibleRange() {
+        return {
+            start: this.trace_.start,
+            end: this.trace_.end
+        };
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {

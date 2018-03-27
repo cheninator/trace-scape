@@ -15,6 +15,8 @@ import { BaseGoldenLayoutComponent } from './component';
 import { ConfigComponent } from './config-component';
 import { ITreeModel } from './../core/model/tree-model';
 import { ProjectExplorerModel } from './../core/model/project-explorer-model';
+import { TraceManager } from '../core/trace-manager';
+import { EventType } from './../base/events';
 
 export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
@@ -57,8 +59,15 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
             count: 10
         });
 
-        this.treeWidget_.onDoubleClick = (model: ITreeModel) => {
-            console.log(model as ProjectExplorerModel);
+        this.treeWidget_.onDoubleClick = async (treeModel: ITreeModel) => {
+            let model = treeModel as ProjectExplorerModel;
+            let trace = await TraceManager.getInstance().openTrace(model.name, model.path);
+
+            window.dispatchEvent(new CustomEvent(EventType.TRACE_CHANGED, {
+                detail: {
+                    model: trace
+                }
+            }));
         };
     }
 }

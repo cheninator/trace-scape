@@ -35,8 +35,8 @@ export class TimelineWidget extends InteractiveWidget {
         this.modelProvider_ = modelProvider;
 
         let box = element.getBoundingClientRect();
-        this.visibleWindow_.min = this.modelProvider_.trace.start;
-        this.visibleWindow_.max = this.modelProvider_.trace.end;
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
         this.visibleWindow_.count = Math.floor(box.width);
 
         this.init();
@@ -79,6 +79,11 @@ export class TimelineWidget extends InteractiveWidget {
 
             await Utils.wait(this.WAIT_BEFORE_REQUEST);
         } while (!completed);
+    }
+
+    public resetVisibleWindow() {
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
     }
 
     private async updateEvents(): Promise<Status> {

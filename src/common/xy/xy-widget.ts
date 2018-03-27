@@ -15,6 +15,7 @@ import { VisibleWindow } from './../base/visible-window';
 import { XYLineChart } from './xy-line-chart';
 import { IXYChart } from './../base/xy-chart';
 import { Utils } from './../core/utils';
+import { EventType } from '../base/events';
 
 export class XYWidget extends InteractiveWidget {
 
@@ -31,8 +32,8 @@ export class XYWidget extends InteractiveWidget {
         this.modelProvider_ = modelProvider;
 
         let box = element.getBoundingClientRect();
-        this.visibleWindow_.min = this.modelProvider_.trace.start;
-        this.visibleWindow_.max = this.modelProvider_.trace.end;
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
         this.visibleWindow_.count = Math.floor(box.width);
 
         this.init();
@@ -76,6 +77,11 @@ export class XYWidget extends InteractiveWidget {
 
     public hide() {
         return;
+    }
+
+    public resetVisibleWindow() {
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
     }
 
     private async updateXY(): Promise<Status> {

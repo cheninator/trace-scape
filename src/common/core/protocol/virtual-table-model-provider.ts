@@ -6,9 +6,9 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { ModelResponse } from './model-response';
 import { VirtualTableQueryFilter } from './../filter/virtual-table-query-filter';
 import { VirtualTableModel } from './../model/virtual-table-model';
+import { ModelResponse } from './model-response';
 
 export interface IVirtualTableModelProvider {
     fetch(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>>;

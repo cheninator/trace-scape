@@ -9,7 +9,8 @@
 import { TimeQueryFilter } from "../filter/time-query-filter";
 import { ModelResponse } from "./model-response";
 import { ITreeModel } from "./../model/tree-model";
+import { IModelProvider } from "./model-provider";
 
-export interface ITreeModelProvider {
+export interface ITreeModelProvider extends IModelProvider {
     fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>>;
 }
