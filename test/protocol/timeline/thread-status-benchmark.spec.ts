@@ -6,11 +6,13 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Trace } from './../../src/common/model/trace';
 import { suite, test, timeout } from 'mocha-typescript';
-import { TreeTimelineModelProvider } from './../../src/common/protocol/timeline/tree-timeline-model-provider';
+
+import { ITimelineModelProvider } from '../../../src/common/core/protocol/timeline-model-provider';
+import { Trace } from './../../../src/common/core/model/trace';
+import { ModelProviders } from './../../../src/common/core/protocol/model-providers';
+import { TreeTimelineModelProviderFactory } from './../../../src/common/core/protocol/timeline/tree-timeline-model-provider-factory';
 import { TimelineModelProviderBenchmark } from './timeline-model-provider-benchmark';
-import { ITimelineModelProvider } from '../../src/common/protocol/timeline-model-provider';
 
 @suite("Thread Status model provider")
 export class ThreadStatusProviderBenchmark extends TimelineModelProviderBenchmark {
@@ -21,7 +23,6 @@ export class ThreadStatusProviderBenchmark extends TimelineModelProviderBenchmar
     }
 
     protected getModelProvider(trace: Trace): ITimelineModelProvider {
-        const providerId = 'org.eclipse.tracecompass.internal.analysis.os.linux.core.threadstatus.ThreadStatusDataProvider';
-        return new TreeTimelineModelProvider(this.serverUrl, trace, providerId);
+        return TreeTimelineModelProviderFactory.create(this.serverUrl, trace, ModelProviders.THREAD_STATUS);
     }
 }

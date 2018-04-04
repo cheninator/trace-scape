@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 École Polytechnique de Montréal
+ * Copyright (C) 2018 École Polytechnique de Montréal
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,10 +12,11 @@ import { SelectionTimeQueryFilter } from './../../src/common/core/filter/selecti
 import { IXYModelProvider } from './../../src/common/core/protocol/xy-model-provider';
 import { TimeQueryFilter } from './../../src/common/core/filter/time-query-filter';
 import { ModelResponse } from './../../src/common/core/protocol/model-response';
-import { ITreeModel } from './../../src/common/core/model/tree-model';
+import { XYLineChart } from './../../src/common/xy/xy-line-chart';
 import { PerformanceMeter } from './../performance-meter';
+import { XYSeries } from '../../src/common/core/model/xy-model';
 
-export abstract class XYModelProviderBenchmark {
+export abstract class XYChartBenchmark {
 
     protected readonly serverUrl = 'http://localhost:8080/tracecompass';
 
@@ -32,6 +33,8 @@ export abstract class XYModelProviderBenchmark {
 
         let traceModelProvider = this.getTraceModelProvider();
         let trace = await traceModelProvider.putTrace(traceName, tracePath);
+        let div = document.createElement('div');
+        let modelProvider = this.getModelProvider(trace);
 
         await this.executeBenchmark(trace, 10, 10);
         await this.executeBenchmark(trace, 10, 100);
@@ -48,36 +51,8 @@ export abstract class XYModelProviderBenchmark {
         };
     }
 
-    protected async executeBenchmark(trace: Trace, repetition: number, numberOfPoints: number) {
-        /* Entries benchmark */
-        let entriesResponse = await this.executeFetchEntriesBenchmark(trace, repetition, numberOfPoints);
-
-        /* XY benchmark. We query for all series */
-        //let ids = entriesResponse.model.map(x => x.id);
-        await this.executeFetchXYBenchmark(trace, repetition, numberOfPoints, new Array());
-    }
-
-    private async executeFetchEntriesBenchmark(trace: Trace, repetition: number, numberOfPoints: number)
-                    : Promise<ModelResponse<ITreeModel[]>> {
-        let filter = this.getQueryFilter(trace, numberOfPoints, new Array());
-        let modelProvider = this.getModelProvider(trace);
-
-        let pm = new PerformanceMeter(`ENTRIES BENCHMARK (${numberOfPoints} points)`);
-        let entriesResponse: ModelResponse<ITreeModel[]>;
-        for (let i = 0; i < repetition; ++i) {
-            pm.start();
-            entriesResponse = await modelProvider.fetchTree(filter);
-            pm.stop();
-        }
-        pm.commit();
-        return entriesResponse;
-    }
-
-    private async executeFetchXYBenchmark(trace: Trace, repetition: number, numberOfPoints: number, ids: number[]) {
-        let filter = this.getQueryFilter(trace, numberOfPoints, ids);
-        let modelProvider = this.getModelProvider(trace);
-
-        let pm = new PerformanceMeter(`XY BENCHMARK (${numberOfPoints} points)`);
+    protected async executeBenchmark(series: XYSeries[], repetition: number) {
+        let pm = new PerformanceMeter(`XY CHART`);
         for (let i = 0; i < repetition; ++i) {
             pm.start();
             await modelProvider.fetchXY(filter);

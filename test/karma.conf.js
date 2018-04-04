@@ -4,16 +4,16 @@ module.exports = function(config) {
     config.set({
         basePath: '',
         frameworks: ['mocha', 'chai'],
-        files: [
-            'timeline/thread-status-benchmark.spec.ts',
-            'xy/cpu-usage-benchmark.spec.ts',
-            'xy/disks-io-benchmark.spec.ts',
-            'xy/kernel-memory-benchmark.spec.ts',
+        files: [           
+            'protocol/xy/cpu-usage-benchmark.spec.ts',
+            'protocol/xy/disks-io-benchmark.spec.ts',
+            'protocol/xy/kernel-memory-benchmark.spec.ts',
+            'protocol/timeline/thread-status-benchmark.spec.ts'
         ],
         exclude: [
         ],
         preprocessors: {
-            'test/**/*.ts': ['webpack']
+            './**/*.ts': ['webpack']
         },
         webpack: {
             module: webpackConfig.module,

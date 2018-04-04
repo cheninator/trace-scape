@@ -6,14 +6,14 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { Trace } from './../../src/common/core/model/trace';
-import { TraceModelProvider, ITraceModelProvider } from './../../src/common/core/protocol/trace-model-provider';
-import { SelectionTimeQueryFilter } from './../../src/common/core/filter/selection-time-query-filter';
-import { ITimelineModelProvider } from '../../src/common/core/protocol/timeline-model-provider';
-import { TimeQueryFilter } from './../../src/common/core/filter/time-query-filter';
-import { ModelResponse } from './../../src/common/core/protocol/model-response';
-import { ITreeModel } from './../../src/common/core/model/tree-model';
-import { PerformanceMeter } from './../performance-meter';
+import { ITimelineModelProvider } from '../../../src/common/core/protocol/timeline-model-provider';
+import { SelectionTimeQueryFilter } from './../../../src/common/core/filter/selection-time-query-filter';
+import { TimeQueryFilter } from './../../../src/common/core/filter/time-query-filter';
+import { Trace } from './../../../src/common/core/model/trace';
+import { ITreeModel } from './../../../src/common/core/model/tree-model';
+import { ModelResponse } from './../../../src/common/core/protocol/model-response';
+import { TraceModelProvider } from './../../../src/common/core/protocol/trace-model-provider';
+import { PerformanceMeter } from './../../performance-meter';
 
 export abstract class TimelineModelProviderBenchmark {
 
