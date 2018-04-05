@@ -15,6 +15,8 @@ import { ModelResponse } from './../../src/common/core/protocol/model-response';
 import { XYLineChart } from './../../src/common/xy/xy-line-chart';
 import { PerformanceMeter } from './../performance-meter';
 import { XYSeries } from '../../src/common/core/model/xy-model';
+import { IXYChart } from '../../src/common/base/xy-chart';
+import { TraceManager } from './../../src/common/core/trace-manager';
 
 export abstract class XYChartBenchmark {
 
@@ -22,24 +24,30 @@ export abstract class XYChartBenchmark {
 
     protected abstract getModelProvider(trace: Trace): IXYModelProvider;
 
+    protected getXYChart(element: HTMLElement): IXYChart {
+        return new XYLineChart(element);
+    }
+
     protected getTraceModelProvider(): ITraceModelProvider {
         return new TraceModelProvider(this.serverUrl);
     }
 
     protected async testManyThreads() {
+        let traceManager = TraceManager.getInstance();
+        let name = 'many-threads';
+        let path = `/home/yonni/Documents/traces/${name}`;
+        let trace = await traceManager.openTrace(name, path);
 
-        let traceName = 'many-threads';
-        let tracePath = `/home/yonni/Documents/traces/${traceName}`;
-
-        let traceModelProvider = this.getTraceModelProvider();
-        let trace = await traceModelProvider.putTrace(traceName, tracePath);
-        let div = document.createElement('div');
+        let chart = this.getXYChart(document.createElement('div'));
         let modelProvider = this.getModelProvider(trace);
+        let tree = await modelProvider.fetchTree(this.getQueryFilter(trace, 100, new Array()));
+        let ids = tree.model.map(x => x.id);
+        let response = await modelProvider.fetchXY(this.getQueryFilter(trace, 100, ids));
 
-        await this.executeBenchmark(trace, 10, 10);
-        await this.executeBenchmark(trace, 10, 100);
-        await this.executeBenchmark(trace, 10, 1000);
-        await this.executeBenchmark(trace, 10, 10000);
+        await this.executeBenchmark(chart, response.model, 10);
+        await this.executeBenchmark(chart, response.model, 100);
+        await this.executeBenchmark(chart, response.model, 1000);
+        await this.executeBenchmark(chart, response.model, 10000);
     }
 
     protected getQueryFilter(trace: Trace, numberOfPoints: number, ids: number[]): TimeQueryFilter {
@@ -51,11 +59,11 @@ export abstract class XYChartBenchmark {
         };
     }
 
-    protected async executeBenchmark(series: XYSeries[], repetition: number) {
-        let pm = new PerformanceMeter(`XY CHART`);
+    protected async executeBenchmark(chart: IXYChart, series: XYSeries[], repetition: number) {
+        let pm = new PerformanceMeter(`XY CHART for ${series.length} series`);
         for (let i = 0; i < repetition; ++i) {
             pm.start();
-            await modelProvider.fetchXY(filter);
+            chart.redraw(series);
             pm.stop();
         }
         pm.commit();

@@ -3,14 +3,13 @@ const Uglify = require("uglifyjs-webpack-plugin");
 var PROD = JSON.parse(process.env.PROD_ENV || '0');
 
 module.exports = {
-    entry: './bin/src/common/app.js',
+    entry: './src/common/app.ts',
     output: {
       filename: './bin/bundle.js'
     },
     resolve: {
       extensions: ['.ts', '.js', '.tsx', '.jsx']
     },
-    devtool: 'source-map',
     module: {
       rules: [
         {
