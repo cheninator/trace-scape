@@ -17,6 +17,7 @@ import { ITreeModel } from './../core/model/tree-model';
 import { ProjectExplorerModel } from './../core/model/project-explorer-model';
 import { TraceManager } from '../core/trace-manager';
 import { EventType } from './../base/events';
+import { Http } from './../core/http';
 
 export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
@@ -30,13 +31,11 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
     get html(): string {
         return `
-            <form>
-                <div>
-                    <label>Upload a trace</label>
-                    <input type="file">
-                </div>
-                <button class="btn btn-outline-secondary btn-sm" type="submit">Upload</button>
-            </form>
+            <div>
+                <label>Upload a trace</label>
+                <input id="file" type="file">
+            </div>
+            <button id="submit" class="btn btn-outline-secondary btn-sm">Upload</button>
             <div id="${this.config_.id}"></div>
         `;
     }
@@ -69,5 +68,18 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
                 }
             }));
         };
+
+        let button = document.getElementById("submit");
+        button.addEventListener("click", (e: MouseEvent) => {
+            const input = document.getElementById('file') as HTMLInputElement;
+            const file = input.files[0];
+            let data = new FormData();
+            data.append('file', file);
+            Http.put("http://localhost:8080/tracecompass/traces", data, {
+                method: 'PUT',
+                mode: 'cors',
+                body: data
+            });
+        });
     }
 }
