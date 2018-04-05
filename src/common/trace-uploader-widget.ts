@@ -7,6 +7,7 @@
  */
 
 import { Http } from './core/http';
+import { TraceManager } from './core/trace-manager';
 
 export class TraceUploaderWidget {
 
@@ -38,10 +39,13 @@ export class TraceUploaderWidget {
         let rootPath = this.uploadRoot_ === undefined ? this.DEFAULT_UPLOAD_ROOT : this.uploadRoot_;
         data.append('path', rootPath);
 
-        Http.put(url, data, {
+        await Http.put(url, data, {
             method: 'PUT',
             mode: 'cors',
             body: data
         });
+
+        let name = file.name.slice(0, -4);
+        await TraceManager.getInstance().openTrace(name, `${rootPath}/${name}/${name}`);
     }
 }
