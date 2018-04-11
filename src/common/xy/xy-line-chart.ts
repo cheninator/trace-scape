@@ -38,10 +38,11 @@ export class XYLineChart implements IXYChart {
             for (let i = 0; i < series.x.length; ++i) {
                 data.push([series.x[i], series.y[i]]);
             }
-            this.chart_.addSeries(<Highcharts.IndividualSeriesOptions>{
+
+            this.chart_.addSeries(<Highcharts.LineChartSeriesOptions>{
                 name: series.name,
                 data: data
-            });
+            }, false, false);
         }
         this.chart_.redraw();
         this.chart_.hideLoading();
@@ -55,7 +56,7 @@ export class XYLineChart implements IXYChart {
     public clear() {
         let seriesLength = this.chart_.series.length;
         for (let i = seriesLength - 1; i > -1; i--) {
-            this.chart_.series[i].remove();
+            this.chart_.series[i].remove(false);
         }
     }
 
