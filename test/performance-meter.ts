@@ -17,6 +17,11 @@ export class PerformanceMeter {
         this.times = new Array();
     }
 
+    get average() {
+        let sum = this.times.reduce((previous, current) => current += previous);
+        return sum / this.times.length;
+    }
+
     /**
      * Start a new execution time record
      */

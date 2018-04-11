@@ -8,11 +8,29 @@
 
 import { XYLineChart } from './../src/common/xy/xy-line-chart';
 import { XYSeries } from './../src/common/core/model/xy-model';
+import { IXYChart } from '../src/common/base/xy-chart';
+import { Dictionary } from './../src/common/core/dictionary';
 
 export class Results {
 
-    public static show(series: XYSeries[]) {
-        let chart = new XYLineChart(document.createElement('div'));
-        chart.redraw(series);
+    private static charts_: Dictionary<IXYChart> = new Dictionary();
+
+    public static createChart(id: string, title: string) {
+        if (!Results.charts_.contains(id)) {
+            let element = document.createElement('div');
+            document.body.appendChild(element);
+
+            let chart = new XYLineChart(element);
+            chart.title = title;
+            Results.charts_.add(id, chart);
+        }
+    }
+
+    public static addSeries(id: string, series: XYSeries) {
+        if (Results.charts_.contains(id)) {
+            let s = new Array();
+            s.push(series);
+            Results.charts_.get(id).draw(s);
+        }
     }
 }

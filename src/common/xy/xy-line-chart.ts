@@ -29,6 +29,9 @@ export class XYLineChart implements IXYChart {
 
     set title(title: string) {
         this.title_ = title;
+        this.chart_.setTitle({
+            text: this.title_
+        });
     }
 
     public draw(xySeries: XYSeries[]) {
@@ -95,13 +98,6 @@ export class XYLineChart implements IXYChart {
             },
             credits: {
                 enabled: false
-            },
-            xAxis: {
-                labels: {
-                    formatter: function() {
-                        return TimeFormatter.fromNanos(this.value);
-                    }
-                },
             },
             yAxis: {
                 title: {

@@ -11,9 +11,12 @@ import { XYLineChart } from './../../src/common/xy/xy-line-chart';
 import { PerformanceMeter } from './../performance-meter';
 import { XYSeries } from '../../src/common/core/model/xy-model';
 import { IXYChart } from '../../src/common/base/xy-chart';
+import { Results } from './../results';
 
 @suite("XY chart benchmark")
 export class XYChartBenchmark {
+
+    private readonly DEFAULT_REPETITION = 10;
 
     protected getXYChart(element: HTMLElement): IXYChart {
         return new XYLineChart(element);
@@ -21,21 +24,39 @@ export class XYChartBenchmark {
 
     @test("Fixed number of series, number of points per series increasing", timeout(5000000))
     public testNumberOfPoints() {
-        this.executeBenchmark(1, 10, 10);
-        this.executeBenchmark(1, 100, 10);
-        this.executeBenchmark(1, 500, 10);
-        this.executeBenchmark(1, 1000, 10);
-        this.executeBenchmark(1, 5000, 10);
-        this.executeBenchmark(1, 10000, 10);
+        Results.createChart("1", "Fixed number of series, number of points per series increasing");
+
+        const numberOfPoints = [10, 100, 500, 1000, 5000, 10000];
+        const numberOfSeries = 1;
+        let results = new Array();
+
+        for (let n of numberOfPoints) {
+            results.push(this.executeBenchmark(numberOfSeries, n, this.DEFAULT_REPETITION));
+        }
+        Results.addSeries("1", {
+            name: "Rendering time according to the number of points",
+            x: numberOfPoints,
+            y: results
+        });
     }
 
     @test("Number of series increasing, fixed number of points per series", timeout(5000000))
     public testNumberOfSeries() {
-        this.executeBenchmark(1, 100, 10);
-        this.executeBenchmark(5, 100, 10);
-        this.executeBenchmark(10, 100, 10);
-        this.executeBenchmark(50, 100, 10);
-        this.executeBenchmark(100, 100, 10);
+        Results.createChart("2", "Number of series increasing, fixed number of points per series");
+
+        const numberOfSeries = [1, 5, 10, 50, 100];
+        const numberOfPoints = 100;
+        let results = new Array();
+
+        for (let n of numberOfSeries) {
+            results.push(this.executeBenchmark(n, numberOfPoints, this.DEFAULT_REPETITION));
+        }
+
+        Results.addSeries("2", {
+            name: "Rendering time according to the number of points",
+            x: numberOfSeries,
+            y: results
+        });
     }
 
     protected executeBenchmark(nbSeries: number, nbPoints: number, repetition: number) {
@@ -48,6 +69,7 @@ export class XYChartBenchmark {
             pm.stop();
         }
         pm.commit();
+        return pm.average;
     }
 
     protected generateSeries(nbSeries: number, nbPoints: number) {
