@@ -64,13 +64,24 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
     private enableDoubleClick() {
         this.treeWidget_.onDoubleClick = async (treeModel: ITreeModel) => {
             let model = treeModel as ProjectExplorerModel;
-            let trace = await TraceManager.getInstance().openTrace(model.name, model.path);
 
-            window.dispatchEvent(new CustomEvent(EventType.TRACE_CHANGED, {
-                detail: {
-                    model: trace
-                }
-            }));
+            // This is a view
+            if (model.viewer !== undefined) {
+                window.dispatchEvent(new CustomEvent(EventType.VIEW_SELECTED, {
+                    detail: {
+                        model: model.viewer
+                    }
+                }));
+            }
+            else {
+                let trace = await TraceManager.getInstance().openTrace(model.name, model.path);
+
+                window.dispatchEvent(new CustomEvent(EventType.TRACE_CHANGED, {
+                    detail: {
+                        model: trace
+                    }
+                }));
+            }
         };
     }
 }

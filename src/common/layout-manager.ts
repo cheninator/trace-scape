@@ -11,6 +11,7 @@ import * as GoldenLayout from 'golden-layout';
 import { IGoldenLayoutComponent } from './components/component';
 import { NavigatorComponent } from './components/navigator-component';
 import { TreeTimelineComponent } from './components/tree-timeline-component';
+import { EventType } from './base/events';
 
 export class LayoutManager {
 
@@ -28,6 +29,8 @@ export class LayoutManager {
         this.layout_.init();
         this.components_ = new Array();
         this.registerNavigatorComponent();
+
+        window.addEventListener(EventType.VIEW_SELECTED, this.viewSelected.bind(this));
     }
 
     public addComponent(component: IGoldenLayoutComponent) {
@@ -102,5 +105,9 @@ export class LayoutManager {
             content: new Array()
         });
         this.layout_.root.contentItems[0].contentItems[0].config.width = 7;
+    }
+
+    private viewSelected(event: CustomEvent) {
+        // TODO: Need to figure out if we have to create a Timeline component or XY component
     }
 }

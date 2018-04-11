@@ -12,5 +12,6 @@ export const EventType = {
     RESET_RANGE: 'resetRange',
     VISIBLE_WINDOW_CHANGED: 'visibleWindowChanged',
     TRACE_CHANGED: 'traceChanged',
-    MODEL_PROVIDER_CHANGED: 'modelProviderChanged'
+    MODEL_PROVIDER_CHANGED: 'modelProviderChanged',
+    VIEW_SELECTED: 'viewSelected'
 };

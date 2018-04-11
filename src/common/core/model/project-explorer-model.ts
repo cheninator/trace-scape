@@ -8,7 +8,14 @@
 
 import { ITreeModel } from './../model/tree-model';
 
+export interface ProjectExplorerViewer {
+    id: string;
+    name: string;
+    serverUrl: string;
+}
+
 export interface ProjectExplorerModel extends ITreeModel {
     path: string;
     type: string;
+    viewer?: ProjectExplorerViewer;
 }
