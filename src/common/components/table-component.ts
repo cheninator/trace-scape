@@ -8,7 +8,7 @@
 
 import * as GoldenLayout from 'golden-layout';
 
-import { EventTableModelProvider } from './../core/protocol/events/event-table-model-provider';
+import { EventTableModelProvider } from './../core/protocol/tables/event-table-model-provider';
 import { BaseGoldenLayoutComponent } from './component';
 import { ConfigComponent } from './config-component';
 import { Trace } from './../core/model/trace';
@@ -16,6 +16,7 @@ import { EventType } from './../base/events';
 import { Utils } from './../core/utils';
 import { TableWidget } from '../table/table-widget';
 import { IVirtualTableModelProvider } from '../core/protocol/virtual-table-model-provider';
+import { TableModelProviderFactory } from './../core/protocol/tables/table-model-provider-factory';
 
 export class TableComponent extends BaseGoldenLayoutComponent {
 
@@ -24,7 +25,7 @@ export class TableComponent extends BaseGoldenLayoutComponent {
 
     constructor(config: ConfigComponent, trace: Trace) {
         super(config);
-        this.modelProvider_ = new EventTableModelProvider(config.serverUrl, trace);
+        this.modelProvider_ = TableModelProviderFactory.create(this.config_.serverUrl, trace, this.config_.id);
     }
 
     get html(): string {

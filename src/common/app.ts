@@ -57,7 +57,7 @@ async function main() {
     }, trace));
 
     layoutManager.addComponent(new TableComponent({
-        id: 'Events table',
+        id: ModelProviders.EVENTS_TABLE,
         serverUrl: serverUrl,
         name: 'Events table'
     }, trace));

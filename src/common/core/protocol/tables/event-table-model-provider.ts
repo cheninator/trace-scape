@@ -19,28 +19,33 @@ export class EventTableModelProvider implements IVirtualTableModelProvider {
     private trace_: Trace;
     private readonly providerID_: string;
 
-    constructor(serverUrl: string, trace: Trace, providerId?: string) {
+    constructor(serverUrl: string, trace: Trace, providerId: string) {
         this.serverUrl_ = serverUrl;
         this.trace_ = trace;
-        this.providerID_ = providerId !== undefined ? providerId : '';
+        this.providerID_ = providerId;
     }
 
     public async fetch(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>> {
-        let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/eventTable`;
+        let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/lines`;
         let params = new URLSearchParams();
         params.set('low', filter.index.toString());
         params.set('size', filter.count.toString());
 
-        let res = await Http.get(url, params);
+        for (let item of filter.columns) {
+            params.append('columnId', item);
+        }
+
+        let result = await Http.get(url, params);
         let model: VirtualTableModel = {
-            index: res.low,
-            count: res.size,
-            columns: res.columns,
-            data: res.lines
+            index: result.response.model.index,
+            count: result.response.model.nbTotalEntries,
+            columns: result.response.model.columnIds,
+            data: result.response.model.data
         };
+
         return <ModelResponse<VirtualTableModel>> {
-            status: Status.COMPLETED,
-            statusMessage: Status.COMPLETED.toString(),
+            status: result.response.status,
+            statusMessage: result.response.statusMessage,
             model: model
         };
     }

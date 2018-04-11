@@ -6,7 +6,6 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { IXYModelProvider } from './../xy-model-provider';
 import { ModelProviders } from './../model-providers';
 import { TreeTimelineModelProvider } from './tree-timeline-model-provider';
 import { ITimelineModelProvider } from '../timeline-model-provider';
