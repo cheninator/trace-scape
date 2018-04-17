@@ -7,13 +7,13 @@
  */
 
 import { Trace } from './../../../src/common/core/model/trace';
-import { TraceModelProvider, ITraceModelProvider } from './../../../src/common/core/protocol/trace-model-provider';
 import { SelectionTimeQueryFilter } from './../../../src/common/core/filter/selection-time-query-filter';
 import { IXYModelProvider } from './../../../src/common/core/protocol/xy-model-provider';
 import { TimeQueryFilter } from './../../../src/common/core/filter/time-query-filter';
 import { ModelResponse } from './../../../src/common/core/protocol/model-response';
 import { ITreeModel } from './../../../src/common/core/model/tree-model';
 import { PerformanceMeter } from './../../performance-meter';
+import { TraceManager } from './../../../src/common/core/trace-manager';
 
 export abstract class XYModelProviderBenchmark {
 
@@ -21,17 +21,11 @@ export abstract class XYModelProviderBenchmark {
 
     protected abstract getModelProvider(trace: Trace): IXYModelProvider;
 
-    protected getTraceModelProvider(): ITraceModelProvider {
-        return new TraceModelProvider(this.serverUrl);
-    }
-
     protected async testManyThreads() {
 
         let traceName = 'many-threads';
         let tracePath = `/home/yonni/Documents/traces/${traceName}`;
-
-        let traceModelProvider = this.getTraceModelProvider();
-        let trace = await traceModelProvider.putTrace(traceName, tracePath);
+        let trace = await TraceManager.getInstance().openTrace(traceName, tracePath);
 
         await this.executeBenchmark(trace, 10, 10);
         await this.executeBenchmark(trace, 10, 100);

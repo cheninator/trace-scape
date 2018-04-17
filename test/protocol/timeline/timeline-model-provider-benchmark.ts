@@ -12,8 +12,8 @@ import { TimeQueryFilter } from './../../../src/common/core/filter/time-query-fi
 import { Trace } from './../../../src/common/core/model/trace';
 import { ITreeModel } from './../../../src/common/core/model/tree-model';
 import { ModelResponse } from './../../../src/common/core/protocol/model-response';
-import { TraceModelProvider } from './../../../src/common/core/protocol/trace-model-provider';
 import { PerformanceMeter } from './../../performance-meter';
+import { TraceManager } from './../../../src/common/core/trace-manager';
 
 export abstract class TimelineModelProviderBenchmark {
 
@@ -26,8 +26,7 @@ export abstract class TimelineModelProviderBenchmark {
         let traceName = 'many-threads';
         let tracePath = `/home/yonni/Documents/traces/${traceName}`;
 
-        let traceModelProvider = new TraceModelProvider(this.serverUrl);
-        let trace = await traceModelProvider.putTrace(traceName, tracePath);
+        let trace = await TraceManager.getInstance().openTrace(traceName, tracePath);
 
         await this.executeBenchmark(trace, 10, 10);
         await this.executeBenchmark(trace, 10, 100);
