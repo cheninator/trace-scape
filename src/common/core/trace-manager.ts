@@ -9,6 +9,8 @@
 import { ITraceModelProvider, TraceModelProvider } from './protocol/trace-model-provider';
 import { Dictionary } from './dictionary';
 import { Trace } from './model/trace';
+import { EventType } from './../base/events';
+import { TreeXYComponent } from '../components/tree-xy-component';
 
 export class TraceManager {
 
@@ -33,6 +35,8 @@ export class TraceManager {
     private constructor(modelProvider: ITraceModelProvider) {
         this.modelProvider_ = modelProvider;
         this.traces_ = new Dictionary();
+
+        window.addEventListener(EventType.TRACE_CHANGED, this.traceUpdated.bind(this));
     }
 
     get activeTrace() {
@@ -60,6 +64,7 @@ export class TraceManager {
 
         if (trace === undefined) {
             trace = await this.modelProvider_.putTrace(name, path);
+            this.traces_.add(trace.UUID, trace);
         }
         this.activeTrace_ = trace;
         return this.activeTrace_;
@@ -84,6 +89,13 @@ export class TraceManager {
             if (!this.traces_.contains(trace.UUID)) {
                 this.traces_.add(trace.UUID, trace);
             }
+        }
+    }
+
+    private traceUpdated(e: CustomEvent) {
+        let trace = e.detail.model as Trace;
+        if (this.traces_.contains(trace.UUID)) {
+            this.traces_.set(trace.UUID, trace);
         }
     }
 }

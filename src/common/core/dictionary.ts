@@ -60,6 +60,10 @@
         return this.items_[key];
     }
 
+    public set(key: string, value: T) {
+        this.items_[key] = value;
+    }
+
     public values(): T[] {
         let values = new Array();
 

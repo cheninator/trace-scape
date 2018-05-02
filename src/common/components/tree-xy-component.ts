@@ -21,6 +21,8 @@ import { Utils } from './../core/utils';
 
 export class TreeXYComponent extends BaseGoldenLayoutComponent {
 
+    private readonly SELECTED_ENTRIES_COUNT = 10;
+
     private xyWidget_: XYWidget;
     private treeWidget_: TreeWidget;
     private modelProvider_: IXYModelProvider;
@@ -61,8 +63,8 @@ export class TreeXYComponent extends BaseGoldenLayoutComponent {
     }
 
     private treeModelChanged(e: CustomEvent) {
-        if (this.xyWidget_ !== undefined) {
-            this.xyWidget_.selectedEntries = e.detail.model;
+        if (this.xyWidget_ !== undefined && e.detail.model !== null) {
+            this.xyWidget_.selectedEntries = e.detail.model.slice(0, this.SELECTED_ENTRIES_COUNT);
         }
     }
 }

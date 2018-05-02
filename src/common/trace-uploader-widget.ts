@@ -8,6 +8,7 @@
 
 import { Http } from './core/http';
 import { TraceManager } from './core/trace-manager';
+import { EventType } from './base/events';
 
 export class TraceUploaderWidget {
 
@@ -47,5 +48,7 @@ export class TraceUploaderWidget {
 
         let name = file.name.slice(0, -4);
         await TraceManager.getInstance().openTrace(name, `${rootPath}/${name}/${name}`);
+
+        window.dispatchEvent(new CustomEvent(EventType.TRACE_UPLOADED, {}));
     }
 }

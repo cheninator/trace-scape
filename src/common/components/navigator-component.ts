@@ -28,6 +28,8 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
     constructor(config: ConfigComponent) {
         super(config);
         this.modelProvider_ = new ProjectExplorerModelProvider(this.config_.serverUrl);
+
+        window.addEventListener(EventType.TRACE_UPLOADED, this.traceUploaded.bind(this));
     }
 
     get html(): string {
@@ -59,6 +61,10 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
         let fileElement = document.getElementById("file");
         let button = document.getElementById("submit");
         this.traceUploaderWidget_ = new TraceUploaderWidget(fileElement, button, this.config_.serverUrl);
+    }
+
+    private traceUploaded() {
+        this.treeWidget_.update();
     }
 
     private enableDoubleClick() {
