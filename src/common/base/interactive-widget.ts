@@ -13,7 +13,7 @@ import { Widget } from './widget';
 
 export abstract class InteractiveWidget extends Widget {
 
-    private readonly ZOOM_PERCENT = 0.1;
+    protected readonly ZOOM_PERCENT = 0.1;
 
     /* Key bindings */
     private plus_: Key;
@@ -80,12 +80,17 @@ export abstract class InteractiveWidget extends Widget {
     }
 
     protected listenForVisibleWindowChange() {
-        window.addEventListener(EventType.VISIBLE_WINDOW_CHANGED, this.rangeSelected.bind(this));
+        window.addEventListener(EventType.VISIBLE_WINDOW_CHANGED, this.visibleWindowChanged.bind(this));
     }
 
-    private rangeSelected(e: CustomEvent) {
+    protected rangeSelected(e: CustomEvent) {
         this.visibleWindow_.min = e.detail.start;
         this.visibleWindow_.max = e.detail.end;
         this.update();
+    }
+
+    protected visibleWindowChanged(e: CustomEvent) {
+        // By default
+        this.rangeSelected(e);
     }
 }

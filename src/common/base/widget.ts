@@ -21,7 +21,13 @@ export abstract class Widget implements IShowable {
         };
     }
 
-    public abstract inflate(visibleWindow?: VisibleWindow): void;
+    public inflate(visibleWindow?: VisibleWindow) {
+        if (visibleWindow !== undefined) {
+            this.visibleWindow_ = visibleWindow;
+        }
+        this.update();
+    }
+
     public abstract update(): void;
     public abstract show(): void;
     public abstract hide(): void;

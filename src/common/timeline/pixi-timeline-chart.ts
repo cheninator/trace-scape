@@ -33,13 +33,17 @@ export class PixiTimelineChart implements ITimelineChart {
     private htmlElement_: HTMLElement;
     private chartContainer_: PIXI.Container;
 
-    private visibleEntries_: TimelineEntry[] = new Array();
-    private eventsGraphics_: PIXI.Graphics[] = new Array();
-    private arrowsGraphics_: PIXI.Graphics[] = new Array();
+    private visibleEntries_: TimelineEntry[];
+    private eventsGraphics_: PIXI.Graphics[];
+    private arrowsGraphics_: PIXI.Graphics[];
 
     constructor(element: HTMLElement) {
         this.htmlElement_ = element;
+
         this.timelinePresentation_ = new TimelinePresentation();
+        this.visibleEntries_ = new Array();
+        this.eventsGraphics_ = new Array();
+        this.arrowsGraphics_ = new Array();
 
         this.init();
     }
@@ -151,6 +155,8 @@ export class PixiTimelineChart implements ITimelineChart {
         this.data_ = event.data;
         this.oldPosition_ = this.data_.getLocalPosition(this.chartContainer_.parent);
         this.originalPosition_ = this.oldPosition_;
+
+        console.log(this.chartContainer_.x);
     }
 
     private onDragEnd(event: PIXI.interaction.InteractionEvent) {
@@ -161,8 +167,11 @@ export class PixiTimelineChart implements ITimelineChart {
         this.oldPosition_ = null;
 
         let resolution = (this.context_.max - this.context_.min) / this.context_.count;
-        let start = this.context_.min + (deltaX * resolution);
-        let end = this.context_.max + (deltaX * resolution);
+        let start = this.context_.min + (-1 * deltaX * resolution);
+        let end = this.context_.max + (-1 * deltaX * resolution);
+
+        this.chartContainer_.x -= deltaX;
+        this.timelineRuler_.container.x -= deltaX;
 
         window.dispatchEvent(new CustomEvent(EventType.VISIBLE_WINDOW_CHANGED, {
             detail: {

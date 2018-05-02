@@ -10,47 +10,39 @@ import { SelectionTimeQueryFilter } from './../core/filter/selection-time-query-
 import { ITimelineModelProvider } from './../core/protocol/timeline-model-provider';
 import { TimelineRowModel, TimelineArrow, TimelineEntry } from '../core/model/timeline-model';
 import { TimeQueryFilter } from './../core/filter/time-query-filter';
-import { InteractiveWidget } from '../base/interactive-widget';
+import { InteractiveWidgetCached } from '../base/interactive-widget-cached';
 import { Status } from './../core/protocol/model-response';
 import { PixiTimelineChart } from './pixi-timeline-chart';
 import { VisibleWindow } from './../base/visible-window';
 import { Utils } from './../core/utils';
 import { ITimelineChart } from '../base/timeline-chart';
 
-export class TimelineWidget extends InteractiveWidget {
+export class TimelineWidget extends InteractiveWidgetCached {
 
     private timelineChart_: ITimelineChart;
     private modelProvider_: ITimelineModelProvider;
 
     /* View models */
-    private visibleEntries_: TimelineEntry[] = new Array();
-    private rowModels_: TimelineRowModel[] = new Array();
-    private arrows_: TimelineArrow[] = new Array();
+    private visibleEntries_: TimelineEntry[];
+    private rowModels_: TimelineRowModel[];
+    private arrows_: TimelineArrow[];
 
     private showArrows: boolean;
 
     constructor(element: HTMLElement, modelProvider: ITimelineModelProvider) {
         super();
+
         this.timelineChart_ = new PixiTimelineChart(element);
+        this.visibleEntries_ = new Array();
+        this.rowModels_ = new Array();
+        this.arrows_ = new Array();
+
         this.modelProvider_ = modelProvider;
-
-        let box = element.getBoundingClientRect();
-        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
-        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
-        this.visibleWindow_.count = Math.floor(box.width);
-
-        this.init();
+        this.init(element);
     }
 
     set visibleEntries(visibleEntries: TimelineEntry[]) {
         this.visibleEntries_ = visibleEntries;
-    }
-
-    public inflate(visibleWindow?: VisibleWindow) {
-        if (visibleWindow !== undefined) {
-            this.visibleWindow_ = visibleWindow;
-        }
-        this.update();
     }
 
     public async update() {
@@ -86,11 +78,16 @@ export class TimelineWidget extends InteractiveWidget {
         this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
     }
 
+    public refresh() {
+        this.timelineChart_.context = this.visibleWindow_;
+        this.timelineChart_.redrawEvents(this.rowModels_);
+    }
+
     private async updateEvents(): Promise<Status> {
         let filter: SelectionTimeQueryFilter = {
-            start: this.visibleWindow_.min,
-            end: this.visibleWindow_.min === this.visibleWindow_.max ? Utils.ETERNITY : this.visibleWindow_.max,
-            count: this.visibleWindow_.count,
+            start: this.cachedVisibleWindow_.min,
+            end: this.cachedVisibleWindow_.min === this.cachedVisibleWindow_.max ? Utils.ETERNITY : this.cachedVisibleWindow_.max,
+            count: this.cachedVisibleWindow_.count,
             items: this.visibleEntries_.map((entry) => entry.id)
         };
 
@@ -111,10 +108,17 @@ export class TimelineWidget extends InteractiveWidget {
         return response.status;
     }
 
-    private init() {
+    private init(element: HTMLElement) {
+        let box = element.getBoundingClientRect();
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
+        this.visibleWindow_.count = Math.floor(box.width);
+
         this.listenForRangeSelection();
         this.listenForVisibleWindowChange();
         this.enableZoomByKeyboard();
         this.enablePanByKeyboard();
+
+        this.initCache();
     }
 }

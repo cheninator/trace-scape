@@ -30,24 +30,11 @@ export class XYWidget extends InteractiveWidget {
 
         this.xyChart_ = new XYLineChart(element);
         this.modelProvider_ = modelProvider;
-
-        let box = element.getBoundingClientRect();
-        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
-        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
-        this.visibleWindow_.count = Math.floor(box.width);
-
-        this.init();
+        this.init(element);
     }
 
     set selectedEntries(selectedEntries: XYEntries[]) {
         this.selectedEntries_ = selectedEntries;
-    }
-
-    public inflate(visibleWindow?: VisibleWindow) {
-        if (visibleWindow !== undefined) {
-            this.visibleWindow_ = visibleWindow;
-        }
-        this.update();
     }
 
     public async update() {
@@ -97,7 +84,12 @@ export class XYWidget extends InteractiveWidget {
         return response.status;
     }
 
-    private init() {
+    private init(element: HTMLElement) {
+        let box = element.getBoundingClientRect();
+        this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
+        this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
+        this.visibleWindow_.count = Math.floor(box.width);
+
         this.listenForRangeSelection();
         this.enableZoomByKeyboard();
         this.enablePanByKeyboard();
