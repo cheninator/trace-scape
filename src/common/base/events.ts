@@ -11,6 +11,7 @@ export const EventType = {
     RANGE_SELECTED: 'rangeSelected',
     RESET_RANGE: 'resetRange',
     VISIBLE_WINDOW_CHANGED: 'visibleWindowChanged',
+    VISIBLE_ENTRIES_CHANGED: 'visibleEntriesChanged',
     TRACE_CHANGED: 'traceChanged',
     TRACE_UPLOADED: 'traceUploaded',
     TRACE_UPDATED: 'traceUpdated',

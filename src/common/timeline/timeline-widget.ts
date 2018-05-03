@@ -16,33 +16,52 @@ import { PixiTimelineChart } from './pixi-timeline-chart';
 import { VisibleWindow } from './../base/visible-window';
 import { Utils } from './../core/utils';
 import { ITimelineChart } from '../base/timeline-chart';
+import { EventType } from '../base/events';
+import { ENGINE_METHOD_DIGESTS } from 'constants';
+import { Coordinate } from '../base/position';
 
 export class TimelineWidget extends InteractiveWidgetCached {
+
+    private readonly ROW_MODELS_CACHE_SIZE = 100;
+    private readonly ROW_MODELS_VISIBLE_SIZE = 25;
 
     private timelineChart_: ITimelineChart;
     private modelProvider_: ITimelineModelProvider;
 
     /* View models */
-    private visibleEntries_: TimelineEntry[];
+    private entries_: TimelineEntry[];
     private rowModels_: TimelineRowModel[];
     private arrows_: TimelineArrow[];
 
     private showArrows: boolean;
 
+    /*
+     * Used for virtualizing. The property rowModels_ contains more row models
+     * than what is going to be shown. This is useful for vertical panning. No need to make
+     * additional request to the server. The property firstVisibleEntry_ and lastVisibleEntry_
+     * are indexes for slicing rowModels_ to pass it to the chart.
+     */
+    private firstCachedEntry: number;
+    private lastCachedEntry: number;
+    private firstVisibleEntry_: number;
+    private lastVisibleEntry_: number;
+
     constructor(element: HTMLElement, modelProvider: ITimelineModelProvider) {
         super();
 
         this.timelineChart_ = new PixiTimelineChart(element);
-        this.visibleEntries_ = new Array();
+        this.entries_ = new Array();
         this.rowModels_ = new Array();
         this.arrows_ = new Array();
 
         this.modelProvider_ = modelProvider;
         this.init(element);
+
+        window.addEventListener(EventType.VISIBLE_ENTRIES_CHANGED, Utils.throttle(this.visibleEntriesChanged.bind(this), 100));
     }
 
-    set visibleEntries(visibleEntries: TimelineEntry[]) {
-        this.visibleEntries_ = visibleEntries;
+    set entries(visibleEntries: TimelineEntry[]) {
+        this.entries_ = visibleEntries;
     }
 
     public async update() {
@@ -80,19 +99,27 @@ export class TimelineWidget extends InteractiveWidgetCached {
 
     public refresh() {
         this.timelineChart_.context = this.visibleWindow_;
-        this.timelineChart_.redrawEvents(this.rowModels_);
+        this.timelineChart_.redrawEvents(this.rowModels_.slice(this.firstVisibleEntry_, this.lastVisibleEntry_));
     }
 
     private async updateEvents(): Promise<Status> {
+        let ids = this.entries_.map((entry) => entry.id).slice(this.firstCachedEntry, this.lastCachedEntry);
+
         let filter: SelectionTimeQueryFilter = {
             start: this.cachedVisibleWindow_.min,
             end: this.cachedVisibleWindow_.min === this.cachedVisibleWindow_.max ? Utils.ETERNITY : this.cachedVisibleWindow_.max,
             count: this.cachedVisibleWindow_.count,
-            items: this.visibleEntries_.map((entry) => entry.id)
+            items: ids
         };
 
         let response = await this.modelProvider_.fetchEvents(filter);
         this.rowModels_ = response.model;
+
+        // Reorder the row models according to entries
+        this.rowModels_.sort((a: TimelineRowModel, b: TimelineRowModel) => {
+            return ids.indexOf(a.entryID) - ids.indexOf(b.entryID);
+        });
+
         return response.status;
     }
 
@@ -114,11 +141,38 @@ export class TimelineWidget extends InteractiveWidgetCached {
         this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
         this.visibleWindow_.count = Math.floor(box.width);
 
+        this.firstVisibleEntry_ = 0;
+        this.lastVisibleEntry_ = this.ROW_MODELS_VISIBLE_SIZE;
+        this.firstCachedEntry = 0;
+        this.lastCachedEntry = this.ROW_MODELS_CACHE_SIZE;
+
         this.listenForRangeSelection();
         this.listenForVisibleWindowChange();
         this.enableZoomByKeyboard();
         this.enablePanByKeyboard();
 
         this.initCache();
+    }
+
+    private visibleEntriesChanged(e: CustomEvent) {
+        let position = e.detail.position as number;
+        let entryWidth = e.detail.entryWidth as number;
+
+        this.firstVisibleEntry_ = Math.round(position / entryWidth);
+        this.lastVisibleEntry_ = this.firstVisibleEntry_ + this.ROW_MODELS_VISIBLE_SIZE;
+
+        /* No need to query the server */
+        if (this.firstCachedEntry <= this.firstVisibleEntry_ && this.lastVisibleEntry_ <= this.lastCachedEntry) {
+            let offset = {
+                x: 0,
+                y: -1 * position % entryWidth
+            } as Coordinate;
+            this.timelineChart_.redrawEvents(this.rowModels_.slice(this.firstVisibleEntry_, this.lastVisibleEntry_), offset);
+            this.refresh();
+        }
+        else {
+            // TODO: Update firstVisibleEntry_ and lastVisibleEntry_
+            this.update();
+        }
     }
 }

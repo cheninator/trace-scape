@@ -9,6 +9,7 @@
 import { colors } from './../components/colors';
 import { VisibleWindow } from './../base/visible-window';
 import { TimeFormatter } from './../core/formatter/time-formatter';
+import { Coordinate } from '../base/position';
 
 export class PixiTimelineRuler {
 
@@ -28,16 +29,14 @@ export class PixiTimelineRuler {
     /* Heigth in pixel of the canvas used to draw the events */
     private heigth_: number;
 
-    /* X and Y position of the ruler */
-    private positionX_: number;
-    private positionY_: number;
+    /* X and Y offset of the ruler */
+    private offset_: Coordinate;
 
-    constructor(x: number, y: number, width: number, heigth: number) {
+    constructor(offset: Coordinate, width: number, heigth: number) {
         this.rulerContainer_ = new PIXI.Container();
         this.rulerGraphics_ = new PIXI.Graphics();
 
-        this.positionX_ = x;
-        this.positionY_ = y;
+        this.offset_ = offset;
         this.width_ = width;
         this.heigth_ = heigth;
     }
@@ -57,29 +56,29 @@ export class PixiTimelineRuler {
     public draw() {
         this.clear();
         this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
-        this.rulerGraphics_.moveTo(this.positionX_, this.positionY_ + (this.entryHeight * 0.75));
-        this.rulerGraphics_.lineTo(this.positionX_ + this.width_, this.positionY_ + (this.entryHeight * 0.75));
+        this.rulerGraphics_.moveTo(this.offset_.x, this.offset_.y + (this.entryHeight * 0.75));
+        this.rulerGraphics_.lineTo(this.offset_.x + this.width_, this.offset_.y + (this.entryHeight * 0.75));
 
         let numberOfDelimitation = 5;
         let delta = this.width_ / numberOfDelimitation;
 
         this.rulerContainer_.removeChildren();
         for (let i = 0; i < numberOfDelimitation; ++i) {
-            this.drawSeparation(this.positionX_ + i * delta, this.heigth_);
+            this.drawSeparation(this.offset_.x + i * delta, this.heigth_);
         }
         this.rulerContainer_.addChild(this.rulerGraphics_);
     }
 
     private drawSeparation(start: number, height: number) {
         this.rulerGraphics_.lineStyle(this.lineWidth, colors.BLACK);
-        this.rulerGraphics_.moveTo(start, this.positionY_);
+        this.rulerGraphics_.moveTo(start, this.offset_.y);
         this.rulerGraphics_.lineTo(start, height);
 
         let resolution = (this.context_.max - this.context_.min) / this.context_.count;
         let time = TimeFormatter.fromNanos(this.context_.min + start * resolution);
         let pixiText = new PIXI.Text(time, this.textStyle);
         pixiText.x = start + 5;
-        pixiText.y = this.positionY_;
+        pixiText.y = this.offset_.y;
         this.rulerContainer_.addChild(pixiText);
     }
 }

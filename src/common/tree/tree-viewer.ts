@@ -25,10 +25,24 @@ export class TreeViewer implements IShowable {
 
     constructor(element: HTMLElement) {
         this.element_ = element;
-        this.init();
+
+        // @ts-ignore: Broken definition type
+        this.tree_ = new Tree({});
+
+        this.element_.onscroll = () => {
+            window.dispatchEvent(new CustomEvent(EventType.VISIBLE_ENTRIES_CHANGED, {
+                detail: {
+                    position: this.element_.scrollTop,
+                    entryWidth: 25
+                }
+            }));
+        };
     }
 
     set treeModel(treeModel: ITreeModel[]) {
+        if (treeModel === null) {
+            return;
+        }
         this.treeModel_ = treeModel;
         let nodes = this.buildTreeFromModel(this.treeModel_);
         this.tree_.removeAll();
@@ -73,6 +87,14 @@ export class TreeViewer implements IShowable {
         return new Array();
     }
 
+    public getAllNodes() {
+        if (this.treeModel_ !== undefined) {
+            let flatten = this.tree_.flatten((node) => node).map(t => t["id"]);
+            return this.treeModel_.filter((model) => flatten.indexOf(model.id.toString()) !== -1);
+        }
+        return new Array();
+    }
+
     public expandAll() {
         this.tree_.expandDeep();
     }
@@ -86,8 +108,7 @@ export class TreeViewer implements IShowable {
         });
 
         let dictionary = new Dictionary<NodeConfig>();
-        for (let i = 0; i < models.length; ++i) {
-            let model = models[i];
+        for (let model of models) {
             dictionary.add(model.id.toString(), {
                 id: model.id.toString(),
                 text: model.name,
@@ -96,8 +117,7 @@ export class TreeViewer implements IShowable {
         }
 
         let roots: NodeConfig[] = new Array();
-        for (let i = 0; i < models.length; ++i) {
-            let model = models[i];
+        for (let model of models) {
             let node = dictionary.get(model.id.toString());
             if (model.parentId !== -1) {
                 let parentNode = dictionary.get(model.parentId.toString());
@@ -108,10 +128,5 @@ export class TreeViewer implements IShowable {
             }
         }
         return roots;
-    }
-
-    private init() {
-        // @ts-ignore: Broken definition type
-        this.tree_ = new Tree({});
     }
 }

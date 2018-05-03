@@ -21,11 +21,11 @@ export class TreeWidget extends Widget {
     private modelProvider_: ITreeModelProvider;
     private entries_: ITreeModel[] = new Array();
 
-    private treeViewer: TreeViewer;
+    private treeViewer_: TreeViewer;
 
     constructor(element: HTMLElement, modelProvider: ITreeModelProvider) {
         super();
-        this.treeViewer = new TreeViewer(element);
+        this.treeViewer_ = new TreeViewer(element);
         this.modelProvider_ = modelProvider;
 
         let box = element.getBoundingClientRect();
@@ -34,14 +34,7 @@ export class TreeWidget extends Widget {
     }
 
     set onDoubleClick(onDoubleClick: (node: ITreeModel) => void) {
-        this.treeViewer.onDoubleClick = onDoubleClick;
-    }
-
-    public inflate(visibleWindow?: VisibleWindow) {
-        if (visibleWindow !== undefined) {
-            this.visibleWindow_ = visibleWindow;
-        }
-        this.update();
+        this.treeViewer_.onDoubleClick = onDoubleClick;
     }
 
     public async update() {
@@ -65,25 +58,29 @@ export class TreeWidget extends Widget {
                     model: this.entries_
                 }
             }));
-            this.treeViewer.update();
+            this.treeViewer_.update();
             await Utils.wait(this.WAIT_BEFORE_REQUEST);
         } while (!completed);
     }
 
     public show() {
-        this.treeViewer.show();
+        this.treeViewer_.show();
     }
 
     public hide() {
-        this.treeViewer.hide();
+        this.treeViewer_.hide();
     }
 
     public getNodes(count: number) {
-        return this.treeViewer.getNodes(count);
+        return this.treeViewer_.getNodes(count);
+    }
+
+    public getAllNodes() {
+        return this.treeViewer_.getAllNodes();
     }
 
     public expandAll() {
-        this.treeViewer.expandAll();
+        this.treeViewer_.expandAll();
     }
 
     public resetVisibleWindow() {
@@ -100,7 +97,7 @@ export class TreeWidget extends Widget {
 
         let response = await this.modelProvider_.fetchTree(filter);
         this.entries_ = response.model;
-        this.treeViewer.treeModel = this.entries_;
+        this.treeViewer_.treeModel = this.entries_;
         return response.status;
     }
 }

@@ -14,6 +14,7 @@ import { IDictionary, Dictionary } from './../core/dictionary';
 import { VisibleWindow } from '../base/visible-window';
 import { ITimelineChart } from '../base/timeline-chart';
 import { PixiTimelineRuler } from './pixi-timeline-ruler';
+import { Coordinate, ORIGIN } from '../base/position';
 
 export class PixiTimelineChart implements ITimelineChart {
 
@@ -33,7 +34,6 @@ export class PixiTimelineChart implements ITimelineChart {
     private htmlElement_: HTMLElement;
     private chartContainer_: PIXI.Container;
 
-    private visibleEntries_: TimelineEntry[];
     private eventsGraphics_: PIXI.Graphics[];
     private arrowsGraphics_: PIXI.Graphics[];
 
@@ -41,14 +41,20 @@ export class PixiTimelineChart implements ITimelineChart {
         this.htmlElement_ = element;
 
         this.timelinePresentation_ = new TimelinePresentation();
-        this.visibleEntries_ = new Array();
         this.eventsGraphics_ = new Array();
         this.arrowsGraphics_ = new Array();
 
         this.init();
     }
 
-    public drawEvents(events: TimelineRowModel[]) {
+    /*
+     * This methods will draw row events in the same order as they appear in the array.
+     */
+    public drawEvents(events: TimelineRowModel[], offset?: Coordinate) {
+        let yOffset = 0;
+        if (offset !== undefined) {
+            yOffset = offset.y;
+        }
 
         while (this.eventsGraphics_.length < events.length) {
             let graphics = new PIXI.Graphics();
@@ -69,7 +75,7 @@ export class PixiTimelineChart implements ITimelineChart {
                 let rectHeight = this.timelinePresentation_.getThicknessOfState(state.value);
 
                 let x = Math.round((start - this.context_.min) / resolution);
-                let y = ((i + 1) * this.entryHeight) + ((this.entryHeight - rectHeight) / 2);
+                let y = ((i + 1) * this.entryHeight) + ((this.entryHeight - rectHeight) / 2) + yOffset;
                 let width = Math.round(state.duration / resolution);
 
                 eventGraphic.beginFill(color, 1);
@@ -81,9 +87,9 @@ export class PixiTimelineChart implements ITimelineChart {
         this.redrawRuler();
     }
 
-    public redrawEvents(events: TimelineRowModel[]) {
+    public redrawEvents(events: TimelineRowModel[], offset?: Coordinate) {
         this.clearEvents();
-        this.drawEvents(events);
+        this.drawEvents(events, offset);
     }
 
     public clear() {
@@ -144,7 +150,7 @@ export class PixiTimelineChart implements ITimelineChart {
                             .on('pointerupoutside', this.onDragEnd.bind(this))
                             .on('pointermove', this.onDragMove.bind(this));
 
-        this.timelineRuler_ = new PixiTimelineRuler(0, 0, options.width, options.height);
+        this.timelineRuler_ = new PixiTimelineRuler(ORIGIN, options.width, options.height);
 
         this.application_.stage.addChild(this.timelineRuler_.container);
         this.application_.stage.addChild(this.chartContainer_);
@@ -155,8 +161,6 @@ export class PixiTimelineChart implements ITimelineChart {
         this.data_ = event.data;
         this.oldPosition_ = this.data_.getLocalPosition(this.chartContainer_.parent);
         this.originalPosition_ = this.oldPosition_;
-
-        console.log(this.chartContainer_.x);
     }
 
     private onDragEnd(event: PIXI.interaction.InteractionEvent) {

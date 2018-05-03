@@ -80,7 +80,7 @@ export abstract class InteractiveWidgetCached extends InteractiveWidget {
     }
 
     private updateOrRefresh() {
-        if (this.visibleWindow_.min < this.cachedVisibleWindow_.max && this.visibleWindow_.max < this.cachedVisibleWindow_.max) {
+        if (this.cachedVisibleWindow_.min <= this.visibleWindow_.min && this.visibleWindow_.max <= this.cachedVisibleWindow_.max) {
             this.refresh();
         } else {
             this.initCache();

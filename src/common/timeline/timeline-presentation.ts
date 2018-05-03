@@ -14,13 +14,13 @@ export class TimelinePresentation {
     private readonly colorMapping: Dictionary<number>;
 
     private readonly thicknessMapping = {
-        0: 12,
-        1: 12,
-        2: 12,
-        3: 12,
-        4: 12,
-        5: 12,
-        6: 12
+        0: 11,
+        1: 11,
+        2: 11,
+        3: 11,
+        4: 11,
+        5: 11,
+        6: 11
     };
 
     constructor() {

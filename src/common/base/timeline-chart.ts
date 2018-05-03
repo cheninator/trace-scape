@@ -9,11 +9,12 @@
 import { TimelineRowModel, TimelineArrow } from './../core/model/timeline-model';
 import { VisibleWindow } from './visible-window';
 import { IShowable } from './showable';
+import { Coordinate, ORIGIN } from './position';
 
 export interface ITimelineChart extends IShowable {
     context: VisibleWindow;
-    redrawEvents(row: TimelineRowModel[]): void;
-    drawEvents(row: TimelineRowModel[]): void;
+    redrawEvents(row: TimelineRowModel[], offset?: Coordinate): void;
+    drawEvents(row: TimelineRowModel[], offset?: Coordinate): void;
     redrawArrows(arrows: TimelineArrow[]): void;
     drawArrows(arrows: TimelineArrow[]): void;
     clearEvents(): void;

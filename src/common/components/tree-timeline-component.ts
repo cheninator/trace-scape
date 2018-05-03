@@ -21,8 +21,6 @@ import { TimelineEntry } from '../core/model/timeline-model';
 
 export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
-    private readonly SELECTED_ENTRIES_COUNT = 25;
-
     private timelineWidget_: TimelineWidget;
     private treeWidget_: TreeWidget;
     private modelProvider_: ITimelineModelProvider;
@@ -65,7 +63,7 @@ export class TreeTimelineComponent extends BaseGoldenLayoutComponent {
 
     private treeModelChanged(e: CustomEvent) {
         if (this.timelineWidget_ !== undefined) {
-            this.timelineWidget_.visibleEntries = this.treeWidget_.getNodes(this.SELECTED_ENTRIES_COUNT) as TimelineEntry[];
+            this.timelineWidget_.entries = this.treeWidget_.getAllNodes() as TimelineEntry[];
             this.treeWidget_.expandAll();
         }
     }
