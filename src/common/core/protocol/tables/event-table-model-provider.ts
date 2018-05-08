@@ -14,27 +14,28 @@ import { VirtualTableQueryFilter } from './../../filter/virtual-table-query-filt
 import { VirtualTableModel } from './../../model/virtual-table-model';
 import { TimeQueryFilter } from '../../filter/time-query-filter';
 import { ITreeModel } from '../../model/tree-model';
+import { TraceBaseModelProvider } from './../trace-base-model-provider';
 
-export class EventTableModelProvider implements IVirtualTableModelProvider {
+export class EventTableModelProvider extends TraceBaseModelProvider implements IVirtualTableModelProvider {
 
     private readonly serverUrl_: string;
-    private trace_: Trace;
     private readonly providerID_: string;
 
     constructor(serverUrl: string, trace: Trace, providerId: string) {
+        super(trace);
         this.serverUrl_ = serverUrl;
-        this.trace_ = trace;
         this.providerID_ = providerId;
     }
 
-    get visibleRange() {
-        return {
-            start: this.trace_.start,
-            end: this.trace_.end
-        };
-    }
-
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<ITreeModel[]>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: new Array()
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/tree`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
@@ -47,6 +48,14 @@ export class EventTableModelProvider implements IVirtualTableModelProvider {
     }
 
     public async fetchLines(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<VirtualTableModel>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: null
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/lines`;
         let params = new URLSearchParams();
         params.set('low', filter.index.toString());

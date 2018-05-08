@@ -8,6 +8,7 @@
 
 import { Trace } from './../model/trace';
 import { EventType } from './../../base/events';
+import { Range } from './../../core/range';
 
 export class TraceBaseModelProvider {
 
@@ -23,6 +24,16 @@ export class TraceBaseModelProvider {
 
     set trace(trace: Trace) {
         this.trace_ = trace;
+    }
+
+    get visibleRange() {
+        let start = this.trace_ == null ? 0 : this.trace_.start;
+        let end = this.trace_ == null ? 0 : this.trace_.end;
+
+        return <Range> {
+            start: start,
+            end: end
+        };
     }
 
     protected listenForTraceChange() {

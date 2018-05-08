@@ -11,10 +11,11 @@ import { SelectionTimeQueryFilter } from './../../filter/selection-time-query-fi
 import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Trace } from './../../model/trace';
 import { ITimelineModelProvider } from './../timeline-model-provider';
-import { ModelResponse } from './../model-response';
+import { ModelResponse, Status } from './../model-response';
 import { ITreeModel } from '../../model/tree-model';
 import { Http } from './../../http';
 import { TraceBaseModelProvider } from './../trace-base-model-provider';
+import { Range } from './../../../core/range';
 
 export class TreeTimelineModelProvider extends TraceBaseModelProvider implements ITimelineModelProvider {
 
@@ -29,14 +30,15 @@ export class TreeTimelineModelProvider extends TraceBaseModelProvider implements
         this.listenForTraceChange();
     }
 
-    get visibleRange() {
-        return {
-            start: this.trace_.start,
-            end: this.trace_.end
-        };
-    }
-
     public async fetchTree(filter: TimeQueryFilter) : Promise<ModelResponse<ITreeModel[]>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<ITreeModel[]>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: new Array()
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/tree`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
@@ -49,6 +51,14 @@ export class TreeTimelineModelProvider extends TraceBaseModelProvider implements
     }
 
     public async fetchEvents(filter: SelectionTimeQueryFilter) : Promise<ModelResponse<TimelineRowModel[]>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<TimelineRowModel[]>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: new Array()
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/states`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
@@ -64,6 +74,14 @@ export class TreeTimelineModelProvider extends TraceBaseModelProvider implements
     }
 
     public async fetchArrows(filter: TimeQueryFilter) : Promise<ModelResponse<TimelineArrow[]>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<TimelineArrow[]>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: new Array()
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/arrows`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());

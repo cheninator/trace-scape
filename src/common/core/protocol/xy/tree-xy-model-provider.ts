@@ -12,9 +12,10 @@ import { TimeQueryFilter } from './../../filter/time-query-filter';
 import { Http } from './../../http';
 import { Trace } from './../../model/trace';
 import { XYSeries } from './../../model/xy-model';
-import { ModelResponse } from './../model-response';
+import { ModelResponse, Status } from './../model-response';
 import { TraceBaseModelProvider } from './../trace-base-model-provider';
 import { IXYModelProvider } from './../xy-model-provider';
+import { Range } from './../../../core/range';
 
 export class TreeXYModelProvider extends TraceBaseModelProvider implements IXYModelProvider {
 
@@ -29,14 +30,15 @@ export class TreeXYModelProvider extends TraceBaseModelProvider implements IXYMo
         this.listenForTraceChange();
     }
 
-    get visibleRange() {
-        return {
-            start: this.trace_.start,
-            end: this.trace_.end
-        };
-    }
-
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<ITreeModel[]>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: new Array()
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/tree`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
@@ -49,6 +51,14 @@ export class TreeXYModelProvider extends TraceBaseModelProvider implements IXYMo
     }
 
     public async fetchXY(filter: TimeQueryFilter): Promise<ModelResponse<XYSeries[]>> {
+        if (this.trace_ == null) {
+            return <ModelResponse<XYSeries[]>> {
+                status: Status.COMPLETED,
+                statusMessage: Status.COMPLETED.toString(),
+                model: new Array()
+            };
+        }
+
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/xy`;
         let params = new URLSearchParams();
         params.set('start', filter.start.toString());
