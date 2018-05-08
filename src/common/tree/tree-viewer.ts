@@ -37,6 +37,11 @@ export class TreeViewer implements IShowable {
                 }
             }));
         };
+
+        // @ts-ignore: Broken definition type
+        let treeDom = new TreeDom(this.tree_, {
+            target: this.element_
+        });
     }
 
     set treeModel(treeModel: ITreeModel[]) {
@@ -47,11 +52,6 @@ export class TreeViewer implements IShowable {
         let nodes = this.buildTreeFromModel(this.treeModel_);
         this.tree_.removeAll();
         this.tree_.addNodes(nodes);
-
-        // @ts-ignore: Broken definition type
-        let treeDom = new TreeDom(this.tree_, {
-            target: this.element_
-        });
     }
 
     set onDoubleClick(onDoubleClick: (node: ITreeModel) => void) {
@@ -63,10 +63,7 @@ export class TreeViewer implements IShowable {
     }
 
     public update() {
-        // @ts-ignore
-        let treeDom = new TreeDom(this.tree_, {
-            target: this.element_
-        });
+        // Nothing special to do
     }
 
     public show() {

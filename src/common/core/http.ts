@@ -19,10 +19,7 @@ export class Http {
         return fetch(url, options || {
             method: method,
             mode: 'cors',
-            headers: new Headers({
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }),
-            body: body !== undefined ? body.toString() : undefined
+            body: body
         }).then(this.handleErrors)
         .then(r => r.json())
         .catch(e => console.error(e));

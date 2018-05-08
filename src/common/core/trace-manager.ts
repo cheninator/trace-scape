@@ -30,21 +30,12 @@ export class TraceManager {
 
     private modelProvider_: ITraceModelProvider;
     private traces_: Dictionary<Trace>;
-    private activeTrace_: Trace;
 
     private constructor(modelProvider: ITraceModelProvider) {
         this.modelProvider_ = modelProvider;
         this.traces_ = new Dictionary();
 
         window.addEventListener(EventType.TRACE_CHANGED, this.traceUpdated.bind(this));
-    }
-
-    get activeTrace() {
-        return this.activeTrace_;
-    }
-
-    set activeTrace(trace: Trace) {
-        this.activeTrace_ = trace;
     }
 
     public async getTraceById(id: string) {
@@ -66,8 +57,11 @@ export class TraceManager {
             trace = await this.modelProvider_.putTrace(name, path);
             this.traces_.add(trace.UUID, trace);
         }
-        this.activeTrace_ = trace;
-        return this.activeTrace_;
+        return trace;
+    }
+
+    public async uploadTraceFile(file: File) {
+        return this.modelProvider_.uploadTrace(file);
     }
 
     private async getTraceByName(name: string, path: string) {

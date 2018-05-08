@@ -93,5 +93,7 @@ export class XYWidget extends InteractiveWidget {
         this.listenForRangeSelection();
         this.enableZoomByKeyboard();
         this.enablePanByKeyboard();
+
+        window.addEventListener(EventType.TRACE_CHANGED, this.resetVisibleWindow.bind(this));
     }
 }

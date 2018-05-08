@@ -58,6 +58,7 @@ export class TimelineWidget extends InteractiveWidgetCached {
         this.init(element);
 
         window.addEventListener(EventType.VISIBLE_ENTRIES_CHANGED, Utils.throttle(this.visibleEntriesChanged.bind(this), 100));
+        window.addEventListener(EventType.TRACE_CHANGED, this.resetVisibleWindow.bind(this));
     }
 
     set entries(visibleEntries: TimelineEntry[]) {
@@ -95,6 +96,7 @@ export class TimelineWidget extends InteractiveWidgetCached {
     public resetVisibleWindow() {
         this.visibleWindow_.min = this.modelProvider_.visibleRange.start;
         this.visibleWindow_.max = this.modelProvider_.visibleRange.end;
+        this.initCache();
     }
 
     public refresh() {

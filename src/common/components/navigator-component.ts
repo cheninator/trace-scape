@@ -60,7 +60,7 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
         let fileElement = document.getElementById("file");
         let button = document.getElementById("submit");
-        this.traceUploaderWidget_ = new TraceUploaderWidget(fileElement, button, this.config_.serverUrl);
+        this.traceUploaderWidget_ = new TraceUploaderWidget(fileElement, button);
     }
 
     private traceUploaded() {

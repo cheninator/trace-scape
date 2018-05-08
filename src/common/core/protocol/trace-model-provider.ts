@@ -14,6 +14,7 @@ export interface ITraceModelProvider {
     getTrace(traceId: string): Promise<Trace>;
     putTrace(name: string, path: string): Promise<Trace>;
     removeTrace(traceId: string): Promise<boolean>;
+    uploadTrace(file: File): Promise<Trace>;
 }
 
 export class TraceModelProvider implements ITraceModelProvider {
@@ -42,5 +43,13 @@ export class TraceModelProvider implements ITraceModelProvider {
 
     public async removeTrace(traceId: string): Promise<boolean> {
         return <boolean> await Http.delete(`${this.serverUrl_}/traces/${traceId}`);
+    }
+
+    public async uploadTrace(file: File): Promise<Trace> {
+        let url = `${this.serverUrl_}/traces`;
+        let data = new FormData();
+        data.append('file', file);
+
+        return <Trace> await Http.put(url, data);
     }
 }
