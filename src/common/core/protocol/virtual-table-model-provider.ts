@@ -9,7 +9,8 @@
 import { VirtualTableQueryFilter } from './../filter/virtual-table-query-filter';
 import { VirtualTableModel } from './../model/virtual-table-model';
 import { ModelResponse } from './model-response';
+import { ITreeModelProvider } from './tree-model-provider';
 
-export interface IVirtualTableModelProvider {
-    fetch(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>>;
+export interface IVirtualTableModelProvider extends ITreeModelProvider {
+    fetchLines(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>>;
 }

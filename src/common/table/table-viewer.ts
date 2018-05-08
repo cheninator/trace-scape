@@ -8,18 +8,24 @@
 
 import { Grid, GridOptions, Column } from 'ag-grid';
 import { IShowable } from './../base/showable';
-import { VirtualTableModel } from './../core/model/virtual-table-model';
+import { VirtualTableModel, TableColumnModel } from './../core/model/virtual-table-model';
 
 export class TableViewer implements IShowable {
 
     private element_: HTMLElement;
     private tableModel_: VirtualTableModel;
+    private columnModel_: TableColumnModel[];
+
     private grid_: Grid;
     private gridOptions_: GridOptions;
 
     constructor(element: HTMLElement) {
         this.element_ = element;
         this.init();
+    }
+
+    set columnModel(columnModel: TableColumnModel[]) {
+        this.columnModel_ = columnModel;
     }
 
     set tableModel(tableModel: VirtualTableModel) {
@@ -31,8 +37,9 @@ export class TableViewer implements IShowable {
         let rowData = new Array();
 
         /* Build the column definitions */
-        for (let column of this.tableModel_.columns) {
-            columnDefs.push({ headerName: column, field: column });
+        for (let column of this.tableModel_.columnIds) {
+            const col = this.columnModel_.filter(x => x.id === column)[0];
+            columnDefs.push({ headerName: col.name, field: col.name });
         }
 
         /* Build the row data */

@@ -12,6 +12,8 @@ import { ModelResponse, Status } from './../model-response';
 import { IVirtualTableModelProvider } from './../virtual-table-model-provider';
 import { VirtualTableQueryFilter } from './../../filter/virtual-table-query-filter';
 import { VirtualTableModel } from './../../model/virtual-table-model';
+import { TimeQueryFilter } from '../../filter/time-query-filter';
+import { ITreeModel } from '../../model/tree-model';
 
 export class EventTableModelProvider implements IVirtualTableModelProvider {
 
@@ -25,7 +27,26 @@ export class EventTableModelProvider implements IVirtualTableModelProvider {
         this.providerID_ = providerId;
     }
 
-    public async fetch(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>> {
+    get visibleRange() {
+        return {
+            start: this.trace_.start,
+            end: this.trace_.end
+        };
+    }
+
+    public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
+        let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/tree`;
+        let params = new URLSearchParams();
+        params.set('start', filter.start.toString());
+        params.set('end', filter.end.toString());
+        params.set('nb', filter.count.toString());
+
+        let res = await Http.get(url, params);
+        this.trace_ = <Trace> res.trace;
+        return <ModelResponse<ITreeModel[]>> res.response;
+    }
+
+    public async fetchLines(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>> {
         let url = `${this.serverUrl_}/traces/${this.trace_.UUID}/providers/${this.providerID_}/lines`;
         let params = new URLSearchParams();
         params.set('low', filter.index.toString());
@@ -36,11 +57,17 @@ export class EventTableModelProvider implements IVirtualTableModelProvider {
         }
 
         let result = await Http.get(url, params);
+
+        let data = new Array();
+        for (let datum of result.response.model.data) {
+            data.push(datum.line);
+        }
+
         let model: VirtualTableModel = {
             index: result.response.model.index,
             count: result.response.model.nbTotalEntries,
-            columns: result.response.model.columnIds,
-            data: result.response.model.data
+            columnIds: result.response.model.columnIds,
+            data: data
         };
 
         return <ModelResponse<VirtualTableModel>> {

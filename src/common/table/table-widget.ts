@@ -14,7 +14,7 @@ import { VirtualTableQueryFilter } from './../core/filter/virtual-table-query-fi
 import { Status } from './../core/protocol/model-response';
 import { Utils } from './../core/utils';
 import { TableViewer } from './table-viewer';
-import { VirtualTableModel } from '../core/model/virtual-table-model';
+import { VirtualTableModel, TableColumnModel } from '../core/model/virtual-table-model';
 
 export class TableWidget extends Widget {
 
@@ -22,6 +22,7 @@ export class TableWidget extends Widget {
 
     private modelProvider_: IVirtualTableModelProvider;
     private tableModel_: VirtualTableModel;
+    private columnModel_: TableColumnModel[];
 
     private tableViewer_: TableViewer;
 
@@ -39,6 +40,7 @@ export class TableWidget extends Widget {
         let completed = false;
         let status: Status;
 
+        await this.updateColumns();
         do {
             status = await this.updateTable();
 
@@ -51,6 +53,7 @@ export class TableWidget extends Widget {
                     break;
             }
 
+            this.tableViewer_.columnModel = this.columnModel_;
             this.tableViewer_.tableModel = this.tableModel_;
             this.tableViewer_.update();
             await Utils.wait(this.WAIT_BEFORE_REQUEST);
@@ -65,6 +68,16 @@ export class TableWidget extends Widget {
         this.tableViewer_.hide();
     }
 
+    private async updateColumns() {
+        let response = await this.modelProvider_.fetchTree({
+            start: this.modelProvider_.visibleRange.start,
+            end: this.modelProvider_.visibleRange.end,
+            count: 100
+        });
+
+        this.columnModel_ = response.model as TableColumnModel[];
+    }
+
     private async updateTable() {
         let filter: VirtualTableQueryFilter = {
             index: 0,
@@ -72,7 +85,7 @@ export class TableWidget extends Widget {
             count: this.DEFAULT_COUNT
         };
 
-        let response = await this.modelProvider_.fetch(filter);
+        let response = await this.modelProvider_.fetchLines(filter);
         this.tableModel_ = response.model;
         return response.status;
     }

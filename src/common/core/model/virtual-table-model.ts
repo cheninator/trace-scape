@@ -6,9 +6,16 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import { ITreeModel } from "./tree-model";
+
 export interface VirtualTableModel {
-    columns: string[];
+    columnIds: number[];
     data: string[][];
     index: number;
     count: number;
+}
+
+export interface TableColumnModel extends ITreeModel {
+    headerToolTip: string;
+    hiddenByDefault: boolean;
 }
