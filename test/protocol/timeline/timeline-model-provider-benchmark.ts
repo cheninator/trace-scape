@@ -26,7 +26,7 @@ export abstract class TimelineModelProviderBenchmark {
         let traceName = 'many-threads';
         let tracePath = `/home/yonni/Documents/traces/${traceName}`;
 
-        let trace = await TraceManager.getInstance().openTrace(traceName, tracePath);
+        let trace = await TraceManager.getInstance(this.serverUrl).openTrace(traceName, tracePath);
 
         await this.executeBenchmark(trace, 10, 10);
         await this.executeBenchmark(trace, 10, 100);
