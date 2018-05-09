@@ -32,10 +32,6 @@ export class TableWidget extends Widget {
         this.modelProvider_ = modelProvider;
     }
 
-    public inflate(visibleWindow?: VisibleWindow) {
-        this.update();
-    }
-
     public async update() {
         let completed = false;
         let status: Status;

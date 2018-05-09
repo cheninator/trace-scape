@@ -25,6 +25,8 @@ export class EventTableModelProvider extends TraceBaseModelProvider implements I
         super(trace);
         this.serverUrl_ = serverUrl;
         this.providerID_ = providerId;
+
+        this.listenForTraceChange();
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
@@ -49,10 +51,17 @@ export class EventTableModelProvider extends TraceBaseModelProvider implements I
 
     public async fetchLines(filter: VirtualTableQueryFilter): Promise<ModelResponse<VirtualTableModel>> {
         if (this.trace_ == null) {
+            let m = <VirtualTableModel> {
+                columnIds: new Array(),
+                count: 0,
+                index: 0,
+                data: new Array()
+            };
+
             return <ModelResponse<VirtualTableModel>> {
                 status: Status.COMPLETED,
                 statusMessage: Status.COMPLETED.toString(),
-                model: null
+                model: m
             };
         }
 

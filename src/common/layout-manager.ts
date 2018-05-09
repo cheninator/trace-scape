@@ -55,7 +55,9 @@ export class LayoutManager {
     }
 
     public init() {
-        this.components_.forEach((c) => c.show());
+        for (let component of this.components_) {
+            component.show();
+        }
     }
 
     private addTimelineComponent(configuration: GoldenLayout.ItemConfig) {

@@ -26,6 +26,10 @@ export class TableComponent extends BaseGoldenLayoutComponent {
     constructor(config: ConfigComponent, trace: Trace) {
         super(config);
         this.modelProvider_ = TableModelProviderFactory.create(this.config_.serverUrl, trace, this.config_.id);
+
+        window.addEventListener(EventType.MODEL_PROVIDER_CHANGED, () => {
+            this.tableWidget_.update();
+        });
     }
 
     get html(): string {

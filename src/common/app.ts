@@ -14,16 +14,22 @@ import { ModelProviders } from './core/protocol/model-providers';
 import { TreeTimelineComponent } from './components/tree-timeline-component';
 import { Trace } from './core/model/trace';
 import { TraceManager } from './core/trace-manager';
+import { Utils } from './core/utils';
 
 let serverUrl = 'http://localhost:8080/tracecompass';
+let trace: Trace;
 
-async function main() {
-
+async function openTestTrace() {
     let traceManager = TraceManager.getInstance();
     let name = 'kernel';
     let path = `/home/yonni/Documents/traces/${name}`;
-    let trace = await traceManager.openTrace(name, path);
+    trace = await traceManager.openTrace(name, path);
+}
 
+async function main() {
+
+    /* Strangely, everything fails with I remove this line... Need more investigation */
+    await Utils.wait(200);
     let layoutManager = new LayoutManager();
 
     layoutManager.addComponent(new TreeTimelineComponent({
