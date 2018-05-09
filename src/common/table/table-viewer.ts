@@ -59,7 +59,7 @@ export class TableViewer implements IShowable {
         this.gridOptions_.columnApi.getAllColumns().forEach((column: Column) => {
             columnsId.push(column.getId());
         });
-        this.gridOptions_.columnApi.autoSizeColumns(columnsId, null);
+        this.gridOptions_.columnApi.autoSizeColumns(columnsId);
 
         this.gridOptions_.api.refreshCells();
     }
