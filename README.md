@@ -11,9 +11,20 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-- A server that expose the REST API. TraceCompass Incubator project offers an implementation of the REST API. You can find it at https://git.eclipse.org/r/#/admin/projects/tracecompass.incubator/org.eclipse.tracecompass.incubator
+- The trace server must be executed before the client:
 
-- You must change the path of the traces. At the moment, it is hardcoded in `src/common/app.ts`
+If you have installed docker, you can start the server with the following command:
+```bash
+cd server/
+docker build -t trace-server .
+docker run -p 8080:8080 -d trace-server
+```
+
+Otherwise:
+```bash
+cd server/tracecompass
+./tracecompass-server
+```
 
 # Quick start
 ```bash
