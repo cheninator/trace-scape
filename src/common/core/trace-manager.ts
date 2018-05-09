@@ -14,18 +14,19 @@ import { TreeXYComponent } from '../components/tree-xy-component';
 
 export class TraceManager {
 
-    private static intance_: TraceManager;
-    private static serverUrl_ = "http://localhost:8080/tracecompass";
+    private static instances_: Dictionary<TraceManager>;
 
-    static set DefaultServerUrl(serverUrl: string) {
-        TraceManager.serverUrl_ = serverUrl;
-    }
-
-    public static getInstance() {
-        if (TraceManager.intance_ === undefined) {
-            TraceManager.intance_ = new TraceManager(new TraceModelProvider(TraceManager.serverUrl_));
+    public static getInstance(serverUrl: string) {
+        if (TraceManager.instances_ === undefined) {
+            TraceManager.instances_ = new Dictionary();
         }
-        return TraceManager.intance_;
+
+        if (!TraceManager.instances_.contains(serverUrl)) {
+            let instance = new TraceManager(new TraceModelProvider(serverUrl));
+            TraceManager.instances_.add(serverUrl, instance);
+        }
+
+        return TraceManager.instances_.get(serverUrl);
     }
 
     private modelProvider_: ITraceModelProvider;

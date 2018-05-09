@@ -7,6 +7,7 @@
  */
 
 import * as Highcharts from 'highcharts';
+require('highcharts/modules/exporting')(Highcharts);
 
 import { TimeFormatter } from './../core/formatter/time-formatter';
 import { XYSeries } from './../core/model/xy-model';
@@ -85,6 +86,18 @@ export class XYLineChart implements IXYChart {
     private initChart() {
         let infos = this.htmlElement_.getBoundingClientRect();
         this.chart_ = Highcharts.chart(this.htmlElement_, {
+            plotOptions: {
+                line: {
+                    animation: false,
+                    shadow: false,
+                    dataLabels: {
+                        shadow: false
+                    },
+                    marker: {
+                        enabled: false
+                    }
+                }
+            },
             chart: {
                 zoomType: 'x',
                 events: {

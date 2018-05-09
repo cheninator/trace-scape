@@ -15,19 +15,21 @@ export class TraceUploaderWidget {
 
     private inputFileElement_: HTMLInputElement;
     private buttonElement_: HTMLElement;
+    private serverUrl_: string;
 
-    constructor(inputFileElement: HTMLElement, buttonElement: HTMLElement) {
+    constructor(inputFileElement: HTMLElement, buttonElement: HTMLElement, serverUrl: string) {
         this.inputFileElement_ = inputFileElement as HTMLInputElement;
         this.buttonElement_ = buttonElement;
+        this.serverUrl_ = serverUrl;
 
         this.buttonElement_.addEventListener('click', this.upload.bind(this));
     }
 
     private async upload() {
         let file = this.inputFileElement_.files[0];
-        let trace = await TraceManager.getInstance().uploadTraceFile(file);
+        let trace = await TraceManager.getInstance(this.serverUrl_).uploadTraceFile(file);
 
-        await TraceManager.getInstance().openTrace(trace.name, trace.path);
+        await TraceManager.getInstance(this.serverUrl_).openTrace(trace.name, trace.path);
         window.dispatchEvent(new CustomEvent(EventType.TRACE_UPLOADED, {}));
         this.inputFileElement_.value = "";
     }

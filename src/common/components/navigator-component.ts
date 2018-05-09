@@ -60,7 +60,7 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
 
         let fileElement = document.getElementById("file");
         let button = document.getElementById("submit");
-        this.traceUploaderWidget_ = new TraceUploaderWidget(fileElement, button);
+        this.traceUploaderWidget_ = new TraceUploaderWidget(fileElement, button, this.config_.serverUrl);
     }
 
     private traceUploaded() {
@@ -80,7 +80,7 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
                 }));
             }
             else {
-                let trace = await TraceManager.getInstance().openTrace(model.name, model.path);
+                let trace = await TraceManager.getInstance(this.config_.serverUrl).openTrace(model.name, model.path);
 
                 window.dispatchEvent(new CustomEvent(EventType.TRACE_CHANGED, {
                     detail: {

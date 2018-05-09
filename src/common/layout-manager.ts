@@ -28,7 +28,6 @@ export class LayoutManager {
         this.layout_ = new GoldenLayout(this.config);
         this.layout_.init();
         this.components_ = new Array();
-        this.registerNavigatorComponent();
 
         window.addEventListener(EventType.VIEW_SELECTED, this.viewSelected.bind(this));
     }
@@ -48,6 +47,9 @@ export class LayoutManager {
 
         if (component instanceof TreeTimelineComponent) {
             this.addTimelineComponent(configuration);
+        }
+        else if (component instanceof NavigatorComponent) {
+            this.addNavigatorComponent(configuration);
         }
         else {
             this.addXYComponent(configuration);
@@ -88,18 +90,7 @@ export class LayoutManager {
         row.addChild(configuration);
     }
 
-    private registerNavigatorComponent() {
-        let component = new NavigatorComponent({
-            id: "navigator",
-            name: "Project explorer",
-            serverUrl: "http://localhost:8080/tracecompass"
-        });
-        this.components_.push(component);
-
-        let configuration = component.itemConfiguration;
-        this.layout_.registerComponent(configuration.title, function(container: GoldenLayout.Container, componentState: any) {
-            container.getElement().html(component.html);
-        });
+    private addNavigatorComponent(configuration: GoldenLayout.ItemConfig) {
         this.layout_.root.contentItems[0].addChild(configuration);
 
         this.layout_.root.contentItems[0].addChild({
