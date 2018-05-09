@@ -21,3 +21,20 @@ git clone https://github.com/cheninator/trace-scape
 cd trace-scape/
 npm install && npm start
 ```
+
+# Docker
+
+TraceScape can be run as a Docker container. To avoid using `sudo`, add the current user to the docker group:
+
+```bash
+sudo usermod -a -G docker $USER
+```
+
+Building TraceScape from the Docker file by using the following commands:
+
+```bash
+docker build -t trace-scape .
+docker run -p 3000:3000 -d trace-scape
+```
+
+You can then access the trace-scape application on your browser by going to http://localhost:3000
