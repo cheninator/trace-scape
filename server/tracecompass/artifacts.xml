@@ -3,7 +3,7 @@
 <repository name='Bundle pool' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
   <properties size='2'>
     <property name='p2.system' value='true'/>
-    <property name='p2.timestamp' value='1525887515243'/>
+    <property name='p2.timestamp' value='1525915317149'/>
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
@@ -236,6 +236,11 @@
         <property name='download.size' value='252201'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.tracecompass.incubator.trace.server.jersey.rest.core' version='0.0.1.201805100120'>
+      <properties size='1'>
+        <property name='download.size' value='290656'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher' version='1.5.0.v20180207-1446'>
       <properties size='1'>
         <property name='download.size' value='54530'/>
@@ -385,11 +390,6 @@
     <artifact classifier='osgi.bundle' id='org.eclipse.jetty.security' version='9.4.8.v20171121'>
       <properties size='1'>
         <property name='download.size' value='102683'/>
-      </properties>
-    </artifact>
-    <artifact classifier='osgi.bundle' id='org.eclipse.tracecompass.incubator.trace.server.jersey.rest.core' version='0.0.1.201805091737'>
-      <properties size='1'>
-        <property name='download.size' value='290704'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='com.fasterxml.jackson.core.jackson-annotations' version='2.6.2.v20161117-2150'>
