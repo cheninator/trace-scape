@@ -36,10 +36,11 @@ export class TraceBaseModelProvider {
         };
     }
 
-    protected listenForTraceChange() {
+    protected listenForTraceChange(providerId: string) {
         window.addEventListener(EventType.TRACE_CHANGED, (e: CustomEvent) => {
             this.trace_ = e.detail.model as Trace;
-            window.dispatchEvent(new Event(EventType.MODEL_PROVIDER_CHANGED));
+            let s = `${EventType.MODEL_PROVIDER_CHANGED}-${providerId}`;
+            window.dispatchEvent(new Event(s));
         });
     }
 }

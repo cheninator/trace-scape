@@ -33,7 +33,8 @@ export class TreeXYComponent extends BaseGoldenLayoutComponent {
 
         window.addEventListener(EventType.TREE_MODEL_CHANGED, this.treeModelChanged.bind(this));
 
-        window.addEventListener(EventType.MODEL_PROVIDER_CHANGED, async () => {
+        let event = `${EventType.MODEL_PROVIDER_CHANGED}-${this.config_.id}`;
+        window.addEventListener(event, async () => {
             this.treeWidget_.resetVisibleWindow();
             this.treeWidget_.update();
 

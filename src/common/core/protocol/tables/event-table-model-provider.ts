@@ -26,7 +26,7 @@ export class EventTableModelProvider extends TraceBaseModelProvider implements I
         this.serverUrl_ = serverUrl;
         this.providerID_ = providerId;
 
-        this.listenForTraceChange();
+        this.listenForTraceChange(this.providerID_);
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {

@@ -39,7 +39,9 @@ export class TableViewer implements IShowable {
         /* Build the column definitions */
         for (let column of this.tableModel_.columnIds) {
             const col = this.columnModel_.filter(x => x.id === column)[0];
-            columnDefs.push({ headerName: col.name, field: col.name });
+            if (col !== undefined) {
+                columnDefs.push({ headerName: col.name, field: col.name });
+            }
         }
 
         /* Build the row data */
