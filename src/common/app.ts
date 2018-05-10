@@ -12,7 +12,7 @@ import { ComponentFactory, Components } from './components/component-factory';
 import { Trace } from './core/model/trace';
 import { Utils } from './core/utils';
 
-let serverUrl = 'http://localhost:8080/tracecompass';
+let serverUrl = 'http://localhost:8080';
 let trace: Trace;
 
 async function openTestTrace() {
