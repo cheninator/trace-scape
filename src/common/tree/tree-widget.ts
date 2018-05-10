@@ -53,7 +53,8 @@ export class TreeWidget extends Widget {
                     break;
             }
 
-            window.dispatchEvent(new CustomEvent(EventType.TREE_MODEL_CHANGED, {
+            let event = `${EventType.TREE_MODEL_CHANGED}-${this.modelProvider_.id}`;
+            window.dispatchEvent(new CustomEvent(event, {
                 detail: {
                     model: this.entries_
                 }

@@ -30,6 +30,10 @@ export class TreeXYModelProvider extends TraceBaseModelProvider implements IXYMo
         this.listenForTraceChange(this.providerID_);
     }
 
+    get id() {
+        return this.providerID_;
+    }
+
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
         if (this.trace_ == null) {
             return <ModelResponse<ITreeModel[]>> {

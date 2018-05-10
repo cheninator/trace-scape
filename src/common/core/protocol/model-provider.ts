@@ -10,4 +10,5 @@ import { Range } from './../range';
 
 export class IModelProvider {
     readonly visibleRange: Range;
+    readonly id: string;
 }

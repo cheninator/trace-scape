@@ -31,7 +31,8 @@ export class TreeXYComponent extends BaseGoldenLayoutComponent {
         super(config);
         this.modelProvider_ = TreeXYModelProviderFactory.create(config.serverUrl, trace, this.config_.id);
 
-        window.addEventListener(EventType.TREE_MODEL_CHANGED, this.treeModelChanged.bind(this));
+        let t = `${EventType.TREE_MODEL_CHANGED}-${this.config_.id}`;
+        window.addEventListener(t, this.treeModelChanged.bind(this));
 
         let event = `${EventType.MODEL_PROVIDER_CHANGED}-${this.config_.id}`;
         window.addEventListener(event, async () => {

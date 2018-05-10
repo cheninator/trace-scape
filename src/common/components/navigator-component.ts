@@ -63,8 +63,9 @@ export class NavigatorComponent extends BaseGoldenLayoutComponent {
         this.traceUploaderWidget_ = new TraceUploaderWidget(fileElement, button, this.config_.serverUrl);
     }
 
-    private traceUploaded() {
-        this.treeWidget_.update();
+    private async traceUploaded() {
+        await this.treeWidget_.update();
+        this.treeWidget_.expandAll();
     }
 
     private enableDoubleClick() {

@@ -18,6 +18,7 @@ import { Utils } from './../utils';
 export class ProjectExplorerModelProvider implements ITreeModelProvider {
 
     private readonly serverUrl_: string;
+    private readonly providerID_ = "Project explorer";
 
     constructor(serverUrl: string) {
         this.serverUrl_ = serverUrl;
@@ -28,6 +29,10 @@ export class ProjectExplorerModelProvider implements ITreeModelProvider {
             start: 0,
             end: Utils.ETERNITY
         };
+    }
+
+    get id() {
+        return this.providerID_;
     }
 
     public async fetchTree(filter: TimeQueryFilter): Promise<ModelResponse<ITreeModel[]>> {
